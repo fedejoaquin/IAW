@@ -5,5 +5,11 @@ $( document ).ready(function(){
     $('.slider').slider({
         indicators:false
     });
+    
+    $(".btn-login").show("size");
+    
+    $(".btn-login").click(function() {
+        $(".panel-login").show("size");
+    });
 });
 
