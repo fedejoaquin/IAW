@@ -5,9 +5,5 @@ $( document ).ready(function(){
     $('.slider').slider({
         indicators:false
     });
-    
-   $( ".infoNos" ).show('slow','swing');
-    
-   $( ".competencia").show('slow','swing');
 });
 
