@@ -1,27 +1,83 @@
-<div class="col s12 l12">
-    <p class="center-align">
-        Esto es un parrafo de bienvinida a webresto 2.0
-        Hay que trabajar para escribir un liundo texto.
-        Salhdos cordiales.
-        Fede
-    </p>
-</div>
 <div class="row">
-    <div class="col l8 s12">
-        <div>
-            <a class="btn-login btn-floating waves-effect waves-light">
+    <div class="col s12 center-align">
+        <p>
+            Esto es un parrafo de bienvinida a webresto 2.0
+            Hay que trabajar para escribir un liundo texto.
+            Salhdos cordiales.
+            Fede
+        </p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col s12 center-align">
+        <div class="row">
+            <a>Acceso al sistema</a>
+        </div>
+        <div class="row">
+            <a id="btn-login-empleados" class="btn-login btn-floating waves-effect waves-light">
                 <img src="http://th01.deviantart.net/fs70/PRE/i/2013/126/1/e/nature_portrait_by_pw_fotografie-d63tx0n.jpg">
             </a>
-            <a class="btn-login btn-floating waves-effect waves-light">
+            <a id="btn-login-usuarios" class="btn-login btn-floating waves-effect waves-light">
                 <img src="http://th01.deviantart.net/fs70/PRE/i/2013/126/1/e/nature_portrait_by_pw_fotografie-d63tx0n.jpg">
-            </a>
+            </a>   
         </div>
-        <div class="panel-login">
-            <label>Usuario</label> 
-            <label>Contraseña</label>
-            <a id="btn-atras-login" class="btn-large btn-floating waves-effect waves-light">
-                Atras
-            </a>
+    </div>
+</div>
+
+<div id="pnl-opc-login-usuarios" class="row panel-login">
+    <div class="col s12 center-align">
+        <div class="row">
+            <a> Login via.. </a>
         </div>
-</div>    
+        <div class="row">
+            <a class="btn-floating waves-effect waves-light">
+                <img src="../img/fb.png">
+            </a>
+            <a class="btn-floating waves-effect waves-light">
+                <img src="../img/fb.png">
+            </a> 
+            <a id="btn-login-usuarios-local" class="btn-floating waves-effect waves-light"> Local </a>  
+        </div> 
+    </div>
+</div>
+
+<div id="pnl-login-empleados" class="row panel-login">
+    <form class="col m4 s12 offset-l4" action="<?php echo site_url() ?>/webresto/loginEmpleado" method="post">
+        <div class="row">
+            <div class="input-field col s12">
+              <input placeholder="Placeholder" id="user_name" type="text" class="validate">
+              <label for="user_name">Usuario</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="password" type="password" class="validate">
+                <label for="password">Password</label>
+            </div>
+        </div>
+        <button class="btn waves-effect waves-light" type="submit" name="action">
+            <i class="material-icons right">Ingresar</i>
+        </button>
+    </form>
+</div>
+
+<div id="pnl-login-usuarios" class="row panel-login">
+    <form class="col m4 s12 offset-l4" action="<?php echo site_url() ?>/webresto/loginUsuario" method="post">
+        <div class="row">
+            <div class="input-field col s12">
+              <input placeholder="Placeholder" id="user_name" type="text" class="validate">
+              <label for="user_name">Usuario</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="password" type="password" class="validate">
+                <label for="password">Password</label>
+            </div>
+        </div>
+        <button class="btn waves-effect waves-light" type="submit" name="action">
+            <i class="material-icons right">Ingresar</i>
+        </button>
+    </form>
 </div>
