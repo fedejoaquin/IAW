@@ -20,6 +20,15 @@ class Nosotros extends CI_Controller {
 	 */
 	public function index()
 	{
-		$this->load->view('vNosotros');
+                /*$this->load->database();
+                $query = $this->db->query('SELECT * FROM usuarios'); 
+                
+                    foreach ($query->result() as $row) 
+                    { 
+                       $resultado['id'] = $row->id; 
+                       $resultado['nombre'] = $row->nombre; 
+                    } 
+		$this->load->view('vNosotros',$resultado);*/
+                $this->load->view('vNosotros');
 	}
 }
