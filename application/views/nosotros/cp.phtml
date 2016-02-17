@@ -2,4 +2,12 @@
     <div  class = "col s12 center-align ">
         <p>Este es un texto de prueba para saber donde queda todo parado, y si no se sale del fucking cuadro, capicci? mandale saludos al tirri</p>
     </div>
+    <div>
+        <?php 
+            foreach ($resultado as $row){
+                echo '<p>'.$row['nombre'].'</p>';
+                echo '<p>'.$row['apellido'].'</p>';
+            }
+        ?>
+    </div>
 </div>
