@@ -3,6 +3,11 @@
     height: 150px;
 }
 
+.btn-admin{
+    width: 110px;
+    height: 110px; 
+}
+
 .panel-login{
     display: none;
 }
