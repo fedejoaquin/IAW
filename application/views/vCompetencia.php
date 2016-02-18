@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script src="js/jquery-2.2.0.min.js" type="text/javascript"></script>
-    <script src="js/jquery-ui.min.js" type="text/javascript"></script>
-    <script src="js/materialize.js" type="text/javascript"></script>
-    <script src="js/animaciones.js" type="text/javascript"></script>
-    
-    <link href="css/materialize.css" rel="stylesheet" type="text/css"/>  
-    <link href="css/Estilo.css" rel="stylesheet" type="text/css"/>
-    <link href="css/jquery-ui.min.css" rel="stylesheet" type="text/css"/>
+    <?php include 'componentes/recursos.phtml'; ?>
 </head>
     <body>
-    <?php include 'componentes/botonera.phtml'; ?>       
-    <?php include '/competencia/cp.phtml'; ?>           
-    <?php include 'componentes/footer.phtml'; ?>   
+        <?php include 'componentes/botonera.phtml'; ?> 
+        <?php 
+            $ruta = array(
+                array('Inicio',  site_url()), 
+                array('Competencia', site_url().'competencia')
+            );
+            include 'componentes/rutaSeguimiento.phtml' 
+        ?>    
+        <?php include '/competencia/'.$funcion.'.phtml'; ?>            
+        <?php include 'componentes/footer.phtml'; ?>   
     </body>
 </html>

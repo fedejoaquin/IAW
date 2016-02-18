@@ -1,11 +1,11 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Admin extends CI_Controller {
+class Facturacion extends CI_Controller {
 
 	public function index()
 	{
             $data['funcion'] = 'index';
-            $this->load->view('vAdmin', $data);
-	}
+            $this->load->view('vFacturacion', $data);
+        }
 }

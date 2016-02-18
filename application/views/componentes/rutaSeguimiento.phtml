@@ -1,0 +1,11 @@
+<div class="rutaSeguimiento">
+    <div class="nav-wrapper">
+      <div class="col s12">
+        <?php foreach ($ruta as $ref){
+            $texto = $ref[0];
+            $enlace = $ref[1];
+            echo '<a href="'.$enlace.'" class="breadcrumb">'.$texto.'</a>';
+        }?>
+      </div>
+    </div>
+</div>

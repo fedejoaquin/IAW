@@ -8,11 +8,12 @@
         <?php 
             $ruta = array(
                 array('Inicio',  site_url()), 
-                array('Nosotros', site_url().'nosotros')
+                array('Empleados', site_url().'empleados'),
+                array('Facturacion', site_url().'facturacion')
             );
             include 'componentes/rutaSeguimiento.phtml' 
-        ?>       
-        <?php include '/nosotros/'.$funcion.'.phtml'; ?>           
+        ?>     
+        <?php include '/facturacion/'.$funcion.'.phtml'; ?>           
         <?php include 'componentes/footer.phtml'; ?>   
     </body>
 </html>
