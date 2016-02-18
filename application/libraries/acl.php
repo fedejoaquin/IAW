@@ -14,12 +14,18 @@ class Acl{
     }
 	
     public function tiene_permiso($controlador, $funcion){
-        $uid = $this->_CI->session->userdata('uid');
+        $uid = $this->_CI->session->userdata('uid'); //ID empleado
+        $ucid = $this->_CI->session->userdata('ucid'); //ID cliente
         $user_roles = $this->_CI->session->userdata('roles');
         
-        // Es visitante
-        if (! $uid OR ! $user_roles ){
-            $user_roles = array('Visitante');
+        //No es cliente
+        if (!ucid){
+            // Es visitante
+            if (! $uid OR ! $user_roles ){
+                $user_roles = array('Visitante');
+            }
+        }else{
+            $user_roles = array('Cliente');
         }
         
         //Obtenemos para un dado controlador, el mapeo Funcion - RolesPermitidos.
