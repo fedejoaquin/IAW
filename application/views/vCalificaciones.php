@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+
     <?php include 'componentes/recursos.phtml'; ?>
 </head>
     <body>

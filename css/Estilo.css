@@ -3,9 +3,14 @@
     height: 150px;
 }
 
-.btn-admin{
-    width: 110px;
-    height: 110px; 
+.btn-rol{
+    
+    width: 100px;
+    height:100px; 
+}
+
+.div-btn-rol{
+    height: 120px;
 }
 
 .panel-login{

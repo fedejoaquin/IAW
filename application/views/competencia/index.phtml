@@ -3,27 +3,43 @@
     <ul class="collapsible" data-collapsible="accordion">
         <li>
             <!-- el green es por ahora, despues hay que agregar estilo, de acuerdo a como queramos -->
-            <div class="green btn waves-light waves-effect btn-info-comp collapsible-header">Info Competencia</div>             
+            <a href="<?php echo site_url() ?>competencia/info">
+            <div class="green btn waves-light waves-effect btn-info-comp collapsible-header">Info Competencia</div> 
+            </a>
         </li>
         <li>
             <div class="green btn waves-light waves-effect collapsible-header">Rankings</div>
             <div class="collapsible-body">
                 <ul class="collapsible" data-collapsible="accordion">
                   <li>
-                    <div  class="green btn waves-light waves-effect btn-mundial collapsible-header">Mundial</div>
+                    <a href="<?php echo site_url() ?>competencia/mundial">
+                        <div class="green btn waves-light waves-effect btn-mundial collapsible-header">
+                            Mundial
+                        </div>
+                    </a>
                   </li>
                   <li>
-                    <div class="green btn waves-light waves-effect btn-nacional collapsible-header">Nacional</div>
+                    <a href="<?php echo site_url() ?>competencia/nacional">
+                        <div class="green btn waves-light waves-effect btn-nacional collapsible-header">
+                            Nacional
+                        </div>
+                    </a>
                   </li>
                   <li>
-                    <div class="green btn waves-light waves-effect btn-provincial collapsible-header">Provincial</div>
+                    <a href="<?php echo site_url() ?>competencia/provincial">
+                        <div class="green btn waves-light waves-effect btn-provincial collapsible-header">
+                            Provincial
+                        </div>
+                    </a>
                   </li>
                </ul>
             </div>
         </li>
     </ul>
     </div>
-    <div class="data-competencia col s9 m9 ">
-        Aca iria la informacion, linkeada a los botones
-    </div>
-</div>
+    
+    
+        
+ 
+    
+
