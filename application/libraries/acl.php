@@ -14,14 +14,14 @@ class Acl{
     }
 	
     public function tiene_permiso($controlador, $funcion){
-        $uid = $this->_CI->session->userdata('uid'); //ID empleado
-        $ucid = $this->_CI->session->userdata('ucid'); //ID cliente
+        $uid = $this->_CI->session->userdata('eid'); //ID empleado
+        $ucid = $this->_CI->session->userdata('cid'); //ID cliente
         $user_roles = $this->_CI->session->userdata('roles');
         
         //No es cliente
-        if (!ucid){
+        if (!cid){
             // Es visitante
-            if (! $uid OR ! $user_roles ){
+            if (! $eid OR ! $user_roles ){
                 $user_roles = array('Visitante');
             }
         }else{
