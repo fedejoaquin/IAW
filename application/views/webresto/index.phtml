@@ -1,10 +1,7 @@
 <div class="row">
     <div class="col s12 center-align">
         <p>
-            Esto es un parrafo de bienvinida a webresto 2.0
-            Hay que trabajar para escribir un liundo texto.
-            Salhdos cordiales.
-            Fede
+            Bienvenidos a WebResto 2.0. Acceda a nuestra plataforma y comience a tramitar todos sus pedidos.
         </p>
     </div>
 </div>
@@ -12,14 +9,11 @@
 <div class="row">
     <div class="col s12 center-align">
         <div class="row">
-            <a>Acceso al sistema</a>
-        </div>
-        <div class="row">
-            <a id="btn-login-empleados" class="btn-login btn-floating waves-effect waves-light">
-                <img src="http://th01.deviantart.net/fs70/PRE/i/2013/126/1/e/nature_portrait_by_pw_fotografie-d63tx0n.jpg">
+            <a id="btn-login-empleados" >
+                <img class="btn-login btn-floating waves-effect waves-light" src="img/empleados.png">
             </a>
-            <a id="btn-login-usuarios" class="btn-login btn-floating waves-effect waves-light">
-                <img src="http://th01.deviantart.net/fs70/PRE/i/2013/126/1/e/nature_portrait_by_pw_fotografie-d63tx0n.jpg">
+            <a id="btn-login-usuarios" >
+                <img class="btn-login btn-floating waves-effect waves-light" src="img/clientes.png">
             </a>   
         </div>
     </div>
@@ -36,22 +30,21 @@
 <div id="pnl-opc-login-usuarios" class="row panel-login">
     <div class="col s12 center-align">
         <div class="row">
-            <a> Login via.. </a>
-        </div>
-        <div class="row">
-            <a class="btn-floating waves-effect waves-light" href="<?php echo site_url() ?>webresto/loginFacebook">
-                <img src="img/fb.png">
+            <a href="<?php echo site_url() ?>webresto/loginFacebook">
+                <img class="btn-floating waves-effect waves-light" src="img/fb.png">
             </a>
-            <a class="btn-floating waves-effect waves-light" href="<?php echo site_url() ?>webresto/loginGMail">
-                <img src="img/fb.png">
+            <a href="<?php echo site_url() ?>webresto/loginGMail">
+                <img class="btn-floating waves-effect waves-light" src="img/g+.png">
             </a> 
-            <a id="btn-login-usuarios-local" class="btn-floating waves-effect waves-light"> Local </a>  
+            <a id="btn-login-usuarios-local"> 
+                <img class="btn-floating waves-effect waves-light" src="img/user.png">
+            </a>  
         </div> 
     </div>
 </div>
 
-<div id="pnl-login-empleados" class="row panel-login">
-    <form class="col m4 s12 offset-l4" action="<?php echo site_url() ?>webresto/loginEmpleado" method="post">
+<div id="pnl-login-empleados" class="row panel-login center-align">
+    <form class="col s8 m4 offset-s2 offset-m4" action="<?php echo site_url() ?>webresto/loginEmpleado" method="post">
         <div class="row">
             <div class="input-field col s12">
               <input id="NE" name="empleado_name" type="text" class="validate">
@@ -71,7 +64,7 @@
 </div>
 
 <div id="pnl-login-usuarios" class="row panel-login">
-    <form class="col m4 s12 offset-l4" action="<?php echo site_url() ?>webresto/loginUsuario" method="post">
+    <form class="col s8 m4 offset-s2 offset-m4" action="<?php echo site_url() ?>webresto/loginCliente" method="post">
         <div class="row">
             <div class="input-field col s12">
               <input id="CN" name="cliente_name" type="text" class="validate">

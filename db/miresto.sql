@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 17-02-2016 a las 20:23:36
+-- Tiempo de generación: 20-02-2016 a las 17:27:57
 -- Versión del servidor: 5.6.24
 -- Versión de PHP: 5.6.8
 
@@ -19,6 +19,8 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `miresto`
 --
+CREATE DATABASE IF NOT EXISTS `miresto` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `miresto`;
 
 -- --------------------------------------------------------
 
@@ -26,6 +28,7 @@ SET time_zone = "+00:00";
 -- Estructura de tabla para la tabla `calificaciones`
 --
 
+DROP TABLE IF EXISTS `calificaciones`;
 CREATE TABLE IF NOT EXISTS `calificaciones` (
   `id` int(11) NOT NULL,
   `id_mozo` int(10) unsigned NOT NULL,
@@ -41,6 +44,7 @@ CREATE TABLE IF NOT EXISTS `calificaciones` (
 -- Estructura de tabla para la tabla `cartas`
 --
 
+DROP TABLE IF EXISTS `cartas`;
 CREATE TABLE IF NOT EXISTS `cartas` (
   `id` int(10) unsigned NOT NULL,
   `id_restriccion_dia` int(10) unsigned NOT NULL,
@@ -62,6 +66,7 @@ INSERT INTO `cartas` (`id`, `id_restriccion_dia`, `id_restriccion_hora`, `nombre
 -- Estructura de tabla para la tabla `cuadriculas_base`
 --
 
+DROP TABLE IF EXISTS `cuadriculas_base`;
 CREATE TABLE IF NOT EXISTS `cuadriculas_base` (
   `id` int(11) NOT NULL,
   `nombre` tinytext NOT NULL,
@@ -77,11 +82,11 @@ CREATE TABLE IF NOT EXISTS `cuadriculas_base` (
 -- Estructura de tabla para la tabla `empleados`
 --
 
+DROP TABLE IF EXISTS `empleados`;
 CREATE TABLE IF NOT EXISTS `empleados` (
   `id` int(10) unsigned NOT NULL,
   `dni` int(10) unsigned NOT NULL,
   `nombre` tinytext NOT NULL,
-  `apellido` tinytext NOT NULL,
   `direccion` tinytext NOT NULL,
   `telefono` int(10) unsigned NOT NULL,
   `email` tinytext NOT NULL,
@@ -93,9 +98,9 @@ CREATE TABLE IF NOT EXISTS `empleados` (
 -- Volcado de datos para la tabla `empleados`
 --
 
-INSERT INTO `empleados` (`id`, `dni`, `nombre`, `apellido`, `direccion`, `telefono`, `email`, `cuit`, `password`) VALUES
-(1, 36704824, 'Federico', 'Joaquin', 'Undiano 69 Depto 13 Piso 1', 2392487559, 'fedejoaquin.mail@gmail.com', 20367048248, 'federico'),
-(2, 35795285, 'Leandro', 'Gilardi', 'Zapiola 1267 Dpto 10', 2914128136, 'leogilardi6@gmail.com', 20357952858, 'leandro');
+INSERT INTO `empleados` (`id`, `dni`, `nombre`, `direccion`, `telefono`, `email`, `cuit`, `password`) VALUES
+(1, 36704824, 'fede', 'Undiano 69 Depto 13 Piso 1', 2392487559, 'fedejoaquin.mail@gmail.com', 20367048248, '5d942a1d73fd8f28d71e6b03d2e42f44721db94b734c2edcfe6fcd48b76a74f9'),
+(2, 35795285, 'leo', 'Zapiola 1267 Dpto 10', 2914128136, 'leogilardi6@gmail.com', 20357952858, '8535e86c8118bbbb0a18ac72d15d3a2b37b18d1bce1611fc60165f322cf57386');
 
 -- --------------------------------------------------------
 
@@ -103,6 +108,7 @@ INSERT INTO `empleados` (`id`, `dni`, `nombre`, `apellido`, `direccion`, `telefo
 -- Estructura de tabla para la tabla `facturaciones`
 --
 
+DROP TABLE IF EXISTS `facturaciones`;
 CREATE TABLE IF NOT EXISTS `facturaciones` (
   `id` int(11) NOT NULL,
   `fecha` date NOT NULL,
@@ -119,6 +125,7 @@ CREATE TABLE IF NOT EXISTS `facturaciones` (
 -- Estructura de tabla para la tabla `fecha_cuadricula`
 --
 
+DROP TABLE IF EXISTS `fecha_cuadricula`;
 CREATE TABLE IF NOT EXISTS `fecha_cuadricula` (
   `id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -129,6 +136,7 @@ CREATE TABLE IF NOT EXISTS `fecha_cuadricula` (
 -- Estructura de tabla para la tabla `imagenes`
 --
 
+DROP TABLE IF EXISTS `imagenes`;
 CREATE TABLE IF NOT EXISTS `imagenes` (
   `id` int(10) unsigned NOT NULL,
   `imagen` mediumblob NOT NULL
@@ -145,33 +153,10 @@ INSERT INTO `imagenes` (`id`, `imagen`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `info-roles`
---
-
-CREATE TABLE IF NOT EXISTS `info-roles` (
-  `id` int(11) NOT NULL,
-  `id_empleado` int(10) unsigned NOT NULL,
-  `rol` int(10) unsigned NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
-
---
--- Volcado de datos para la tabla `info-roles`
---
-
-INSERT INTO `info-roles` (`id`, `id_empleado`, `rol`) VALUES
-(1, 1, 1),
-(2, 1, 2),
-(3, 1, 3),
-(4, 2, 4),
-(5, 2, 5),
-(6, 2, 6);
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `info_cuadriculas_base`
 --
 
+DROP TABLE IF EXISTS `info_cuadriculas_base`;
 CREATE TABLE IF NOT EXISTS `info_cuadriculas_base` (
   `id` int(11) NOT NULL,
   `pos_x` tinyint(3) unsigned NOT NULL,
@@ -187,6 +172,7 @@ CREATE TABLE IF NOT EXISTS `info_cuadriculas_base` (
 -- Estructura de tabla para la tabla `info_cuadriculas_fecha`
 --
 
+DROP TABLE IF EXISTS `info_cuadriculas_fecha`;
 CREATE TABLE IF NOT EXISTS `info_cuadriculas_fecha` (
   `id` int(11) NOT NULL,
   `pos_x` tinyint(3) unsigned NOT NULL,
@@ -201,6 +187,7 @@ CREATE TABLE IF NOT EXISTS `info_cuadriculas_fecha` (
 -- Estructura de tabla para la tabla `info_lista_precio`
 --
 
+DROP TABLE IF EXISTS `info_lista_precio`;
 CREATE TABLE IF NOT EXISTS `info_lista_precio` (
   `id` int(10) unsigned NOT NULL,
   `id_producto` int(10) unsigned NOT NULL,
@@ -222,9 +209,10 @@ INSERT INTO `info_lista_precio` (`id`, `id_producto`, `id_lista_precio`, `precio
 -- Estructura de tabla para la tabla `info_pedidos`
 --
 
+DROP TABLE IF EXISTS `info_pedidos`;
 CREATE TABLE IF NOT EXISTS `info_pedidos` (
   `id` int(10) unsigned NOT NULL,
-  `id_pedido` int(10) unsigned NOT NULL,
+  `id_mesa` int(10) unsigned NOT NULL,
   `id_producto` int(10) unsigned NOT NULL,
   `id_lista_precio` int(10) unsigned NOT NULL,
   `id_pedidor` int(10) unsigned NOT NULL,
@@ -235,9 +223,35 @@ CREATE TABLE IF NOT EXISTS `info_pedidos` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `info_roles`
+--
+
+DROP TABLE IF EXISTS `info_roles`;
+CREATE TABLE IF NOT EXISTS `info_roles` (
+  `id` int(11) NOT NULL,
+  `id_empleado` int(10) unsigned NOT NULL,
+  `rol` int(10) unsigned NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `info_roles`
+--
+
+INSERT INTO `info_roles` (`id`, `id_empleado`, `rol`) VALUES
+(1, 1, 1),
+(2, 1, 2),
+(3, 1, 3),
+(4, 2, 4),
+(5, 2, 5),
+(6, 2, 6);
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `lista_precio`
 --
 
+DROP TABLE IF EXISTS `lista_precio`;
 CREATE TABLE IF NOT EXISTS `lista_precio` (
   `id` int(10) unsigned NOT NULL,
   `nombre` tinytext NOT NULL,
@@ -258,6 +272,7 @@ INSERT INTO `lista_precio` (`id`, `nombre`, `fecha_modificacion`, `creador`) VAL
 -- Estructura de tabla para la tabla `menues`
 --
 
+DROP TABLE IF EXISTS `menues`;
 CREATE TABLE IF NOT EXISTS `menues` (
   `id` int(10) unsigned NOT NULL,
   `id_carta` int(10) unsigned NOT NULL,
@@ -280,12 +295,24 @@ INSERT INTO `menues` (`id`, `id_carta`, `id_seccion`, `id_producto`, `id_lista_p
 -- Estructura de tabla para la tabla `mesas`
 --
 
+DROP TABLE IF EXISTS `mesas`;
 CREATE TABLE IF NOT EXISTS `mesas` (
   `id` int(10) unsigned NOT NULL,
   `numero` smallint(5) unsigned NOT NULL,
   `abierta` tinyint(1) NOT NULL DEFAULT '0',
-  `id_mozo` int(10) unsigned NOT NULL,
-  `id_pedido` int(10) unsigned NOT NULL
+  `id_mozo` int(10) unsigned NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `mesas_pedidores`
+--
+
+DROP TABLE IF EXISTS `mesas_pedidores`;
+CREATE TABLE IF NOT EXISTS `mesas_pedidores` (
+  `id_pedidor` int(11) NOT NULL,
+  `id_mesa` int(10) unsigned NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -294,6 +321,7 @@ CREATE TABLE IF NOT EXISTS `mesas` (
 -- Estructura de tabla para la tabla `mesa_cuadricula`
 --
 
+DROP TABLE IF EXISTS `mesa_cuadricula`;
 CREATE TABLE IF NOT EXISTS `mesa_cuadricula` (
   `id` int(11) NOT NULL,
   `pos_x` tinyint(3) unsigned NOT NULL,
@@ -308,22 +336,10 @@ CREATE TABLE IF NOT EXISTS `mesa_cuadricula` (
 -- Estructura de tabla para la tabla `pedidores`
 --
 
+DROP TABLE IF EXISTS `pedidores`;
 CREATE TABLE IF NOT EXISTS `pedidores` (
   `id` int(11) NOT NULL,
-  `id_mesa` int(10) unsigned NOT NULL,
-  `es_mozo` tinyint(1) NOT NULL DEFAULT '0',
-  `email` tinytext NOT NULL,
   `nombre` tinytext NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `pedidos`
---
-
-CREATE TABLE IF NOT EXISTS `pedidos` (
-  `id` int(10) unsigned NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -332,6 +348,7 @@ CREATE TABLE IF NOT EXISTS `pedidos` (
 -- Estructura de tabla para la tabla `pedidos_procesados`
 --
 
+DROP TABLE IF EXISTS `pedidos_procesados`;
 CREATE TABLE IF NOT EXISTS `pedidos_procesados` (
   `id` int(11) NOT NULL,
   `id_info_pedido` int(10) unsigned NOT NULL,
@@ -345,6 +362,7 @@ CREATE TABLE IF NOT EXISTS `pedidos_procesados` (
 -- Estructura de tabla para la tabla `productos`
 --
 
+DROP TABLE IF EXISTS `productos`;
 CREATE TABLE IF NOT EXISTS `productos` (
   `id` int(10) unsigned NOT NULL,
   `nombre` tinytext NOT NULL,
@@ -365,6 +383,7 @@ INSERT INTO `productos` (`id`, `nombre`, `id_imagen`) VALUES
 -- Estructura de tabla para la tabla `reservas`
 --
 
+DROP TABLE IF EXISTS `reservas`;
 CREATE TABLE IF NOT EXISTS `reservas` (
   `id` int(11) NOT NULL,
   `fecha` date NOT NULL,
@@ -379,6 +398,7 @@ CREATE TABLE IF NOT EXISTS `reservas` (
 -- Estructura de tabla para la tabla `restricciones_dia`
 --
 
+DROP TABLE IF EXISTS `restricciones_dia`;
 CREATE TABLE IF NOT EXISTS `restricciones_dia` (
   `id` int(10) unsigned NOT NULL,
   `lunes` tinyint(1) NOT NULL DEFAULT '0',
@@ -404,6 +424,7 @@ INSERT INTO `restricciones_dia` (`id`, `lunes`, `martes`, `miercoles`, `jueves`,
 -- Estructura de tabla para la tabla `restricciones_hora`
 --
 
+DROP TABLE IF EXISTS `restricciones_hora`;
 CREATE TABLE IF NOT EXISTS `restricciones_hora` (
   `id` int(10) unsigned NOT NULL,
   `0` tinyint(1) NOT NULL DEFAULT '0',
@@ -446,6 +467,7 @@ INSERT INTO `restricciones_hora` (`id`, `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, 
 -- Estructura de tabla para la tabla `roles`
 --
 
+DROP TABLE IF EXISTS `roles`;
 CREATE TABLE IF NOT EXISTS `roles` (
   `id` int(10) unsigned NOT NULL,
   `descripcion` tinytext NOT NULL
@@ -469,6 +491,7 @@ INSERT INTO `roles` (`id`, `descripcion`) VALUES
 -- Estructura de tabla para la tabla `secciones`
 --
 
+DROP TABLE IF EXISTS `secciones`;
 CREATE TABLE IF NOT EXISTS `secciones` (
   `id` int(10) unsigned NOT NULL,
   `nombre` tinytext NOT NULL
@@ -529,12 +552,6 @@ ALTER TABLE `imagenes`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `info-roles`
---
-ALTER TABLE `info-roles`
-  ADD PRIMARY KEY (`id`), ADD KEY `id_empleado` (`id_empleado`), ADD KEY `id_empleado_2` (`id_empleado`);
-
---
 -- Indices de la tabla `info_cuadriculas_base`
 --
 ALTER TABLE `info_cuadriculas_base`
@@ -559,6 +576,12 @@ ALTER TABLE `info_pedidos`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `info_roles`
+--
+ALTER TABLE `info_roles`
+  ADD PRIMARY KEY (`id`), ADD KEY `id_empleado` (`id_empleado`), ADD KEY `id_empleado_2` (`id_empleado`);
+
+--
 -- Indices de la tabla `lista_precio`
 --
 ALTER TABLE `lista_precio`
@@ -577,6 +600,12 @@ ALTER TABLE `mesas`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `mesas_pedidores`
+--
+ALTER TABLE `mesas_pedidores`
+  ADD PRIMARY KEY (`id_pedidor`);
+
+--
 -- Indices de la tabla `mesa_cuadricula`
 --
 ALTER TABLE `mesa_cuadricula`
@@ -586,12 +615,6 @@ ALTER TABLE `mesa_cuadricula`
 -- Indices de la tabla `pedidores`
 --
 ALTER TABLE `pedidores`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indices de la tabla `pedidos`
---
-ALTER TABLE `pedidos`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -676,11 +699,6 @@ ALTER TABLE `fecha_cuadricula`
 ALTER TABLE `imagenes`
   MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
--- AUTO_INCREMENT de la tabla `info-roles`
---
-ALTER TABLE `info-roles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
---
 -- AUTO_INCREMENT de la tabla `info_cuadriculas_base`
 --
 ALTER TABLE `info_cuadriculas_base`
@@ -701,6 +719,11 @@ ALTER TABLE `info_lista_precio`
 ALTER TABLE `info_pedidos`
   MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT;
 --
+-- AUTO_INCREMENT de la tabla `info_roles`
+--
+ALTER TABLE `info_roles`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
+--
 -- AUTO_INCREMENT de la tabla `lista_precio`
 --
 ALTER TABLE `lista_precio`
@@ -720,16 +743,6 @@ ALTER TABLE `mesas`
 --
 ALTER TABLE `mesa_cuadricula`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT de la tabla `pedidores`
---
-ALTER TABLE `pedidores`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT de la tabla `pedidos`
---
-ALTER TABLE `pedidos`
-  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `pedidos_procesados`
 --
