@@ -1,5 +1,5 @@
 $( document ).ready(function(){    
-    
+   
     $(".button-collapse").sideNav();
     
     $('.slider').slider({
@@ -24,7 +24,8 @@ $( document ).ready(function(){
         $("#pnl-opc-login-usuarios").hide();
         $("#pnl-login-usuarios").show("size");
     });
-    
-    
 });
+
+
+
 

@@ -1,0 +1,39 @@
+<div class ="row ">
+    <form name="tabla" action="" method="POST">
+        <table class = "highlight centered responsive-table">
+            <thead>
+              <tr>
+                  
+                  <th data-field="dni">Dni</th>
+                  <th data-field="nombre">Nombre</th>
+                  <th data-field="direccion">Direccion</th>
+                  <th data-field="telefono">Telefono</th>
+                  <th data-field="email">Email</th>
+                  <th data-field="cuit">Cuit</th>
+                  <th></th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <?php	foreach ($empleados as $empleado) { ?>
+                <tr>
+                        <td><?php echo $empleado['dni']; ?></td>
+                        <td><?php echo $empleado['nombre']; ?></td>
+                        <td><?php echo $empleado['direccion']; ?></td>
+                        <td><?php echo $empleado['telefono']; ?></td>
+                        <td><?php echo $empleado['email']; ?></td>
+                        <td><?php echo $empleado['cuit']; ?></td>
+                        <td>
+                            <button class="btn waves-effect waves-light" type="submit" name="action">
+                                Edit <i class="material-icons right">send</i>
+                            </button>
+                        </td>
+                    </tr>
+                <?php } ?>
+            </tbody>
+        </table>
+        <a href="<?php site_url()?>altaEmpleado" class="btn waves-effect waves-light">
+            Agregar Empleado
+        </a>
+    </form>
+</div>

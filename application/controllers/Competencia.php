@@ -27,10 +27,5 @@ class Competencia extends CI_Controller {
             $this->load->view('vCompetencia', $data);
 	}
         
-         public function info()
-	{
-            $data['funcion'] = 'info';
-            $this->load->view('vCompetencia', $data);
-	}
         
 }
