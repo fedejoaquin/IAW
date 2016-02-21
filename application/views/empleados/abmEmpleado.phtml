@@ -3,7 +3,7 @@
         <table class = "highlight centered responsive-table">
             <thead>
               <tr>
-                  <th></th>
+                  
                   <th data-field="dni">Dni</th>
                   <th data-field="nombre">Nombre</th>
                   <th data-field="direccion">Direccion</th>
@@ -16,13 +16,6 @@
             <tbody>
               <?php	foreach ($empleados as $empleado) { ?>
                 <tr>
-                    
-                    <td>
-                        
-                        <input placeholder="Direccion" id="direccion" type="text" class="validate" name="direccion">
-            <label for="direccion">Direccion</label>
-                    </td>
-                    
                     <td><?php echo $empleado['dni']; ?></td>
                     <td><?php echo $empleado['nombre']; ?></td>
                     <td><?php echo $empleado['direccion']; ?></td>
@@ -30,20 +23,20 @@
                     <td><?php echo $empleado['email']; ?></td>
                     <td><?php echo $empleado['cuit']; ?></td>
                     <td>
-                        <button class="btn waves-effect waves-light" type="submit" name="action">
-                            Edit <i class="material-icons right">send</i>
+                        <button class="btn waves-effect waves-light" type="submit" name="editar">
+                        <i class="material-icons right">edit</i>
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn waves-effect waves-light" type="submit" name="eliminar"><i class="material-icons right">delete</i>
                         </button>
                     </td>
                 </tr>
                 <?php } ?>
             </tbody>
         </table>
-        
-        
-        
-        <a href="<?php site_url()?>elimEmpleado" class="btn waves-effect waves-light">
-            Aceptar
+        <a href="<?php site_url()?>altaEmpleado" class="btn waves-effect waves-light">
+            Agregar Empleado
         </a>
-       
     </form>
 </div>
