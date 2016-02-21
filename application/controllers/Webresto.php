@@ -14,7 +14,7 @@ class Webresto extends CI_Controller {
 
     public function loginEmpleado(){
         //Si no esta logueado
-        if (! ($this->chequear_login_redirect()) ){
+        if (! ($this->chequear_login_redirect()) ){          
             $usuario = $this->input->post('empleado_name');
             $pass = $this->input->post('empleado_password');
 
@@ -26,8 +26,7 @@ class Webresto extends CI_Controller {
                 $this->load->view('vWebresto', $data);
             }else{ 
                 //Consulta en busca de un empleado con nombre $usuario
-                $query = $this->db->query('SELECT id, password FROM Empleados WHERE nombre="'.$usuario.'"');
-                $resultado = $query->row_array();
+                $resultado = $this->MEmpleados->get_empleado_password($usuario);
 
                 //Si no hay usuario.
                 if( count($resultado) === 0 ){
@@ -44,8 +43,7 @@ class Webresto extends CI_Controller {
                     if ( $hash_pass === $hash_pass_db ){
                         //Obtengo los roles asociados al empleado
                         $id_empleado = $resultado['id'];
-                        $query = $this->db->query('SELECT descripcion FROM roles JOIN info_roles ON roles.id = info_roles.rol WHERE info_roles.id_empleado="'.$id_empleado.'"');
-                        $resultado = $query->result_array();
+                        $resultado = $this->MInfo_roles->get_roles_empleado($id_empleado);
 
                         //Creo un arreglo con los roles
                         $roles = array();
@@ -101,8 +99,7 @@ class Webresto extends CI_Controller {
             //Si esta procesando el callback de Facebook exitoso, proceso los datos y creo sesión
              if($this->facebook->getUser()){
                 $dataUser = $this->facebook->api('/me/');
-                $this->session->set_userdata('cid','1');
-                $this->session->set_userdata('user_name',$dataUser['first_name'].' '.$dataUser['last_name']); 
+                $this->altaCliente($dataUser['first_name'].' '.$dataUser['last_name']); 
                 $this->session->set_userdata('logout_url',$this->facebook->getLogoutUrl(array('next' => site_url())));
                 $data['funcion'] = 'index';
                 $this->load->view('vClientes', $data);
@@ -112,7 +109,6 @@ class Webresto extends CI_Controller {
             }
         }
     }
-
 
     public function loginGMail(){
         //Si no esta logueado
@@ -133,7 +129,7 @@ class Webresto extends CI_Controller {
             $client->setClientSecret($client_secret);
             $client->setRedirectUri($redirect_uri);
             $client->setDeveloperKey($simple_api_key);
-            $client->addScope("https://www.googleapis.com/auth/userinfo.email");
+            $client->addScope("https://www.googleapis.com/auth/userinfo.profile");
 
             // Send Client Request
             $objOAuthService = new Google_Service_Oauth2($client);
@@ -146,19 +142,18 @@ class Webresto extends CI_Controller {
             }
 
             // Set Access Token to make Request
-            if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
+            if (isset($_SESSION['access_token']) && $_SESSION['access_token']){
                 $client->setAccessToken($this->session->userdata('access_token'));
             }
 
             // Get User Data from Google and store them in $data
             if ($client->getAccessToken()) {
                 $userData = $objOAuthService->userinfo->get();
-                $this->session->set_userdata('cid','1');
-                $this->session->set_userdata('user_name','pepito');
+                $this->altaCliente($userData['name']);
                 $this->session->set_userdata('access_token',$client->getAccessToken());
             } else {
                 $authUrl = $client->createAuthUrl();
-                redirect($authUrl);
+                redirect($authUrl); 
             }
             // Load view and send values stored in $data
             $data['funcion'] = 'index';
@@ -167,14 +162,26 @@ class Webresto extends CI_Controller {
     }
 
     public function logout(){
-        if($this->session->userdata('logout_url')){
-            $url = $this->session->userdata('logout_url');
-            $this->session->sess_destroy();  
-            redirect($url);
-        }else{
-            $this->session->sess_destroy();  
-            redirect(site_url().'webresto');
-        }
+        $this->session->sess_destroy();  
+        redirect(site_url().'webresto');
+    }
+    
+    private function altaCliente($name){
+        do{
+            $key = '';
+            $pattern = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789';
+            $longitud = 6;
+            $max = strlen($pattern)-1;
+            
+            for($i=0; $i < $longitud; $i++) {
+                $key .= $pattern{mt_rand(0,$max)};
+            }
+            
+            $queryExitosa = $this->MPedidores->insertar($key,$name);   
+        
+        }while( !$queryExitosa );
+        $this->session->set_userdata('cid',$key);
+        $this->session->set_userdata('user_name',$name);
     }
     
     /**
