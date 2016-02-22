@@ -1,5 +1,5 @@
 <div class ="row center-align col s12">
-    <form name="tabla" action="" method="POST">
+    
         <table class = "highlight centered responsive-table">
             <thead>
               <tr>
@@ -22,21 +22,28 @@
                     <td><?php echo $empleado['telefono']; ?></td>
                     <td><?php echo $empleado['email']; ?></td>
                     <td><?php echo $empleado['cuit']; ?></td>
-                    <td>
-                        <button class="btn waves-effect waves-light" type="submit" name="editar">
-                        <i class="material-icons right">edit</i>
-                        </button>
+                    <td><form name="tabla" action="<?php echo site_url() ?>empleados/editarEmpleado" method="POST">
+                        <a href="<?php echo site_url()?>empleados/editarEmpleado"  >
+                            <button class="btn waves-effect waves-light" type="submit" value="<?php echo $empleado['id']; ?>" name="editar">
+                                    <i class="material-icons right">edit</i>
+                            </button>
+                        </a>
+                        </form>
                     </td>
-                    <td>
-                        <button class="btn waves-effect waves-light" type="submit" name="eliminar"><i class="material-icons right">delete</i>
-                        </button>
+                    <td><form name="tabla" action="<?php echo site_url() ?>empleados/eliminarEmpleado" method="POST">
+                        <a href="<?php echo site_url()?>empleados/principalABM"  >
+                            <button class="btn waves-effect waves-light" type="submit" value="<?php echo $empleado['id']; ?>" name="eliminar">
+                                    <i class="material-icons right">delete</i>
+                            </button>
+                        </a>
+                        </form>
                     </td>
                 </tr>
                 <?php } ?>
             </tbody>
         </table>
-        <a href="<?php site_url()?>altaEmpleado" class="btn waves-effect waves-light">
+        <a href="<?php echo site_url()?>empleados/altaEmpleado" class="btn waves-effect waves-light">
             Agregar Empleado
         </a>
-    </form>
+    
 </div>

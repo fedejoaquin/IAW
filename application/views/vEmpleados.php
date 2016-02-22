@@ -12,7 +12,7 @@
             );
             include 'componentes/rutaSeguimiento.phtml' 
         ?>        
-        <?php include '/empleados/'.$funcion.'.phtml'; ?>            
+        <?php include '/empleados/index.phtml'; ?>            
         <?php include 'componentes/footer.phtml'; ?>   
     </body>
 </html>
