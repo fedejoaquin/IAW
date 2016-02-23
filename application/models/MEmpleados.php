@@ -8,7 +8,7 @@ class MEmpleados extends CI_Model {
         }
 
         public function insertarEmpleado($data){   
-            $chequeoNombre = $this->db->query('SELECT id FROM Empleados WHERE dni="'.$data['nombre'].'"');
+            $chequeoNombre = $this->db->query('SELECT id FROM Empleados WHERE nombre="'.$data['nombre'].'"');
             
             if(count($chequeoNombre)>=1)
             {

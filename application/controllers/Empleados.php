@@ -17,16 +17,24 @@ class Empleados extends CI_Controller {
             
         }
         public function altaEmpleado(){
-            $data['error'] = 0;
-            $data['modificacion'] = 0;
-            $data['funcion'] = 'abmEmpleados/alta';
-            $this->load->view('vEmpleados', $data);
+            $datosAlta = $this->input->post('password');
+            if(!$datosAlta)
+            {
+                $data['error'] = 0;
+                $data['funcion'] = 'abmEmpleados/alta';
+                $this->load->view('vEmpleados', $data);
+            }
+            else{
+                echo "error";
+                $data['error'] = $this->MEmpleados->insertarEmpleado($this->input->post());
+                echo $data['error'];
+                $data['funcion'] = 'abmEmpleados/alta';
+                $this->load->view('vEmpleados', $data);
+            }
         }
         
         public function agregarEmpleado(){
-            $data['error'] = $this->MEmpleados->insertarEmpleado($this->input->post());
-            $data['funcion'] = 'abmEmpleados/alta';
-            $this->load->view('vEmpleados', $data);
+            
             
         }
         public function bajaEmpleado(){
