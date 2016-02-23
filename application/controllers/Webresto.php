@@ -57,7 +57,7 @@ class Webresto extends CI_Controller {
                         $this->session->set_userdata('roles',$roles);
 
                         $data['roles'] = $roles;
-                        $data['funcion'] = 'roles/vistaRol';
+                        $data['funcion'] = 'roles/index';
                         $this->load->view('vEmpleados', $data);   
                     }else{
                         //Pass incorrecto
@@ -191,7 +191,7 @@ class Webresto extends CI_Controller {
     */
    private function chequear_login_redirect(){
        if (!($this->session->userdata('eid') === NULL)){
-           $data['funcion'] = 'roles/vistaRol';
+           $data['funcion'] = 'roles/index';
            $data['roles'] = $this->session->userdata('roles');
            $this->load->view('vEmpleados', $data);
            return true;

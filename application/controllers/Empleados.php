@@ -4,35 +4,34 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Empleados extends CI_Controller {
 	public function index()
 	{
-            //$data['roles'] = array('Admin', 'Gerente','Mozo');
-            $data['funcion'] = 'roles/vistaRol'     ;
+            $data['funcion'] = 'roles/index'     ;
             $this->load->view('vEmpleados', $data);
 	}
         
-        public function abmempleado(){
+        public function abm(){
             $resultado = $this->MEmpleados->obtenerEmpleados();    
             $data['empleados'] = $resultado;
-            $data['funcion'] = 'abmEmpleados/principalABM';
+            $data['funcion'] = 'abm/index';
             $this->load->view('vEmpleados', $data);
             
         }
         public function altaEmpleado(){
             $data['error'] = 0;
             $data['modificacion'] = 0;
-            $data['funcion'] = 'abmEmpleados/alta';
+            $data['funcion'] = 'amb/alta';
             $this->load->view('vEmpleados', $data);
         }
         
         public function agregarEmpleado(){
             $data['error'] = $this->MEmpleados->insertarEmpleado($this->input->post());
-            $data['funcion'] = 'abmEmpleados/alta';
+            $data['funcion'] = 'abm/alta';
             $this->load->view('vEmpleados', $data);
             
         }
         public function bajaEmpleado(){
             $resultado = $this->MEmpleados->obtenerEmpleados();
             $data['empleados'] = $resultado;
-            $data['funcion'] = 'abmEmpleados/principalABM';
+            $data['funcion'] = 'amb/index';
             $this->load->view('vEmpleados', $data);
         }
         
@@ -40,7 +39,7 @@ class Empleados extends CI_Controller {
             $resultado = $this->MEmpleados->obtenerEmpleadoId($this->input->post('editar'));
                 $data['empleado'] = $resultado;
                 $data['error'] = 0;
-                $data['funcion'] = 'abmEmpleados/modificacion';
+                $data['funcion'] = 'abm/modificar';
                 $this->load->view('vEmpleados', $data);
         }
         
@@ -53,13 +52,13 @@ class Empleados extends CI_Controller {
             $this->MEmpleados->actualizarEmpleado($datos);
             $resultado = $this->MEmpleados->obtenerEmpleados();    
                 $data['empleados'] = $resultado;
-                $data['funcion'] = 'abmEmpleados/principalABM';
+                $data['funcion'] = 'amb/index';
                 $this->load->view('vEmpleados', $data);
             }
             else{
                 $data['empleado'] = $datos;
                 $data['error'] = 1;
-                $data['funcion'] = 'abmEmpleados/modificacion';
+                $data['funcion'] = 'amb/modificar';
                 $this->load->view('vEmpleados', $data);
             }
         }
@@ -70,7 +69,7 @@ class Empleados extends CI_Controller {
             $this->MEmpleados->eliminarEmpleado($datos);
             $resultado = $this->MEmpleados->obtenerEmpleados();    
                 $data['empleados'] = $resultado;
-                $data['funcion'] = 'abmEmpleados/principalABM';
+                $data['funcion'] = 'abm/index';
                 $this->load->view('vEmpleados', $data);
         }
 }
