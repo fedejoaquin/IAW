@@ -12,6 +12,7 @@
             );
             include 'componentes/rutaSeguimiento.phtml' 
         ?>      
+        <?php include '/clientes/cabezera.phtml'; ?>
         <?php include '/clientes/'.$funcion.'.phtml'; ?>        
         <?php include 'componentes/footer.phtml'; ?>   
     </body>

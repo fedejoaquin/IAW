@@ -1,0 +1,15 @@
+<div class="col s12">
+    <div class="txt-cabecera">
+        ¡Bienvenido al sistema de pedidos de miResto!
+    </div>
+    <div class="txt-info">
+        Usuario: <?php echo $this->session->userdata['user_name'] . '<br>'; ?>
+        <?php 
+            $cid = $this->session->userdata['cid'];
+            $cid_1 = substr($cid, 0,2);
+            $cid_2 = substr($cid, 2,2);
+            $cid_3 = substr($cid, 4,2);
+        ?>
+        ID asignado: <?php echo $cid_1 . '-' . $cid_2 . '-' . $cid_3 . '<br>'; ?>
+    </div>
+</div>

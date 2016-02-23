@@ -3,10 +3,21 @@
     height: 150px;
 }
 
-.btn-rol{
-    
+.btn-opc{
     width: 100px;
-    height:100px; 
+    height: 100px; 
+}
+
+.txt-cabecera{
+    text-align: center;
+    font-size: 25px;   
+    margin: 10px;
+}
+
+.txt-info{
+    text-align: center;
+    font-size: 18px;   
+    margin: 10px;
 }
 
 .div-btn-rol{

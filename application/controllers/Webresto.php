@@ -83,12 +83,10 @@ class Webresto extends CI_Controller {
                 $data['funcion'] = 'index';
                 $this->load->view('vWebresto', $data);
             }else{ 
-                $this->session->set_userdata('cid','1');
-                $this->session->set_userdata('user_name',$usuario);
+                $this->altaCliente($usuario);
                 $data['funcion'] = 'index';
                 $this->load->view('vClientes', $data);   
             }
-            
         }
     }
 
@@ -180,8 +178,8 @@ class Webresto extends CI_Controller {
             $queryExitosa = $this->MPedidores->insertar($key,$name);   
         
         }while( !$queryExitosa );
-        $this->session->set_userdata('cid',$key);
         $this->session->set_userdata('user_name',$name);
+        $this->session->set_userdata('cid',$key);
     }
     
     /**
@@ -189,7 +187,7 @@ class Webresto extends CI_Controller {
     * - Si la session indica que ya se logueó, entonces carga vista e indica que hay que redirigir.
     * - Si la session indica que no se logueó, entonces indica que no se debe redirigir.
     */
-   private function chequear_login_redirect(){
+    private function chequear_login_redirect(){
        if (!($this->session->userdata('eid') === NULL)){
            $data['funcion'] = 'roles/index';
            $data['roles'] = $this->session->userdata('roles');
