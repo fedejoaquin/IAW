@@ -2,19 +2,19 @@
 class MEmpleados extends CI_Model {
        
         public function get_empleado_password ($nombre){
-            $query = $this->db->query('SELECT id, password FROM Empleados WHERE nombre="'.$nombre.'"');
+            $query = $this->db->query('SELECT id,password FROM Empleados WHERE nombre="'.$nombre.'"');
             $resultado = $query->row_array();
             return $resultado;
         }
 
         public function insertarEmpleado($data){   
             $chequeoNombre = $this->db->query('SELECT id FROM Empleados WHERE nombre="'.$data['nombre'].'"');
-            
-            if(count($chequeoNombre)>=1)
-            {
+            //$numero_filas = mysql_num_rows($chequeoNombre->result_array());
+            $afectadas = $chequeoNombre->row_array();
+            if (count($afectadas['id']) > 0) {
               return 1;
             }
-            $password = $hash_pass = hash('sha256',$data['password']);
+            $password = hash('sha256',$data['password']);
             $insertEmpleados = array(
             "dni" => $data['dni'],
             "nombre" => $data['nombre'],
@@ -25,10 +25,10 @@ class MEmpleados extends CI_Model {
             "password" =>$password);
             $this->db->insert("empleados",$insertEmpleados);
             
-            $query = $this->db->query('SELECT id, password FROM Empleados WHERE dni="'.$data['dni'].'"');
+            $query = $this->db->query('SELECT id FROM Empleados WHERE nombre="'.$data['nombre'].'"');
             $id = $query->row_array()['id'];
             
-            
+            if(count($data['data'])>0){
             $idRol= $data['data'];
             $count = count($idRol);
             for ($i = 0; $i < $count; $i++) {
@@ -36,7 +36,7 @@ class MEmpleados extends CI_Model {
                   'id_empleado'=> $id,
                   'rol'=>$idRol[$i]);
               $this->db->insert("info_roles",$insertInfoRoles);
-            }   
+            }   }
             return 0;
         }
         public function obtenerEmpleados(){   

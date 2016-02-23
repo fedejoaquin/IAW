@@ -4,81 +4,91 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Empleados extends CI_Controller {
 	public function index()
 	{
-            //$data['roles'] = array('Admin', 'Gerente','Mozo');
-            $data['funcion'] = 'roles/vistaRol'     ;
+            $data['funcion'] = 'roles/index'     ;
             $this->load->view('vEmpleados', $data);
 	}
         
-        public function abmempleado(){
+        public function abm(){
             $resultado = $this->MEmpleados->obtenerEmpleados();    
             $data['empleados'] = $resultado;
-            $data['funcion'] = 'abmEmpleados/principalABM';
+            $data['funcion'] = 'abm/index';
             $this->load->view('vEmpleados', $data);
             
         }
-        public function altaEmpleado(){
-            $datosAlta = $this->input->post('password');
-            if(!$datosAlta)
+        public function alta(){
+        if($this->input->post('data') ){
+            $datosAlta['password'] = $this->input->post('password');
+            $datosAlta['nombre'] = $this->input->post('nombre');
+            if(!$datosAlta['password'] || !$datosAlta['nombre'] )
             {
-                $data['error'] = 0;
-                $data['funcion'] = 'abmEmpleados/alta';
+                $data['error'] = 3;
+                $data['funcion'] = 'abm/alta';
                 $this->load->view('vEmpleados', $data);
             }
             else{
-                echo "error";
-                $data['error'] = $this->MEmpleados->insertarEmpleado($this->input->post());
-                echo $data['error'];
-                $data['funcion'] = 'abmEmpleados/alta';
+                    $data['error'] = $this->MEmpleados->insertarEmpleado($this->input->post());
+                    if($data['error'])
+                    {
+                        $data['funcion'] = 'abm/alta';
+                        $this->load->view('vEmpleados', $data);
+                    }
+                    else{
+                        $this->abm();
+                    }
+                }
+        }else{
+                
+                if($this->input->post()){ 
+                    $data['error'] = 2;
+                }//no hay rol
+                else{$data['error'] = 0;}
+                $data['funcion'] = 'abm/alta';
                 $this->load->view('vEmpleados', $data);
             }
         }
         
-        public function agregarEmpleado(){
-            
-            
-        }
-        public function bajaEmpleado(){
-            $resultado = $this->MEmpleados->obtenerEmpleados();
-            $data['empleados'] = $resultado;
-            $data['funcion'] = 'abmEmpleados/principalABM';
-            $this->load->view('vEmpleados', $data);
-        }
         
-        public function editarEmpleado(){
-            $resultado = $this->MEmpleados->obtenerEmpleadoId($this->input->post('editar'));
-                $data['empleado'] = $resultado;
-                $data['error'] = 0;
-                $data['funcion'] = 'abmEmpleados/modificacion';
-                $this->load->view('vEmpleados', $data);
-        }
         
-        public function actualizarEmpleado(){
-            $id_empleado = $this->input->post('id_empleado');
+        public function editar(){
             $datos = $this->input->post();
-            $datos['id'] = $id_empleado;
-            
-            if($datos['password']){
-            $this->MEmpleados->actualizarEmpleado($datos);
-            $resultado = $this->MEmpleados->obtenerEmpleados();    
-                $data['empleados'] = $resultado;
-                $data['funcion'] = 'abmEmpleados/principalABM';
-                $this->load->view('vEmpleados', $data);
-            }
-            else{
-                $data['empleado'] = $datos;
-                $data['error'] = 1;
-                $data['funcion'] = 'abmEmpleados/modificacion';
-                $this->load->view('vEmpleados', $data);
+            if($datos){
+                $data['editar'] = $datos['editar'];
+                if($this->input->post('nombre')){
+                    if($this->input->post('password')){
+                        $id_empleado = $this->input->post('id_empleado');
+                        $datos['id'] = $id_empleado;
+                        $this->MEmpleados->actualizarEmpleado($datos);
+                        $this->abm();
+                    }
+                    else{
+                        $data['empleado'] = $datos;
+                        $data['id']=$datos['editar'];
+                        $data['error'] = 1;
+                        $data['funcion'] = 'abm/modificacion';
+                        $this->load->view('vEmpleados', $data);
+                    }
+                }else{
+                    $resultado = $this->MEmpleados->obtenerEmpleadoId($data['editar']);
+                    $data['empleado'] = $resultado;
+                    $data['id']=$datos['editar'];
+                    $data['error'] = 0;
+                    $data['funcion'] = 'abm/modificacion';
+                    $this->load->view('vEmpleados', $data);
+                }
+            }else{
+                $this->abm();
             }
         }
-        public function eliminarEmpleado(){
+       
+        public function eliminar(){
             $id_empleado = $this->input->post('eliminar');
             $datos = $this->input->post();
             $datos['id'] = $id_empleado;
             $this->MEmpleados->eliminarEmpleado($datos);
             $resultado = $this->MEmpleados->obtenerEmpleados();    
                 $data['empleados'] = $resultado;
-                $data['funcion'] = 'abmEmpleados/principalABM';
+                $data['funcion'] = 'abm/index';
                 $this->load->view('vEmpleados', $data);
         }
 }
+

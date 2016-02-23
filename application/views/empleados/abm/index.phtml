@@ -22,16 +22,16 @@
                     <td><?php echo $empleado['telefono']; ?></td>
                     <td><?php echo $empleado['email']; ?></td>
                     <td><?php echo $empleado['cuit']; ?></td>
-                    <td><form name="tabla" action="<?php echo site_url() ?>empleados/editarEmpleado" method="POST">
-                        <a href="<?php echo site_url()?>empleados/editarEmpleado"  >
+                    <td><form name="tabla" action="<?php echo site_url() ?>empleados/editar" method="POST">
+                        <a href="<?php echo site_url()?>empleados/editar">
                             <button class="btn waves-effect waves-light" type="submit" value="<?php echo $empleado['id']; ?>" name="editar">
                                     <i class="material-icons right">edit</i>
                             </button>
                         </a>
                         </form>
                     </td>
-                    <td><form name="tabla" action="<?php echo site_url() ?>empleados/eliminarEmpleado" method="POST">
-                        <a href="<?php echo site_url()?>empleados/principalABM"  >
+                    <td><form name="formulario" action="<?php echo site_url() ?>empleados/eliminar" method="POST">
+                            <a href="<?php echo site_url()?>empleados/index" >
                             <button class="btn waves-effect waves-light" type="submit" value="<?php echo $empleado['id']; ?>" name="eliminar">
                                     <i class="material-icons right">delete</i>
                             </button>
@@ -42,7 +42,7 @@
                 <?php } ?>
             </tbody>
         </table>
-        <a href="<?php echo site_url()?>empleados/altaEmpleado" class="btn waves-effect waves-light">
+        <a href="<?php echo site_url()?>empleados/alta" class="btn waves-effect waves-light">
             Agregar Empleado
         </a>
     
