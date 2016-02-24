@@ -8,12 +8,13 @@ class MEmpleados extends CI_Model {
         }
 
         public function insertarEmpleado($data){   
+            //Chequeamos que el nombre ingresado no pertenezca a la base de datos
             $chequeoNombre = $this->db->query('SELECT id FROM Empleados WHERE nombre="'.$data['nombre'].'"');
-            //$numero_filas = mysql_num_rows($chequeoNombre->result_array());
             $afectadas = $chequeoNombre->row_array();
-            if (count($afectadas['id']) > 0) {
+            if (count($afectadas) > 0) {
               return 1;
             }
+            //Si el nombre es correcto.
             $password = hash('sha256',$data['password']);
             $insertEmpleados = array(
             "dni" => $data['dni'],
@@ -27,7 +28,7 @@ class MEmpleados extends CI_Model {
             
             $query = $this->db->query('SELECT id FROM Empleados WHERE nombre="'.$data['nombre'].'"');
             $id = $query->row_array()['id'];
-            
+            //Asignamos los roles.
             if(count($data['data'])>0){
             $idRol= $data['data'];
             $count = count($idRol);
@@ -51,7 +52,14 @@ class MEmpleados extends CI_Model {
             return $resultado;
         }
         
-        public function actualizarEmpleado($data){
+        public function actualizarEmpleado($data,$igual){   
+            if(!$igual){
+                $chequeoNombre = $this->db->query('SELECT id FROM Empleados WHERE nombre="'.$data['nombre'].'"');
+                $afectadas = $chequeoNombre->row_array();
+                 if (count($afectadas) > 0) {
+                   return 1;
+                 }
+            }
             //Armamos el paquete a insertar.
             $password = $hash_pass = hash('sha256',$data['password']);
             $updateEmpleado = array(
@@ -78,6 +86,7 @@ class MEmpleados extends CI_Model {
                   'rol'=>$idRol[$i]);
               $this->db->insert("info_roles",$insertInfoRoles);
             }
+            return 0;
         }
         
         public function eliminarEmpleado($data){
