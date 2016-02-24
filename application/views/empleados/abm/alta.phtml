@@ -1,5 +1,5 @@
 <div class="row ">
-    <form class="col s12" action="<?php echo site_url() ?>empleados/alta" method="post">
+    <form class="col s12" action="<?php echo site_url() ?>empleados/alta" method="post" onsubmit="return confirm('¿Realmente quiere agregar este empleado?');">
         <div class="row">
           <div class="input-field col s4">
             <input placeholder="Nombre" id="nombre" type="text" class="validate" name="nombre">
@@ -10,9 +10,9 @@
               <p class="msjError">El nombre ya pertenece a un empleado registrado, por favor ingrese uno diferente</p>
           </div>  
           <?php } ?>
-          <?php if($error == 3){ ?>
+          <?php if($error == 2){ ?>
           <div class="col s4">
-              <p class="msjError"> Por favor, ingrese un nombre</p>
+              <p class="msjError">Faltan ingresar datos</p>
           </div>  
           <?php } ?> 
         </div>
@@ -59,18 +59,13 @@
             <input id="recepcionista" type="checkbox" name="data[]" value="6">
             <label for="recepcionista">Recepcionista</label>
           </div>
-        <?php if($error == 2){ ?>
+        <?php if($error == 3){ ?>
           <div class="col s4">
-              <p class="msjError">Ingrese un rol</p>
+              <p class="msjError">Faltan ingresar rol</p>
           </div>  
           <?php } ?> 
         </div>
-        <?php if($error == 3){ ?>
-          <div class="col s4">
-              <p class="msjError">Por favor, ingrese un password</p>
-          </div>  
-          <?php } ?> 
-        <a href="<?php echo  site_url()?>empleados/">
+         <a href="<?php echo  site_url()?>empleados/">
             <button class="btn waves-effect waves-light" type="submit" name="action">
                 Aceptar <i class="material-icons right">send</i>
             </button>

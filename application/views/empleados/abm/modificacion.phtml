@@ -1,5 +1,5 @@
 <div class="row ">
-    <form class="col s12" name="formulario" action="<?php echo site_url() ?>empleados/editar" method="POST">
+    <form class="col s12" name="formulario" action="<?php echo site_url() ?>empleados/editar" method="POST"  onsubmit="return confirm('¿Realmente quiere editar este empleado?');">
         <div class="row">
           <div class="input-field col s4">
             <input placeholder="Nombre" id="nombre" type="text" class="validate" name="nombre" 
@@ -72,6 +72,7 @@
             </div>  
                 <?php } ?>  
             <div class="col s4">
+                
                 <a href="<?php echo  site_url()?>empleados/editar" id="botonConfirmar">
                     <button class="btn waves-effect waves-light" type="submit" name="id_empleado" value=" <?php echo $id;?>">
                         Aceptar <i class="material-icons right">send</i>

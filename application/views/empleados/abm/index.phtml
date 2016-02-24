@@ -30,7 +30,7 @@
                         </a>
                         </form>
                     </td>
-                    <td><form name="formulario" action="<?php echo site_url() ?>empleados/eliminar" method="POST">
+                    <td><form name="formulario" action="<?php echo site_url() ?>empleados/eliminar" method="POST" onsubmit="return confirm('¿Realmente quiere eliminar este empleado?');">
                             <a href="<?php echo site_url()?>empleados/index" >
                             <button class="btn waves-effect waves-light" type="submit" value="<?php echo $empleado['id']; ?>" name="eliminar">
                                     <i class="material-icons right">delete</i>
