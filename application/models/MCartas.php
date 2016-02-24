@@ -5,16 +5,17 @@ class MCartas extends CI_Model {
         $carta = $this->get_carta_actual();
         $id_carta = $carta['id'];
         
+        $resultado['id_carta'] = $id_carta;
+        $resultado['nombre_carta'] = $carta['nombre'];
+        
         $consulta = 'SELECT s.nombre as nombre_seccion, p.nombre as nombre_producto, il.precio, i.imagen FROM (((Info_carta ic LEFT JOIN Secciones s ON ic.id_seccion = s.id) ';
         $consulta .= 'LEFT JOIN Productos p ON ic.id_producto = p.id ) LEFT JOIN Info_lista_precio il ON ic.id_producto = il.id_producto AND ic.id_lista_precio = il.id_lista_precio ) ';
         $consulta .= 'LEFT JOIN Imagenes i ON i.id = p.id_imagen WHERE ic.id_carta = '.$id_carta.' ORDER BY nombre_seccion';
-        
-        echo $consulta;
+
         $query = $this->db->query($consulta);
         $resultado['info_carta'] = $query->result_array();
-        
-        $resultado['id_carta'] = $id_carta;
-        $resultado['nombre'] = $carta['nombre'];
+                
+        return $resultado;
     }
     
     /**

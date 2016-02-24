@@ -8,6 +8,11 @@ $( document ).ready(function(){
     
     $(".btn-login").show("size");
     
+   
+    $('.collapsible').collapsible({
+      accordion : false
+    });
+   
     $("#btn-login-empleados").click(function() {
        $("#pnl-opc-login-usuarios").hide();
        $("#pnl-login-usuarios").hide();

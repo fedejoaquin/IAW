@@ -6,10 +6,13 @@
         Usuario: <?php echo $this->session->userdata['user_name'] . '<br>'; ?>
         <?php 
             $cid = $this->session->userdata['cid'];
+            $mesa_asignada = $this->session->userdata['mesa_asignada'];
             $cid_1 = substr($cid, 0,2);
             $cid_2 = substr($cid, 2,2);
             $cid_3 = substr($cid, 4,2);
         ?>
         ID asignado: <?php echo $cid_1 . '-' . $cid_2 . '-' . $cid_3 . '<br>'; ?>
+        Mesa asignada: <?php echo ($mesa_asignada != NULL ? $mesa_asignada['numero'] : 'Sin asignar') .'<br>'?>
+        Mozo asignado: <?php echo ($mesa_asignada != NULL ? $mesa_asignada['nombre_mozo'] : 'Sin asignar') ?>
     </div>
 </div>

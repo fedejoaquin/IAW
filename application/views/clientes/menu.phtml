@@ -1,4 +1,27 @@
-<div>
-    <h1>ESTO ES EL MENU</h1>
-    <?php echo 'La carta actual es: '; ?>
+<div class="row">
+    <div class="col m8 s12 offset-m2">
+        <?php echo 'La carta actual es: '.$nombre_carta.'<br>'; ?>
+        <ul class="collapsible" data-collapsible="accordion">
+            <?php 
+                $indice = 0;
+                $cantidad = count($info_carta);
+                while($indice<$cantidad){
+                    $seccion_anterior = $info_carta[$indice]['nombre_seccion'];
+
+                    //imprimo el encabezado y el tag para abrir el cuerpo del tab
+                    echo '<li> <div class="collapsible-header">'.$seccion_anterior.'</div>';
+                    echo '<div class="collapsible-body">';
+
+                    //Mientras no cambie de encabezado, imprimo los elementos dentro
+                    while($indice<$cantidad && $seccion_anterior === $info_carta[$indice]['nombre_seccion']){
+                        $row = $info_carta[$indice++];
+                        echo '<div>'.$row['nombre_producto'].' - '.$row['precio'].'</div>';
+                    }
+
+                    echo '</div>';
+                    echo '</li>';
+                }
+            ?>
+        </ul>
+    </div>
 </div>
