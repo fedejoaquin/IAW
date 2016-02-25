@@ -19,16 +19,6 @@
     </div>
 </div>
 
-<?php if ($hayError){ ?>
-<div class="row">
-    <div class="col s12 center-align">
-        <label class="errorLogin">
-            <?php echo $error; ?>
-        </label>
-    </div>
-</div>
-<?php } ?>
-
 <div id="pnl-opc-login-usuarios" class="row panel-login">
     <div class="col s12 center-align">
         <div class="row">
@@ -46,7 +36,10 @@
 </div>
 
 <div id="pnl-login-empleados" class="row panel-login center-align">
-    <form class="col s8 m4 offset-s2 offset-m4" action="<?php echo site_url() ?>webresto/loginEmpleado" method="post">
+    <?php 
+        $attr = array('class'=>'col s8 m4 offset-s2 offset-m4');
+        echo form_open('webresto/loginEmpleado',$attr); 
+    ?>
         <div class="row">
             <div class="input-field col s12">
               <input id="NE" name="empleado_name" type="text" class="validate">
@@ -66,7 +59,10 @@
 </div>
 
 <div id="pnl-login-usuarios" class="row panel-login">
-    <form class="col s8 m4 offset-s2 offset-m4" action="<?php echo site_url() ?>webresto/loginCliente" method="post">
+    <?php 
+        $attr = array('class'=>'col s8 m4 offset-s2 offset-m4');
+        echo form_open('webresto/loginCliente',$attr); 
+    ?>
         <div class="row">
             <div class="input-field col s12">
               <input id="CN" name="cliente_name" type="text" class="validate">

@@ -26,16 +26,14 @@ class Webresto extends CI_Controller {
     public function loginEmpleado(){
         //Si no esta logueado
         if (! ($this->chequear_login_redirect()) ){          
-            $usuario = $this->input->post('empleado_name');
-            $pass = $this->input->post('empleado_password');
-
-            //Chequeo de ingreso de datos.
-            if (! $usuario || ! $pass ){
-                $data['hayError'] = true;
-                $data['error'] = 'Debe ingresar un Usuario y Password.';
+            //Chequeo de datos enviados por el formulario
+            if ($this->form_validation->run('webresto/loginEmpleado') == FALSE){
                 $data['funcion'] = 'index';
-                $this->load->view('vWebresto', $data);
+                $this->load->view('vWebresto', $data);            
             }else{ 
+                $usuario = $this->input->post('empleado_name');
+                $pass = $this->input->post('empleado_password');
+
                 //Consulta en busca de un empleado con nombre $usuario
                 $resultado = $this->MEmpleados->get_empleado_password($usuario);
 
@@ -90,15 +88,12 @@ class Webresto extends CI_Controller {
     public function loginCliente(){
         //Si no esta logueado
         if (! ($this->chequear_login_redirect()) ){
-            
-            $usuario = $this->input->post('cliente_name');
-            //Chequeo de ingreso de datos.
-            if (! $usuario ){
-                $data['hayError'] = true;
-                $data['error'] = 'Debe ingresar un Usuario.';
+            //Chequeo de datos enviados por el formulario
+            if ($this->form_validation->run('webresto/loginCliente') == FALSE){
                 $data['funcion'] = 'index';
                 $this->load->view('vWebresto', $data);
             }else{ 
+                $usuario = $this->input->post('cliente_name');
                 $this->altaCliente($usuario);
                 $data['funcion'] = 'index';
                 $this->load->view('vClientes', $data);   
