@@ -37,7 +37,7 @@
 
 <div id="pnl-login-empleados" class="row panel-login center-align">
     <?php 
-        $attr = array('class'=>'col s8 m4 offset-s2 offset-m4');
+        $attr = array('class'=>'col s8 m4 offset-s2 offset-m4', 'autocomplete' => 'off');
         echo form_open('webresto/loginEmpleado',$attr); 
     ?>
         <div class="row">
@@ -60,7 +60,7 @@
 
 <div id="pnl-login-usuarios" class="row panel-login">
     <?php 
-        $attr = array('class'=>'col s8 m4 offset-s2 offset-m4');
+        $attr = array('class'=>'col s8 m4 offset-s2 offset-m4', 'autocomplete' => 'off');
         echo form_open('webresto/loginCliente',$attr); 
     ?>
         <div class="row">

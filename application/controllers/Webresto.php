@@ -11,7 +11,6 @@ class Webresto extends CI_Controller {
     public function index(){
         //Si no esta logueado
         if (! ($this->chequear_login_redirect()) ){
-            $data['hayError'] = false;
             $data['funcion'] = 'index';
             $this->load->view('vWebresto', $data);
         }
@@ -70,8 +69,6 @@ class Webresto extends CI_Controller {
                         $this->load->view('vEmpleados', $data);   
                     }else{
                         //Pass incorrecto
-                        $data['hayError'] = true;
-                        $data['error'] = 'Contraseña inválida.';
                         $data['funcion'] = 'index';
                         $this->load->view('vWebresto', $data);
                     } 
@@ -96,7 +93,7 @@ class Webresto extends CI_Controller {
                 $usuario = $this->input->post('cliente_name');
                 $this->altaCliente($usuario);
                 $data['funcion'] = 'index';
-                $this->load->view('vClientes', $data);   
+                $this->load->view('vClientes',$data);
             }
         }
     }
@@ -116,7 +113,7 @@ class Webresto extends CI_Controller {
                 $this->altaCliente($dataUser['first_name'].' '.$dataUser['last_name']); 
                 $this->session->set_userdata('logout_url',$this->facebook->getLogoutUrl(array('next' => site_url())));
                 $data['funcion'] = 'index';
-                $this->load->view('vClientes', $data);
+                $this->load->view('vClientes',$data);
             }else{
                 //Se intenta loguear con facebook, iniciamos la autenticación
                 redirect( $this->facebook->getLoginUrl());
@@ -174,9 +171,8 @@ class Webresto extends CI_Controller {
                 $authUrl = $client->createAuthUrl();
                 redirect($authUrl); 
             }
-            // Load view and send values stored in $data
             $data['funcion'] = 'index';
-            $this->load->view('vClientes', $data);        
+            $this->load->view('vClientes',$data);      
         }
     }
     

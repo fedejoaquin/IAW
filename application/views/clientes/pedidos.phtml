@@ -1,4 +1,17 @@
+<div class="txt-cabecera">
+    ¡Bienvenido al sistema de pedidos de miResto!
+</div>
+
 <div class="row">
+    <div class="col m8 s12 offset-m2">
+        <ul class="tabs">
+            <li class="tab"><a class="active" href="#menu">MENU</a></li>
+            <li class="tab"><a href="#pedidos">PEDIDOS</a></li>  
+        </ul>
+    </div>
+</div>
+
+<div id="menu" class="row">
     <div class="col m8 s12 offset-m2">
         <?php echo 'La carta actual es: '.$nombre_carta.'<br>'; ?>
         <ul class="collapsible" data-collapsible="accordion">
@@ -15,13 +28,16 @@
                     //Mientras no cambie de encabezado, imprimo los elementos dentro
                     while($indice<$cantidad && $seccion_anterior === $info_carta[$indice]['nombre_seccion']){
                         $row = $info_carta[$indice++];
-                        echo '<div> <img src="data:image/png;base64,'.base64_encode($row['imagen']).'"alt=img"/>'.$row['nombre_producto'].' - '.$row['precio'].'</div>';
+                        $np = $row['nombre_producto'];
+                        $id = $row['id_producto'];
+                        $p = $row['precio'];
+                        echo '<div> <img src="'.site_url().'img/comidas/'.$id.'.png"/>'.$np.' - '.$p.'</div>';
                     }
 
                     echo '</div>';
                     echo '</li>';
                 }
-                
+
                 $indice = 0;
                 $cantidad = count($info_promociones);
                 while($indice<$cantidad){
@@ -33,14 +49,37 @@
 
                     //Mientras no cambie de encabezado, imprimo los elementos dentro
                     while($indice<$cantidad && $promo_anterior === $info_promociones[$indice]['nombre_promocion']){
-                        $row = $info_carta[$indice++];
-                        echo '<div>'.$row['nombre_producto'].'</div>';
+                        $row = $info_promociones[$indice++];
+                        $np = $row['nombre_producto'];
+                        $id = $row['id_producto'];
+                        $p = $row['precio'];
+                        echo '<div> <img src="'.site_url().'img/comidas/'.$id.'.png"/>'.$np.'</div>';
                     }
-
+                    echo 'Precio promoción: '.$p;
                     echo '</div>';
                     echo '</li>';
                 }
             ?>
         </ul>
     </div>
+</div>
+    
+<div id="pedidos" class="row">
+    <div class="col m8 s12 offset-m2">
+        <ul class="collapsible" data-collapsible="accordion">
+            <li> 
+                <div class="collapsible-header">Sin Confirmar</div>
+                <div class="collapsible-body">
+                    PEDIDOS SIN CONFIRMAR
+                </div>
+            </li>
+            <li> 
+                <div class="collapsible-header">Confirmados</div>
+                <div class="collapsible-body">
+                   PEDIDOS CONFIRMADOS 
+                </div>
+            </li>
+        </ul>
+    </div>
+    
 </div>

@@ -11,18 +11,31 @@ class Clientes extends CI_Controller {
      */
     public function index(){
         if($this->chequear_login_redirect()){
-            $this->chequear_vinculado_redirect();
+            $this->chequear_vinculado();
             $data['funcion'] = 'index';
             $this->load->view('vClientes',$data);
         }
     }
     
     /**
-     * Lista el menú actual si es que el cliente está logueado y vinculado.
+     * Info de Clientes. Chequea que esté logueado y/o vinculado.
+     * - En caso de estar logueado y/o vinculado, muetra la info actual.
+     * - En caso no estar logueado, redirige al home de webresto.
+     */
+    public function info(){
+        if($this->chequear_login_redirect()){
+            $this->chequear_vinculado();
+            $data['funcion'] = 'info';
+            $this->load->view('vClientes',$data);
+        }
+    }
+    
+    /**
+     * Lista el menú actual y los pedidos, si es que el cliente está logueado y vinculado.
      * $data['info_carta' ] = array (Secciones,nombre_producto,Precio)
      * $data['info_promociones'] = array(NombrePromo,Productos,Precio)
      */
-    public function menu(){
+    public function pedidos(){
         if($this->chequear_login_redirect()){
             if($this->chequear_vinculado_redirect()){
                 $resultado = $this->MCartas->get_menu_actual();
@@ -31,7 +44,7 @@ class Clientes extends CI_Controller {
                 $data['nombre_carta'] = $resultado['nombre_carta'];
                 $data['info_carta'] = $resultado['info_carta'];
                 $data['info_promociones'] = $resultado_1;
-                $data['funcion'] = 'menu';
+                $data['funcion'] = 'pedidos';
                 $this->load->view('vClientes', $data);
             }
         }
@@ -58,12 +71,12 @@ class Clientes extends CI_Controller {
     /**
     * Chequea si existe datos de cliente logueado. 
     * - Si la session indica que ya se logueó, entonces retorna verdadero.
-    * - Si la session indica que no se logueó, entonces redirige al home del sitio y retorna false.
+    * - Si la session indica que no se logueó, entonces redirige al home de webresto y retorna false.
     */
    private function chequear_login_redirect(){
         if ($this->session->userdata('cid') === NULL){
             $data['funcion'] = 'index';
-            $this->load->view('vWelcome',$data);
+            $this->load->view('vWebresto',$data);
             return false;
         }else{
             return true;
