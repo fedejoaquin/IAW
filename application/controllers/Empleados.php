@@ -16,52 +16,46 @@ class Empleados extends CI_Controller {
             $data['empleados'] = $resultado;
             $data['funcion'] = 'abm/index';
             $this->load->view('vEmpleados', $data);
-            
         }
         
         /*
          * Funcion que da el alta de un empleado.
          */
         public function alta(){
-        //Si tiene el campo data, entonces tiene role/s asignado/s
-        if($this->input->post('data')){
-            //Chequeo si tiene todos los campos completos.
-            $paso = $this->chequeoData($this->input->post());
-            //Si encuentra que falta algun campo.
-            if($paso == 1 || $paso == 0)
+            if ($this->form_validation->run('empleados/altaEditar') == FALSE)
             {
-               
-                $data['error'] = 2;
                 $data['funcion'] = 'abm/alta';
                 $this->load->view('vEmpleados', $data);
             }
-            else{
-                //Intentamos dar de alta el empleado, pero chequeamos que no se repita el nombre.
-                $data['error'] = $this->MEmpleados->insertarEmpleado($this->input->post());
-                //Si se repite el nombre
-                if($data['error'])
-                {
-                    $data['error'] = 1;
+            else
+            {
+                if($this->MEmpleados->insertarEmpleado($this->input->post())){
                     $data['funcion'] = 'abm/alta';
                     $this->load->view('vEmpleados', $data);
                 }
-                else{
-                    $this->abm();
-            }
-                }
-        }else{
-            if($this->input->post()){ 
-                $data['error'] = 3;
-            }//no hay datos
-            else{$data['error'] = 0;}
-            $data['funcion'] = 'abm/alta';
-            $this->load->view('vEmpleados', $data);
+                $this->abm();
             }
         }
         
         
         
         public function editar(){
+            if ($this->form_validation->run('empleados/altaEditar') == FALSE)
+            {
+                $data['funcion'] = 'abm/alta';
+                $this->load->view('vEmpleados', $data);
+            }
+            else
+            {
+                if($this->MEmpleados->insertarEmpleado($this->input->post())){
+                    $data['funcion'] = 'abm/alta';
+                    $this->load->view('vEmpleados', $data);
+                }
+                $this->abm();
+            }
+            
+            
+            
             $datos = $this->input->post();
             //Si hay datos
             if($datos){
