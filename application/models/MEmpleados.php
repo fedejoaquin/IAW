@@ -1,6 +1,7 @@
 <?php 
 class MEmpleados extends CI_Model {
        
+        
         public function get_empleado_password ($nombre){
             $query = $this->db->query('SELECT id,password FROM Empleados WHERE nombre="'.$nombre.'"');
             $resultado = $query->row_array();

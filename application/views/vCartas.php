@@ -8,7 +8,7 @@
         <?php 
             $ruta = array(
                 array('Inicio',  site_url()), 
-                array('Empleado', site_url().'empleado'),
+                array('Webresto', site_url().'webresto'),
                 array('Cartas', site_url().'cartas')
             );
             include 'componentes/rutaSeguimiento.phtml' 

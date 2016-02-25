@@ -1,3 +1,23 @@
 <div class =" row ">
-    <p>ESTO ES cartas</p>
+    <table>
+        <thead>
+              <tr>
+                  
+                  <th data-field="id">Id</th>
+                  <th data-field="nombre">Nombre</th>
+                  <th data-field="creador">Creador</th>
+                 
+                  <th></th>
+              </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($info_carta as $carta) { ?>
+            <tr>
+                <td><?php echo $carta['id']; ?></td>
+                <td><?php echo $carta['nombre']; ?></td>
+                <td><?php echo $carta['creador']; ?></td>
+            </tr>
+            <?php } ?>
+        </tbody>
+    </table>
 </div>

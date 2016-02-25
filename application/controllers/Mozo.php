@@ -6,6 +6,6 @@ class Mozo extends CI_Controller {
 	public function index()
 	{
             $data['funcion'] = 'index';
-            $this->load->view('vMozo', $data);
+            $this->load->view('vMenu', $data);
 	}
 }

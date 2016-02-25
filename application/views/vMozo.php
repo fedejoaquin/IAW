@@ -13,7 +13,7 @@
             );
             include 'componentes/rutaSeguimiento.phtml' 
         ?>      
-        <?php include '/mozo/'.$funcion.'.phtml'; ?>          
+        <?php include '/menu/'.$funcion.'.phtml'; ?>          
         <?php include 'componentes/footer.phtml'; ?>   
     </body>
 </html>
