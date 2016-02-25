@@ -15,7 +15,26 @@
                     //Mientras no cambie de encabezado, imprimo los elementos dentro
                     while($indice<$cantidad && $seccion_anterior === $info_carta[$indice]['nombre_seccion']){
                         $row = $info_carta[$indice++];
-                        echo '<div>'.$row['nombre_producto'].' - '.$row['precio'].'</div>';
+                        echo '<div> <img src="data:image/png;base64,'.base64_encode($row['imagen']).'"alt=img"/>'.$row['nombre_producto'].' - '.$row['precio'].'</div>';
+                    }
+
+                    echo '</div>';
+                    echo '</li>';
+                }
+                
+                $indice = 0;
+                $cantidad = count($info_promociones);
+                while($indice<$cantidad){
+                    $promo_anterior = $info_promociones[$indice]['nombre_promocion'];
+
+                    //imprimo el encabezado y el tag para abrir el cuerpo del tab
+                    echo '<li> <div class="collapsible-header">'.$promo_anterior.'</div>';
+                    echo '<div class="collapsible-body">';
+
+                    //Mientras no cambie de encabezado, imprimo los elementos dentro
+                    while($indice<$cantidad && $promo_anterior === $info_promociones[$indice]['nombre_promocion']){
+                        $row = $info_carta[$indice++];
+                        echo '<div>'.$row['nombre_producto'].'</div>';
                     }
 
                     echo '</div>';

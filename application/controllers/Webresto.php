@@ -3,6 +3,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Webresto extends CI_Controller {
     
+    /**
+     * Index de Webresto. Chequea que no esté logueado el usuario.
+     * - En caso de estar logueado, redirige al index de clientes o empleados según corresponda.
+     * - En caso no estar logueado, muestra el index de webresto.
+     */
     public function index(){
         //Si no esta logueado
         if (! ($this->chequear_login_redirect()) ){
@@ -12,6 +17,12 @@ class Webresto extends CI_Controller {
         }
     }
 
+    /**
+    * Login local de empleados. 
+    * Valida que ya no se encuentre logueado, y sus credenciales.
+    * - Redirige a la vista empleados/index en caso de autenticación exitosa.
+    * - Redirige a la vista webresto/index indicando error en caso de autenticación fallida.
+    */
     public function loginEmpleado(){
         //Si no esta logueado
         if (! ($this->chequear_login_redirect()) ){          
@@ -71,6 +82,11 @@ class Webresto extends CI_Controller {
         }
     }
     
+    /**
+    * Login local del cliente. 
+    * Valida que ya no se encuentre logueado, y da de alta al cliente asignándole un ID.
+    * Redirige a la vista clientes/index.
+    */
     public function loginCliente(){
         //Si no esta logueado
         if (! ($this->chequear_login_redirect()) ){
@@ -89,7 +105,12 @@ class Webresto extends CI_Controller {
             }
         }
     }
-
+    
+    /**
+     * Login vía FACEBOOK. 
+     * Valida los tokens, crea la info de session, utilizando la librerías de Facebook.
+     * Redirige a clientes/index.
+     */
     public function loginFacebook(){             
         //Si no esta logueado
         if (! ($this->chequear_login_redirect()) ){
@@ -107,7 +128,12 @@ class Webresto extends CI_Controller {
             }
         }
     }
-
+    
+    /**
+     * Login vía GMAIL. 
+     * Valida los tokens, crea la info de session, utilizando la librerías de Google+.
+     * Redirige a clientes/index.
+     */
     public function loginGMail(){
         //Si no esta logueado
         if (! ($this->chequear_login_redirect()) ){
@@ -158,12 +184,21 @@ class Webresto extends CI_Controller {
             $this->load->view('vClientes', $data);        
         }
     }
-
+    
+    /**
+     * Destruye la session. Redirige a webresto.
+     */
     public function logout(){
         $this->session->sess_destroy();  
         redirect(site_url().'webresto');
     }
     
+    /**
+     * Crea un identificador para el cliente, identificador con el cual lo vinculará el mozo al sistema.
+     * Con el identificador, inserta un registra que asocia al identificador con el nombre del cliente $name,
+     * en el modelo de pedidores de la base de datos.
+     * @param $name = Nombre del cliente dado de alta.
+     */
     private function altaCliente($name){
         do{
             $key = '';

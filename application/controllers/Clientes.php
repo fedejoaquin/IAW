@@ -2,27 +2,47 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Clientes extends CI_Controller {
-
+    
+    /**
+     * Index de Clientes. Chequea que esté logueado y/o vinculado.
+     * - En caso de estar logueado, muetra el index.
+     * - En caso de estar logueado y vinculado, muestra el index.
+     * - En caso no estar logueado, redirige al home de webresto.
+     */
     public function index(){
         if($this->chequear_login_redirect()){
+            $this->chequear_vinculado_redirect();
             $data['funcion'] = 'index';
-            $this->load->view('vClientes', $data);
+            $this->load->view('vClientes',$data);
         }
     }
-
+    
+    /**
+     * Lista el menú actual si es que el cliente está logueado y vinculado.
+     * $data['info_carta' ] = array (Secciones,nombre_producto,Precio)
+     * $data['info_promociones'] = array(NombrePromo,Productos,Precio)
+     */
     public function menu(){
         if($this->chequear_login_redirect()){
             if($this->chequear_vinculado_redirect()){
                 $resultado = $this->MCartas->get_menu_actual();
+                $resultado_1 = $this->MCartas->get_promociones_actual();
                 $data['id_carta'] = $resultado['id_carta'];
                 $data['nombre_carta'] = $resultado['nombre_carta'];
                 $data['info_carta'] = $resultado['info_carta'];
+                $data['info_promociones'] = $resultado_1;
                 $data['funcion'] = 'menu';
                 $this->load->view('vClientes', $data);
             }
         }
     }
     
+    /**
+    * Chequea si existe datos de cliente logueado y vinculado a una mesa. 
+    * - Si no está logueado, redirige al home del sitio.
+    * - Si está logueado y vinculado, elimina datos de sessión y datos en la BD, y redirige a webresto/logout.
+    * - Si está sólo logueado, elimina datos de session y redirige a webresto/logout.
+    */
     public function logout(){
         if($this->chequear_login_redirect()){
             if($this->chequear_vinculado()){
@@ -38,7 +58,7 @@ class Clientes extends CI_Controller {
     /**
     * Chequea si existe datos de cliente logueado. 
     * - Si la session indica que ya se logueó, entonces retorna verdadero.
-    * - Si la session indica que no se logueó, entonces redirige al home del sitio.
+    * - Si la session indica que no se logueó, entonces redirige al home del sitio y retorna false.
     */
    private function chequear_login_redirect(){
         if ($this->session->userdata('cid') === NULL){
@@ -53,12 +73,12 @@ class Clientes extends CI_Controller {
     /**
     * Chequea si existe datos de vinculación de un cliente logueado. 
     * - Si la session indica que ya se vinculó, entonces retorna verdadero.
-    * - Si la session indica que no se logueó, entonces redirige al home del sitio.
+    * - Si la session indica que no se logueó, entonces redirige al home del sitio t retorna false.
     */
     private function chequear_vinculado_redirect(){
-        if ($this->chequear_vinculado())
+        if ($this->chequear_vinculado()){
             return true;
-        else{
+        }else{
             $data['funcion'] = 'index';
             $this->load->view('vClientes',$data);
             return false;
@@ -82,6 +102,5 @@ class Clientes extends CI_Controller {
         }else{
             return true;
         }
-    }
-    
+    }   
 }
