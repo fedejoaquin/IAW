@@ -10,7 +10,9 @@
                 array('Inicio',  site_url()), 
                 array('Empleados', site_url().'empleados')
             );
-            include 'componentes/rutaSeguimiento.phtml' 
+            include 'componentes/rutaSeguimiento.phtml';
+            include 'componentes/errores.phtml'
+            
         ?>        
         <?php include '/empleados/index.phtml'; ?>            
         <?php include 'componentes/footer.phtml'; ?>   

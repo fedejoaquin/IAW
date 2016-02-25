@@ -1,6 +1,6 @@
 <div class="row ">
-    <?php echo form_open('empleados/alta'); ?>
-    <form class="col s12" action="<?php echo site_url() ?>empleados/alta" method="post" onsubmit="return confirm('¿Realmente quiere agregar este empleado?');">
+    <?php $atrib = array("onsubmit"=>"return confirm('¿Realmente quiere editar este empleado?')");
+          echo form_open('empleados/alta'); ?>
         <div class="row">
           <div class="input-field col s4">
             <input placeholder="Nombre" id="nombre" type="text" class="validate" name="nombre">
@@ -41,7 +41,7 @@
                <label for="passwordConf">Confirmar Password</label>
             </div>
         </div>
-        <div class="row">
+        <div class="row left-align">
             <div class="col s4">
                 <input id="admin" type="checkbox" name="data[]" value="1" >
                 <label for="admin">Aministrador</label><br>
