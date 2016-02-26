@@ -59,4 +59,16 @@ class MCartas extends CI_Model {
         $resultado = $query->row_array();
         return $resultado;
     }
-}
+    
+    public function get_cartas(){
+        
+        $campos = "e.nombre as creador,rd.0 as Lun,rd.1 as Mar,rd.2 as Mie,rd.3 as Jue,rd.4 as Vie,rd.5 as Sab,rd.6 as Dom,";
+        $campos .="rh.0,rh.1,rh.2,rh.3,rh.4,rh.5,rh.6,rh.7,rh.8,rh.9,rh.10,rh.11,rh.12,rh.13,rh.14,rh.15,rh.16,";
+        $campos .= "rh.17,rh.18,rh.19,rh.20,rh.21,rh.22,rh.23,c.nombre,c.id";
+        $completo = 'SELECT '.$campos.' FROM restricciones_dia rd JOIN cartas c  ON rd.id= c.id_restriccion_dia'
+                . ' JOIN restricciones_hora rh ON rh.id= c.id_restriccion_hora JOIN empleados e WHERE c.creador = e.id';
+        $resultado['datos_carta']  = $this->db->query($completo)->result_array();
+        return $resultado;
+    }
+    
+ }

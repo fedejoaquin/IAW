@@ -5,8 +5,18 @@ class Cartas extends CI_Controller {
 
 	public function index()
 	{
-            $data['info_carta'] = $this->MCartasLeo->get_cartas();
+            $data = $this->MCartas->get_cartas();
             $data['funcion'] = 'index';
             $this->load->view('vCartas', $data);
 	}
+        
+        public function editar(){
+            
+        }
+        
+        public function crear(){
+            $data['empleados'] = $this->MEmpleados->obtenerEmpleados();
+            $data['funcion'] = 'alta';
+            $this->load->view('vCartas', $data);
+        }
 }

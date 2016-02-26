@@ -1,23 +1,55 @@
 <div class =" row ">
-    <table>
+    <table class = "highlight centered responsive-table">
         <thead>
               <tr>
-                  
                   <th data-field="id">Id</th>
                   <th data-field="nombre">Nombre</th>
                   <th data-field="creador">Creador</th>
-                 
+                  <th data-field="dias">Dias</th>
+                  <th data-field="horas">Horas</th>
                   <th></th>
               </tr>
         </thead>
         <tbody>
-            <?php foreach ($info_carta as $carta) { ?>
+            <?php foreach ($datos_carta as $carta) { ?>
             <tr>
                 <td><?php echo $carta['id']; ?></td>
                 <td><?php echo $carta['nombre']; ?></td>
                 <td><?php echo $carta['creador']; ?></td>
+                <td>
+                    <a class='dropdown-button btn' href='#' data-activates='horas<?php echo $carta['id'] ?>'>Ver Horas</a>
+                    <ul id='horas<?php echo $carta['id'] ?>' class='dropdown-content'>
+                        <?php for($i=0;$i<24;$i++){ ?>
+                            <li><a href="#!"><?php echo 'Hora:'.$i.' - '.$carta[$i] ?></a></li>
+                        <?php }?>
+                    </ul>
+                </td>
+                <td>
+                    <a class='dropdown-button btn' href='#' data-activates='dias<?php echo $carta['id'] ?>'>Ver Dias</a>
+                    <ul id='dias<?php echo $carta['id'] ?>' class='dropdown-content'>
+                        <li><a href="#!"><?php echo 'Lun: '.$carta['Lun'] ?></a></li>
+                        <li><a href="#!"><?php echo 'Mar: '.$carta['Mar'] ?></a></li>
+                        <li><a href="#!"><?php echo 'Mie: '.$carta['Mie'] ?></a></li>
+                        <li><a href="#!"><?php echo 'Jue: '.$carta['Jue'] ?></a></li>
+                        <li><a href="#!"><?php echo 'Vie: '.$carta['Vie'] ?></a></li>
+                        <li><a href="#!"><?php echo 'Sab: '.$carta['Sab'] ?></a></li>
+                        <li><a href="#!"><?php echo 'Dom: '.$carta['Dom'] ?></a></li>
+                    </ul>
+                </td>
+                <td>
+                    <form name="tabla" action="<?php echo site_url() ?>cartas/editar" method="POST">
+                        <a href="<?php echo site_url()?>cartas/editar">
+                            <button class="btn waves-effect waves-light" type="submit" value="<?php echo $carta['id']; ?>" name="editar">
+                                    <i class="material-icons right">edit</i>
+                            </button>
+                        </a>
+                    </form>
+                </td>
             </tr>
             <?php } ?>
         </tbody>
     </table>
+    <a href="<?php echo site_url()?>cartas/crear" class="btn waves-effect waves-light">
+            Crear Carta
+        </a>
 </div>

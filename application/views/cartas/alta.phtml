@@ -1,0 +1,58 @@
+<div class="row ">
+    <?php $atrib = array("onsubmit"=>"return confirm('¿Realmente quiere crear esta carta?')");
+          echo form_open('cartas/alta'); ?>
+        <div class="row">
+          <div class="input-field col s4">
+            <input placeholder="Nombre" id="nombre" type="text" class="validate" name="nombre">
+            <label for="nombre">Nombre</label>
+          </div>
+        </div>
+        <div>
+            <div class="row center-align">
+                <div class="col s12">
+                  <ul class="tabs">
+                    <li class="tab col s3"><a href="#horas">Establecer Horas</a></li>
+                    <li class="tab col s3"><a class="active" href="#dias">Establecer Días</a></li>
+                  </ul>
+                </div>
+                <div id="horas" class="col s12 center-align">
+                    <table>
+                        <tbody>
+                            <td><?php for($i=0;$i<8;$i++){ ?>
+                                    <input id="hora<?php echo $i?>" type="checkbox" name="horas[]" value="<?php echo $i?>" >
+                                    <label for="hora<?php echo $i?>">Hora: <?php echo $i.':00' ?></label><br>    
+                                <?php }?>
+                            </td>
+                            <td><?php for($i=8;$i<16;$i++){ ?>
+                                    <input id="hora<?php echo $i?>" type="checkbox" name="horas[]" value="<?php echo $i?>" >
+                                    <label for="hora<?php echo $i?>">Hora: <?php echo $i.':00' ?></label><br>    
+                                <?php }?>
+                            </td>
+                            <td><?php for($i=16;$i<24;$i++){ ?>
+                                    <input id="hora<?php echo $i?>" type="checkbox" name="horas[]" value="<?php echo $i?>" >
+                                    <label for="hora<?php echo $i?>">Hora: <?php echo $i.':00' ?></label><br>    
+                                <?php }?>
+                            </td>
+                          </tbody>
+                    </table>
+                </div>
+                <div id="dias" class="col s12 left-align">
+                    <input id="lun" type="checkbox" name="dias[]" value="0" >
+                    <label for="lun">Lunes</label><br>
+                    <input id="mar" type="checkbox" name="dias[]" value="1">
+                    <label for="mar">Martes</label><br>
+                    <input id="mie" type="checkbox" name="dias[]" value="2">
+                    <label for="mie">Miercoles</label><br>
+                    <input id="jue" type="checkbox" name="dias[]" value="3">
+                    <label for="jue">jueves</label><br>
+                    <input id="vie" type="checkbox" name="dias[]" value="4">
+                    <label for="vie">Viernes</label><br>
+                    <input id="sab" type="checkbox" name="dias[]" value="5">
+                    <label for="sab">Sabado</label><br>
+                    <input id="dom" type="checkbox" name="dias[]" value="6">
+                    <label for="dom">Domingo</label>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
