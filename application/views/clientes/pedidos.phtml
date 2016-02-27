@@ -6,7 +6,7 @@
     <div class="col m8 s12 offset-m2">
         <ul class="tabs">
             <li class="tab"><a class="active" href="#menu">MENU</a></li>
-            <li class="tab"><a href="#pedidos">PEDIDOS</a></li>  
+            <li class="tab"><a href="#pedidos" onclick="listarCarrito()">PEDIDOS</a></li>  
         </ul>
     </div>
 </div>
@@ -39,7 +39,8 @@
                                 <td> <img src="<?php echo site_url().'img/comidas/'.$id.'.png'; ?>"/> </td>
                                 <td><?php echo $np; ?></td>
                                 <td><?php echo '$'.$p; ?></td>
-                                <td> Carrito URL comprar</td>
+                                <td> 
+                                    <a href="#" onclick="<?php echo "agregarCarrito(".$id.",'".$np."',".$p.")"; ?>"> Comprar </a></td>
                             </tr>
                         <?php
                             }
@@ -94,7 +95,10 @@
             <li> 
                 <div class="collapsible-header">Sin Confirmar</div>
                 <div class="collapsible-body">
-                    PEDIDOS SIN CONFIRMAR
+                    <table class="responsive-table">
+                        <tbody id="tablaCarrito">  
+                        </tbody>     
+                    </table>
                 </div>
             </li>
             <li> 
@@ -120,7 +124,7 @@
                                             $salida = 'En cocina...';
                                         }
                                     }else{
-                                        $salida = 'P/Entregar';
+                                        $salida = 'Para entregar...';
                                     }
                                     return $salida;
                                 }
@@ -137,7 +141,7 @@
                                         <td><?php echo $id; ?></td>
                                         <td><?php echo $id_pedidor.' | '.$pedidor; ?></td>
                                         <td><?php echo $producto; ?></td>
-                                        <td><?php echo $precio; ?></td>
+                                        <td><?php echo '$'.$precio; ?></td>
                                         <td><?php echo $estado; ?></td>
                                     </tr>
                             <?php
@@ -148,6 +152,17 @@
                 </div>
             </li>
         </ul>
+    </div>  
+</div>
+
+<!-- Modal Structure -->
+<div id="modalComentarios" class="modal">
+    <div class="modal-content">
+        <h4>Agregando Comentario</h4>
+        <input id="idComentario" type="text" hidden="true">
+        <input id="inputComentario" type="text" maxlength="50" autocomplete="off">
     </div>
-    
+    <div class="modal-footer">
+        <a onClick="enviarComentario()" class=" modal-action modal-close waves-effect waves-green btn-flat">OK</a>
+    </div>
 </div>

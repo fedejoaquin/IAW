@@ -29,6 +29,8 @@ $( document ).ready(function(){
         $("#pnl-opc-login-usuarios").hide();
         $("#pnl-login-usuarios").show("size");
     });
+    
+    $('.modal-trigger').leanModal();
 });
 
 

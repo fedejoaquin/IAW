@@ -20,6 +20,14 @@
     margin: 10px;
 }
 
+.toast-add{
+    background-color: green;
+}
+
+.toast-delete{
+    background-color: red; 
+}
+
 .div-btn-opc{
     height: 120px;
 }
