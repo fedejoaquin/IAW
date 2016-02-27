@@ -51,7 +51,7 @@ class Webresto extends CI_Controller {
                     if ( $hash_pass === $hash_pass_db ){
                         //Obtengo los roles asociados al empleado
                         $id_empleado = $resultado['id'];
-                        $resultado = $this->MInfo_roles->get_roles_empleado($id_empleado);
+                        $resultado = $this->MRoles->get_roles_empleado($id_empleado);
 
                         //Creo un arreglo con los roles
                         $roles = array();

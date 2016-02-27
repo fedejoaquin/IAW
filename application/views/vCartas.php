@@ -11,7 +11,8 @@
                 array('Webresto', site_url().'webresto'),
                 array('Cartas', site_url().'cartas')
             );
-            include 'componentes/rutaSeguimiento.phtml' 
+            include 'componentes/rutaSeguimiento.phtml';
+            include 'componentes/errores.phtml';
         ?>    
         <?php include '/cartas/'.$funcion.'.phtml'; ?>           
         <?php include 'componentes/footer.phtml'; ?>   

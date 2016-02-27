@@ -3,42 +3,42 @@ $config = array(
 'empleados/altaEditar' => array(      
         array(
             'field'   => 'nombre', 
-            'label'   => 'Nombre de usuario invalido o existente.', 
+            'label'   => 'Nombre de usuario', 
             'rules'   => 'required'
         ),
         array(
             'field'   => 'dni', 
-            'label'   => 'DNI invalido.', 
+            'label'   => 'DNI', 
             'rules'   => 'required|numeric'
         ),
         array(
             'field'   => 'direccion', 
-            'label'   => 'Direccion Invalida.', 
+            'label'   => 'Direccion', 
             'rules'   => 'required'
          ),   
         array(
             'field'   => 'telefono', 
-            'label'   => 'Telefono invalido.', 
+            'label'   => 'Telefono', 
             'rules'   => 'required|numeric'
         ),   
         array(
             'field'   => 'cuit', 
-            'label'   => 'Cuit invalido.', 
+            'label'   => 'Cuit', 
             'rules'   => 'required|numeric'
         ),   
         array(
            'field'   => 'email', 
-           'label'   => 'Email invalido.', 
+           'label'   => 'Email', 
            'rules'   => 'required|valid_email'
         ),   
         array(
            'field'   => 'password', 
-           'label'   => 'Password invalido.', 
+           'label'   => 'Password .', 
            'rules'   => 'required'
         ),   
         array(
            'field'   => 'passwordConf', 
-           'label'   => 'Confirmacion de password invalida.', 
+           'label'   => 'Confirmar password.', 
            'rules'   => 'required|matches[password]'
         ),   
         array(
@@ -67,5 +67,14 @@ $config = array(
             'label'   => 'nombre_usuario', 
             'rules'   => 'required'
         )
-  ),
-); //Fin config
+  ),//Fin config
+'cartas/altaEditar' => array(      
+        array(
+            'field'   => 'nombre', 
+            'label'   => 'Nombre carta', 
+            'rules'   => 'required'
+        ),
+        
+    
+  ),//Fin cartas/altaEditar.
+); 

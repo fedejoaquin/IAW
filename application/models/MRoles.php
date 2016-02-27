@@ -11,7 +11,7 @@ class MRoles extends CI_Model{
         $consulta .= 'FROM roles JOIN info_roles ON roles.id = info_roles.rol ';
         $consulta .= 'WHERE info_roles.id_empleado="'.$id.'"';
         
-        $query = $this->db->query();
+        $query = $this->db->query($consulta);
         $resultado = $query->result_array();
         
         return $resultado;
