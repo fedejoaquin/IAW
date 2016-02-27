@@ -1,6 +1,8 @@
 <div class="row ">
-    <?php $atrib = array("onsubmit"=>"return confirm('¿Realmente quiere editar este empleado?')");
-          echo form_open('empleados/alta'); ?>
+    <?php 
+        $attr = array('autocomplete' => 'off', 'onsubmit'=>'return confirm("¿Realmente quiere editar este empleado?")');
+        echo form_open('empleados/alta', $attr); 
+    ?>
         <div class="row">
           <div class="input-field col s4">
             <input placeholder="Nombre" id="nombre" type="text" class="validate" name="nombre">

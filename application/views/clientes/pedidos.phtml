@@ -20,44 +20,68 @@
                 $cantidad = count($info_carta);
                 while($indice<$cantidad){
                     $seccion_anterior = $info_carta[$indice]['nombre_seccion'];
-
-                    //imprimo el encabezado y el tag para abrir el cuerpo del tab
-                    echo '<li> <div class="collapsible-header">'.$seccion_anterior.'</div>';
-                    echo '<div class="collapsible-body">';
-
-                    //Mientras no cambie de encabezado, imprimo los elementos dentro
-                    while($indice<$cantidad && $seccion_anterior === $info_carta[$indice]['nombre_seccion']){
-                        $row = $info_carta[$indice++];
-                        $np = $row['nombre_producto'];
-                        $id = $row['id_producto'];
-                        $p = $row['precio'];
-                        echo '<div> <img src="'.site_url().'img/comidas/'.$id.'.png"/>'.$np.' - '.$p.'</div>';
-                    }
-
-                    echo '</div>';
-                    echo '</li>';
+                ?>
+                    <!-- imprimo el encabezado y el tag para abrir el cuerpo del tab -->
+                    <li> 
+                        <div class="collapsible-header"> <?php echo $seccion_anterior; ?> </div>
+                        <div class="collapsible-body">
+                        <table class="responsive-table">
+                        <tbody>          
+                        <?php
+                            //Mientras no cambie de encabezado, imprimo los elementos dentro
+                            while($indice<$cantidad && $seccion_anterior === $info_carta[$indice]['nombre_seccion']){
+                                $row = $info_carta[$indice++];
+                                $np = $row['nombre_producto'];
+                                $id = $row['id_producto'];
+                                $p = $row['precio'];
+                        ?>
+                            <tr>
+                                <td> <img src="<?php echo site_url().'img/comidas/'.$id.'.png'; ?>"/> </td>
+                                <td><?php echo $np; ?></td>
+                                <td><?php echo '$'.$p; ?></td>
+                                <td> Carrito URL comprar</td>
+                            </tr>
+                        <?php
+                            }
+                        ?>
+                        </tbody>
+                        </table>
+                        </div>
+                    </li> 
+                    
+            <?php 
                 }
 
                 $indice = 0;
                 $cantidad = count($info_promociones);
                 while($indice<$cantidad){
                     $promo_anterior = $info_promociones[$indice]['nombre_promocion'];
-
-                    //imprimo el encabezado y el tag para abrir el cuerpo del tab
-                    echo '<li> <div class="collapsible-header">'.$promo_anterior.'</div>';
-                    echo '<div class="collapsible-body">';
-
-                    //Mientras no cambie de encabezado, imprimo los elementos dentro
-                    while($indice<$cantidad && $promo_anterior === $info_promociones[$indice]['nombre_promocion']){
-                        $row = $info_promociones[$indice++];
-                        $np = $row['nombre_producto'];
-                        $id = $row['id_producto'];
-                        $p = $row['precio'];
-                        echo '<div> <img src="'.site_url().'img/comidas/'.$id.'.png"/>'.$np.'</div>';
-                    }
-                    echo 'Precio promoción: '.$p;
-                    echo '</div>';
-                    echo '</li>';
+                ?>
+                    <li> 
+                        <div class="collapsible-header"> <?php echo $promo_anterior; ?> </div>
+                        <div class="collapsible-body">
+                        <p>Precio promoción: <?php echo '$'.$info_promociones[$indice]['precio']; ?></p>
+                        <table class="responsive-table">
+                        <tbody>  
+                        <?php
+                            //Mientras no cambie de encabezado, imprimo los elementos dentro
+                            while($indice<$cantidad && $promo_anterior === $info_promociones[$indice]['nombre_promocion']){
+                                $row = $info_promociones[$indice++];
+                                $np = $row['nombre_producto'];
+                                $id = $row['id_producto'];
+                        ?>
+                            <tr>
+                                <td> <img src="<?php echo site_url().'img/comidas/'.$id.'.png'; ?>"/> </td>
+                                <td><?php echo $np; ?></td>
+                            </tr>
+                        <?php
+                            }
+                        ?>
+                        </tbody>
+                        </table>
+                        </div>
+                    </li> 
+            <?php       
                 }
             ?>
         </ul>
@@ -76,7 +100,51 @@
             <li> 
                 <div class="collapsible-header">Confirmados</div>
                 <div class="collapsible-body">
-                   PEDIDOS CONFIRMADOS 
+                    <table class="responsive-table">
+                        <thead>
+                          <tr>
+                              <th data-field="id">#ID</th>
+                              <th data-field="pedidor">Pedidor</th>
+                              <th data-field="producto">Producto</th>
+                              <th data-field="precio">Precio</th>
+                              <th data-field="estado">Estado</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                                function calcularEstado($e,$p,$s){
+                                    if($s===NULL){
+                                        if($p===NULL){
+                                            $salida = 'Procesando...';
+                                        }else{
+                                            $salida = 'En cocina...';
+                                        }
+                                    }else{
+                                        $salida = 'P/Entregar';
+                                    }
+                                    return $salida;
+                                }
+                                
+                                foreach($pedidos_procesados as $row){
+                                    $id = $row['id'];
+                                    $id_pedidor = $row['id_pedidor'];
+                                    $pedidor = $row['nombre_pedidor'] === NULL ? 'Desvinculado' : $row['nombre_pedidor'];
+                                    $producto = $row['nombre_producto'];
+                                    $precio = $row['precio'];
+                                    $estado = calcularEstado($row['fecha_e'], $row['fecha_p'], $row['fecha_s']);
+                            ?>
+                                    <tr>
+                                        <td><?php echo $id; ?></td>
+                                        <td><?php echo $id_pedidor.' | '.$pedidor; ?></td>
+                                        <td><?php echo $producto; ?></td>
+                                        <td><?php echo $precio; ?></td>
+                                        <td><?php echo $estado; ?></td>
+                                    </tr>
+                            <?php
+                                }
+                            ?>
+                        </tbody>
+                    </table>
                 </div>
             </li>
         </ul>

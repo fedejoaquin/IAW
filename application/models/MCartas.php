@@ -14,8 +14,10 @@ class MCartas extends CI_Model {
         $resultado['id_carta'] = $id_carta;
         $resultado['nombre_carta'] = $carta['nombre'];
         
-        $consulta = 'SELECT s.nombre as nombre_seccion, p.nombre as nombre_producto, p.id as id_producto, il.precio FROM (((Info_carta ic LEFT JOIN Secciones s ON ic.id_seccion = s.id) ';
-        $consulta .= 'LEFT JOIN Productos p ON ic.id_producto = p.id ) LEFT JOIN Info_lista_precio il ON ic.id_producto = il.id_producto AND ic.id_lista_precio = il.id_lista_precio ) ';
+        $consulta = 'SELECT s.nombre as nombre_seccion, p.nombre as nombre_producto, p.id as id_producto, il.precio ';
+        $consulta .= 'FROM (((Info_carta ic LEFT JOIN Secciones s ON ic.id_seccion = s.id) ';
+        $consulta .= 'LEFT JOIN Productos p ON ic.id_producto = p.id ) ';
+        $consulta .= 'LEFT JOIN Info_lista_precio il ON ic.id_producto = il.id_producto AND ic.id_lista_precio = il.id_lista_precio ) ';
         $consulta .= 'WHERE ic.id_carta = '.$id_carta.' ORDER BY nombre_seccion';
 
         $query = $this->db->query($consulta);
@@ -34,8 +36,10 @@ class MCartas extends CI_Model {
         $carta = $this->get_carta_actual();
         $id_carta = $carta['id'];
         
-        $consulta = 'SELECT p.nombre as nombre_promocion, pr.nombre as nombre_producto, pr.id as id_producto, p.precio FROM ((Promociones p LEFT JOIN Info_promociones ip ON p.id = ip.id_promocion ) ';
-        $consulta .= 'LEFT JOIN Productos pr ON ip.id_producto = pr.id ) WHERE p.id_carta = '.$id_carta;
+        $consulta = 'SELECT p.nombre as nombre_promocion, pr.nombre as nombre_producto, pr.id as id_producto, p.precio ';
+        $consulta .= 'FROM ((Promociones p LEFT JOIN Info_promociones ip ON p.id = ip.id_promocion ) ';
+        $consulta .= 'LEFT JOIN Productos pr ON ip.id_producto = pr.id ) ';
+        $consulta .= 'WHERE p.id_carta = '.$id_carta;
 
         $query = $this->db->query($consulta);
         $resultado = $query->result_array();
@@ -52,8 +56,10 @@ class MCartas extends CI_Model {
         $hora_actual = getdate()['hours'];
         $dia_actual = getdate()['wday'];
         
-        $consulta = 'SELECT c.id, c.nombre FROM (Cartas c LEFT JOIN restricciones_dia rd on c.id_restriccion_dia = rd.id) ';
-        $consulta .= 'LEFT JOIN restricciones_hora rh ON c.id_restriccion_hora = rh.id WHERE rd.'.$dia_actual.'=TRUE and rh.'.$hora_actual.'=TRUE';
+        $consulta = 'SELECT c.id, c.nombre ';
+        $consulta .= 'FROM (Cartas c LEFT JOIN restricciones_dia rd on c.id_restriccion_dia = rd.id) ';
+        $consulta .= 'LEFT JOIN restricciones_hora rh ON c.id_restriccion_hora = rh.id ';
+        $consulta .= 'WHERE rd.'.$dia_actual.'=TRUE and rh.'.$hora_actual.'=TRUE';
         
         $query = $this->db->query($consulta);
         $resultado = $query->row_array();

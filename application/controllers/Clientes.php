@@ -38,12 +38,15 @@ class Clientes extends CI_Controller {
     public function pedidos(){
         if($this->chequear_login_redirect()){
             if($this->chequear_vinculado_redirect()){
-                $resultado = $this->MCartas->get_menu_actual();
-                $resultado_1 = $this->MCartas->get_promociones_actual();
-                $data['id_carta'] = $resultado['id_carta'];
-                $data['nombre_carta'] = $resultado['nombre_carta'];
-                $data['info_carta'] = $resultado['info_carta'];
-                $data['info_promociones'] = $resultado_1;
+                $menu_actual = $this->MCartas->get_menu_actual();
+                $promo_actual = $this->MCartas->get_promociones_actual();
+                $pedidos_procesados = $this->MPedidos->get_procesados($this->session->userdata('mesa_asignada')['id']);
+                
+                $data['id_carta'] = $menu_actual['id_carta'];
+                $data['nombre_carta'] = $menu_actual['nombre_carta'];
+                $data['info_carta'] = $menu_actual['info_carta'];
+                $data['info_promociones'] = $promo_actual;
+                $data['pedidos_procesados'] = $pedidos_procesados;
                 $data['funcion'] = 'pedidos';
                 $this->load->view('vClientes', $data);
             }
