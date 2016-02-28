@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Clientes extends CI_Controller {
+class Ajax extends CI_Controller {
     
     /**
      * Index de Clientes. Chequea que esté logueado y/o vinculado.
@@ -9,11 +9,15 @@ class Clientes extends CI_Controller {
      * - En caso de estar logueado y vinculado, muestra el index.
      * - En caso no estar logueado, redirige al home de webresto.
      */
-    public function index(){
-        if($this->chequear_login_redirect()){
-            $this->chequear_vinculado();
-            $data['funcion'] = 'index';
-            $this->load->view('vClientes',$data);
+    public function altaPedido(){
+        $resultado = array();
+        if($this->chequear_vinculado()){
+            $resultado['data'] = 'El usuario actual se encuentra vinculado a webresto.';
+            echo json_encode($resultado);
+        }else{
+            $resultado['error'] = 'El usuario actual no se encuentra vinculado a webresto.';
+            $resultado['data'] = array();
+            echo json_encode($resultado);
         }
     }
     
@@ -51,6 +55,11 @@ class Clientes extends CI_Controller {
                 $this->load->view('vClientes', $data);
             }
         }
+    }
+    
+    public function pedido(){
+        
+        return false;
     }
     
     /**
