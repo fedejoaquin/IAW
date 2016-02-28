@@ -4,6 +4,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Empleados extends CI_Controller {
 	public function index()
 	{
+            
+            $id_empleado = $this->session->userdata('eid');
+            $resultado = $this->MRoles->get_roles_empleado($id_empleado);
+
+            //Creo un arreglo con los roles
+            $roles = array();
+            foreach($resultado as $rol){
+                array_push($roles,$rol['descripcion']);
+            }
+            $data['roles'] = $roles;
             $data['funcion'] = 'roles/index'     ;
             $this->load->view('vEmpleados', $data);
 	}

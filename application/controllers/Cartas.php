@@ -16,6 +16,7 @@ class Cartas extends CI_Controller {
         }
         
         public function alta(){
+            //print_r($this->MListaPrecios->get_productos());
             if ($this->form_validation->run('cartas/altaEditar') === FALSE)
             {
                 $data['productos'] = $this->MCartas->get_productos();
@@ -25,25 +26,35 @@ class Cartas extends CI_Controller {
             else {
                 
                 $data = $this->input->post();
-                print_r($data);
-                $validacionDias = $this->form_validation->run('cartas/restriccionesDias') ;
-                $validacionHoras = $this->form_validation->run('cartas/restriccionesHoras');
-                if($validacionDias){ $data['dias']= array(); }
-                if($validacionHoras){ $data['horas']= array(); }
+               /* echo "Antes <br>";
+                print_r($data['productos']);
+                echo "Despues <br> ";*/
                 $validacion = $this->MRestricciones->validarDiaHora($data['dias'],$data['horas']);
                 if($validacion)
                 {    
+                    /*Si valida, hay que poner los datos en la base de datos, el 
+                    problema es que puede cancelar, asique no se puede hacer aun.
+                    Cargamos el formulario de lista_precios, con los productos seleccionados.
+                    (Le pasamos todo, y al final hacemos el insert).
+                     */
+                    $this->lista_precios_carta($data);
                     
-                    echo "Paso";
-                    $this->index();
                 }
                 else{ 
-                    //$data['creador']  = $this->session->userdata('eid');
-                echo "No paso";
-                $data['productos'] = $this->MCartas->get_productos();
-                $data['funcion'] = 'alta';
-                $this->load->view('vCartas', $data);
+                    echo "No paso";
+                    $data['productos'] = $this->MCartas->get_productos();
+                    $data['funcion'] = 'alta';
+                    $this->load->view('vCartas', $data);
                 }
             }
+        }
+        
+        public function lista_precios_carta($data){
+            if ($this->form_validation->run('cartas/altaEditar') === FALSE){
+                
+                
+            }
+                    
+            
         }
 }

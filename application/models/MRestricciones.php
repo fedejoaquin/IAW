@@ -13,7 +13,6 @@ class MRestricciones extends CI_Model {
         while($indiceCarta < $cantCartas && $compatible){
             //obtengo la carta actual
             $cartaActual = $cartasAlmacenadas[$indiceCarta];
-            print_r($cartaActual);
             $indiceDia = 0;
             while( $indiceDia<$diasCant && $compatible){
                 $nombreDia = $this->obtenerNombreDia($dias[$indiceDia]);

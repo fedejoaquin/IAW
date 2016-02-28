@@ -73,25 +73,19 @@ $config = array(
             'field'   => 'nombre', 
             'label'   => 'Nombre carta', 
             'rules'   => 'required'
+        ),array(
+            'field' => 'horas',
+          'rules' => 'required'
         ),
-        /*array(
-            'field'   => 'productos', 
-            'label'   => 'productos', 
-            'rules'   => 'required'
-        ),*/
-
-    
-  ),//Fin cartas/altaEditar.
-    'cartas/restriccionesDias' => array(
         array(
           'field' => 'dias',
           'rules' => 'required'
-        )
-    ),//Fin restricciones Dias
-    'cartas/restriccionesHoras' => array(
+        ),
         array(
-            'field' => 'horas',
-          'rules' => 'required'
+            'field'   => 'productos', 
+            'label'   => 'productos', 
+            'rules'   => 'required'
         )
-    )//Fin restricciones Horas
+  ),//Fin cartas/altaEditar.
+    
 ); 
