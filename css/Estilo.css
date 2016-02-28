@@ -20,11 +20,11 @@
     margin: 10px;
 }
 
-.toast-add{
+.toast-ok{
     background-color: green;
 }
 
-.toast-delete{
+.toast-error{
     background-color: red; 
 }
 

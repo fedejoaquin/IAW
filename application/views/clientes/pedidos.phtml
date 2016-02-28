@@ -40,7 +40,8 @@
                                 <td><?php echo $np; ?></td>
                                 <td><?php echo '$'.$p; ?></td>
                                 <td> 
-                                    <a href="#" onclick="<?php echo "agregarCarrito(".$id.",'".$np."',".$p.")"; ?>"> Comprar </a></td>
+                                    <a class="btn waves-effect waves-green" href="#" onclick="<?php echo "agregarProducto(".$id.",'".$np."',".$p.")"; ?>"><i class="material-icons">add</i></a>
+                                </td>
                             </tr>
                         <?php
                             }
@@ -61,7 +62,18 @@
                     <li> 
                         <div class="collapsible-header"> <?php echo $promo_anterior; ?> </div>
                         <div class="collapsible-body">
-                        <p>Precio promoción: <?php echo '$'.$info_promociones[$indice]['precio']; ?></p>
+                            <?php
+                                $id_promo = $info_promociones[$indice]['id_promocion'];
+                                $precio_promo = $info_promociones[$indice]['precio'];
+                                $nom_promo = $info_promociones[$indice]['nombre_promocion'];
+                            ?>
+                            <div class="row center-align">
+                                Precio promoción: <?php echo '$'.$precio_promo; ?>
+                                <a class="btn waves-effect waves-green" href="#" onclick="<?php echo "agregarPromocion(".$id_promo.",'".$nom_promo."',".$precio_promo.")"; ?>">
+                                    <i class="material-icons">add</i>
+                                </a>
+                            </div>
+                            
                         <table class="responsive-table">
                         <tbody>  
                         <?php
@@ -95,6 +107,10 @@
             <li> 
                 <div class="collapsible-header">Sin Confirmar</div>
                 <div class="collapsible-body">
+                    <div class="row center-align">
+                        <a class="btn waves-effect" onclick="confirmarPedido()">Confirmar pedidos</a>
+                        <a class="btn waves-effect" onclick="vaciarCarrito()">Vaciar carrito</a>
+                    </div>
                     <table class="responsive-table">
                         <tbody id="tablaCarrito">  
                         </tbody>     
@@ -159,8 +175,7 @@
 <div id="modalComentarios" class="modal">
     <div class="modal-content">
         <h4>Agregando Comentario</h4>
-        <input id="idComentario" type="text" hidden="true">
-        <input id="inputComentario" type="text" maxlength="50" autocomplete="off">
+        <input id="inputComentario" type="text" maxlength="85" autocomplete="off">
     </div>
     <div class="modal-footer">
         <a onClick="enviarComentario()" class=" modal-action modal-close waves-effect waves-green btn-flat">OK</a>
