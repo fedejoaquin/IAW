@@ -8,15 +8,14 @@ class MRestricciones extends CI_Model {
         $compatible = 1;
         $diasCant = count($dias);
         $horasCant = count($horas);
-        $indiceCarta = 1;
+        $indiceCarta = 0;
         
         while($indiceCarta < $cantCartas && $compatible){
             //obtengo la carta actual
-            echo "Ruben";
             $cartaActual = $cartasAlmacenadas[$indiceCarta];
+            print_r($cartaActual);
             $indiceDia = 0;
             while( $indiceDia<$diasCant && $compatible){
-                echo $dias[$indiceDia];
                 $nombreDia = $this->obtenerNombreDia($dias[$indiceDia]);
                 //Si colisiona el dia
                 if($cartaActual[$nombreDia])
