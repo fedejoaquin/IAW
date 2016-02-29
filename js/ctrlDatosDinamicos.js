@@ -107,8 +107,9 @@ function calcularEstado(fecha_p, fecha_s){
 
 function listarConfirmados(data){
     listarCarrito();
-    var productos = data['confirmados'];
-    
+    var productos = data['productos'];
+    var promociones = data['promociones'];
+        
     $('#tablaConfirmados').empty();
        
     for(var i=0; i<productos.length;i++){

@@ -6,7 +6,6 @@ class Ajax extends CI_Controller {
     public function altaPedido(){
         $resultado = array();
         if($this->chequear_vinculado()){
-            
             //Array(tupla_1, tupla_2, ..., tupla_n)
             //Tupla(Id, Producto, Precio, Id_lp, Comentarios)
             $productos = $this->input->post('productosPedidos');
@@ -16,13 +15,26 @@ class Ajax extends CI_Controller {
             $id_pedidor = $this->session->userdata('cid');
             $id_mesa = $this->session->userdata('mesa_asignada')['id'];
             
-            foreach ($productos as $row){
-                $this->MPedidos->insert($id_pedidor,$id_mesa, $row['id'], $row['id_lp']);
+            if (!empty($productos)){ 
+                foreach ($productos as $row){
+                    $this->MPedidos->solicitarProducto($id_pedidor,$id_mesa, $row['id'], $row['id_lp'], $row['comentarios']);
+                }
             }
             
-            $resultado['data'] = array();
-            $resultado['data']['confirmados'] = $this->MPedidos->get_procesados($this->session->userdata('mesa_asignada')['id']);
-            echo json_encode($resultado);
+            if(!empty($promociones)){
+                foreach ($promociones as $row){
+                    $this->MPedidos->solicitarPromocion($id_pedidor,$id_mesa, $row['id'], $row['comentarios']);
+                }
+            }            
+            
+            if (empty($productos) && empty($promociones)){
+                $resultado['error'] = 'Con los datos subministrados, no se puede realizar la operación.';
+                $resultado['data'] = array();
+                echo json_encode($resultado);
+            }else{
+                $this->estadoMesa();
+            }
+             
         }else{
             $resultado['error'] = 'El usuario actual no se encuentra vinculado a webresto.';
             $resultado['data'] = array();
@@ -39,7 +51,8 @@ class Ajax extends CI_Controller {
         $resultado = array();
         if($this->chequear_vinculado()){
             $resultado['data'] = array();
-            $resultado['data']['confirmados'] = $this->MPedidos->get_procesados($this->session->userdata('mesa_asignada')['id']);
+            $resultado['data']['productos'] = $this->MPedidos->get_productos_procesados($this->session->userdata('mesa_asignada')['id']);
+            $resultado['data']['promociones'] = $this->MPedidos->get_promociones_procesadas($this->session->userdata('mesa_asignada')['id']);        
             echo json_encode($resultado);
         }else{
             $resultado['error'] = 'El usuario actual no se encuentra vinculado a webresto.';
