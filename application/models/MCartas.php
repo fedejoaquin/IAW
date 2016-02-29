@@ -5,7 +5,7 @@ class MCartas extends CI_Model {
      * Computa y retorna el menú que actualmente se encuentra vigente, para la carta disponible actualmente. 
      * Para eso chequea la carta actual, y según ella, retorna un arreglo con aquellas secciones, precios y productos
      * que la componen. 
-     * @return Array(Nombre_seccion,Nombre_producto, Id_producto,Precio)
+     * @return Array(Nombre_seccion,Nombre_producto, Id_producto,Precio, Id_lista_precio)
      */    
     public function get_menu_actual(){
         $carta = $this->get_carta_actual();
@@ -14,7 +14,7 @@ class MCartas extends CI_Model {
         $resultado['id_carta'] = $id_carta;
         $resultado['nombre_carta'] = $carta['nombre'];
         
-        $consulta = 'SELECT s.nombre as nombre_seccion, p.nombre as nombre_producto, p.id as id_producto, il.precio ';
+        $consulta = 'SELECT s.nombre as nombre_seccion, p.nombre as nombre_producto, p.id as id_producto, il.precio, il.id_lista_precio ';
         $consulta .= 'FROM (((Info_carta ic LEFT JOIN Secciones s ON ic.id_seccion = s.id) ';
         $consulta .= 'LEFT JOIN Productos p ON ic.id_producto = p.id ) ';
         $consulta .= 'LEFT JOIN Info_lista_precio il ON ic.id_producto = il.id_producto AND ic.id_lista_precio = il.id_lista_precio ) ';

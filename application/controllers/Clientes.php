@@ -32,8 +32,9 @@ class Clientes extends CI_Controller {
     
     /**
      * Lista el menú actual y los pedidos, si es que el cliente está logueado y vinculado.
-     * $data['info_carta' ] = array (Secciones,nombre_producto,Precio)
-     * $data['info_promociones'] = array(NombrePromo,Productos,Precio)
+     * $data['info_carta' ] = Array (Secciones,nombre_producto,Precio, Id_lista_precio)
+     * $data['info_promociones'] = Array(NombrePromo,Productos,Precio)
+     * $data['pedidos_procesados'] = Array(Id,Id_pedidor,Nombre_pedidor, Nombre_producto, Precio, Fecha_e, Fecha_p, Fecha_s)
      */
     public function pedidos(){
         if($this->chequear_login_redirect()){
@@ -54,19 +55,12 @@ class Clientes extends CI_Controller {
     }
     
     /**
-    * Chequea si existe datos de cliente logueado y vinculado a una mesa. 
+    * Chequea si existe datos de cliente logueado. 
     * - Si no está logueado, redirige al home del sitio.
-    * - Si está logueado y vinculado, elimina datos de sessión y datos en la BD, y redirige a webresto/logout.
-    * - Si está sólo logueado, elimina datos de session y redirige a webresto/logout.
+    * - Si está logueado, elimina datos de sessión y redirige a webresto/logout.
     */
     public function logout(){
         if($this->chequear_login_redirect()){
-            if($this->chequear_vinculado()){
-                $this->MMesasPedidores->desvincular($this->session->userdata('cid'));
-                $this->MPedidores->eliminar($this->session->userdata('cid'));
-            }else{
-                $this->MPedidores->eliminar($this->session->userdata('cid'));
-            }
             redirect(site_url().'webresto/logout');
         }
     }
@@ -107,16 +101,12 @@ class Clientes extends CI_Controller {
     * - Responde falso en caso de no estar vinculado.
     */
     private function chequear_vinculado(){
-        if ($this->session->userdata('mesa_asignada') === NULL){
-            $resultado = $this->MMesasPedidores->get_mesa_pedidor($this->session->userdata('cid'));
-            if (count($resultado)>0){
-                $this->session->set_userdata('mesa_asignada',$resultado);
-                return true;
-            }else{
-                return false;
-            }
-        }else{
+        $resultado = $this->MMesasPedidores->get_mesa_pedidor($this->session->userdata('cid'));
+        $this->session->set_userdata('mesa_asignada',$resultado);
+        if (count($resultado)>0){
             return true;
+        }else{
+            return false;
         }
-    }   
+    }
 }

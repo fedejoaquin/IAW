@@ -34,13 +34,14 @@
                                 $np = $row['nombre_producto'];
                                 $id = $row['id_producto'];
                                 $p = $row['precio'];
+                                $id_lp = $row['id_lista_precio'];
                         ?>
                             <tr>
                                 <td> <img src="<?php echo site_url().'img/comidas/'.$id.'.png'; ?>"/> </td>
                                 <td><?php echo $np; ?></td>
                                 <td><?php echo '$'.$p; ?></td>
                                 <td> 
-                                    <a class="btn waves-effect waves-green" href="#" onclick="<?php echo "agregarProducto(".$id.",'".$np."',".$p.")"; ?>"><i class="material-icons">add</i></a>
+                                    <a class="btn waves-effect waves-green" href="#" onclick="<?php echo "agregarProducto(".$id.",'".$np."',".$p.",".$id_lp." )"; ?>"><i class="material-icons">add</i></a>
                                 </td>
                             </tr>
                         <?php
@@ -130,9 +131,9 @@
                               <th data-field="estado">Estado</th>
                           </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="tablaConfirmados">
                             <?php
-                                function calcularEstado($e,$p,$s){
+                                function calcularEstado($p,$s){
                                     if($s===NULL){
                                         if($p===NULL){
                                             $salida = 'Procesando...';
@@ -151,7 +152,7 @@
                                     $pedidor = $row['nombre_pedidor'] === NULL ? 'Desvinculado' : $row['nombre_pedidor'];
                                     $producto = $row['nombre_producto'];
                                     $precio = $row['precio'];
-                                    $estado = calcularEstado($row['fecha_e'], $row['fecha_p'], $row['fecha_s']);
+                                    $estado = calcularEstado($row['fecha_p'], $row['fecha_s']);
                             ?>
                                     <tr>
                                         <td><?php echo $id; ?></td>

@@ -3,8 +3,8 @@ var promociones = new Array();
 var datosComentario = new Array();
 var total = 0;
 
-function agregarProducto( id, producto, precio ){
-    var tupla = {'id':id,'producto':producto,'precio':precio, 'comentarios':'Sin comentarios.'}; 
+function agregarProducto( id, producto, precio, id_lp ){
+    var tupla = {'id':id,'producto':producto,'precio':precio, 'id_lp': id_lp, 'comentarios':'Sin comentarios.'}; 
     productos.push(tupla);
     total += precio;
     Materialize.toast(producto + ' agregado.', 2000,'toast-ok');
@@ -73,22 +73,14 @@ function enviarComentario(){
     Materialize.toast('Comentario adherido.', 2000,'toast-ok');
 }
 
-function generarDatosConfirmacion(){
-    var envio = {
-        'productosPedidos' : productos,
-        'promocionesPedidas': promociones        
-    };
-    return envio;
-}
-
 function confirmarPedido(){
     if (productos.length===0 && promociones.length===0){
         Materialize.toast('No hay nada en el carrito.', 2000,'toast-error');
     }else{
         $.ajax({
-            data:  generarDatosConfirmacion(),
-            url:   'http://localhost/IAW-PF/ajax/altapedido',
-            type:  'get',
+            data:  {'productosPedidos': productos, 'promocionesPedidas':promociones},
+            url:   'http://localhost/IAW-PF/ajax/altaPedidos',
+            type:  'post',
             error: function(response){
                 Materialize.toast('Se produjo un error en la conexión.', 5000,'toast-error');
                 Materialize.toast('El servidor no está respondiendo nuestra solicitud.', 5000,'toast-error');
@@ -97,7 +89,7 @@ function confirmarPedido(){
             },
             success: function (response){
                 var respuesta = JSON.parse(response);
-                if (respuesta['error'] === 'undefined'){
+                if (respuesta['error'] === undefined){
                     productos = new Array();
                     promociones = new Array();
                     precio = 0;

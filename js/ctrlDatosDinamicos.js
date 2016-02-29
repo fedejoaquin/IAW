@@ -1,3 +1,8 @@
+
+$( document ).ready(function(){
+    controlAjax();
+});
+
 function listarCarrito(){
     $('#tablaCarrito').empty();
     
@@ -86,8 +91,61 @@ function listarCarrito(){
     }  
 }
 
-function listarConfirmados(respuesta){
+function calcularEstado(fecha_p, fecha_s){
+    var salida;
+    if (fecha_s !== null){
+        salida = 'Para entregar';
+    }else{
+        if (fecha_p !== null){
+            salida = 'En cocina...';
+        }else{
+            salida = 'Procesando...';
+        }
+    }
+    return salida;
+}
+
+function listarConfirmados(data){
     listarCarrito();
-    var productos = respuesta['data'];
+    var productos = data['confirmados'];
+    
+    $('#tablaConfirmados').empty();
+       
+    for(var i=0; i<productos.length;i++){
+        row = $("<tr></tr>");
+
+        colId = $("<td>"+productos[i]['id']+"</td>");
+        colProducto = $("<td>"+productos[i]['nombre_producto']+"</td>");
+        colPrecio = $("<td> $"+productos[i]['precio']+"</td>");
+       
+        var pedidor = productos[i]['id_pedidor'] + " | " + productos[i]['nombre_pedidor'];
+        colPedidor = $("<td>"+pedidor+"</td>");
         
+        var estado = calcularEstado(productos[i]['fecha_p'], productos[i]['fecha_s']);
+        colEstado = $("<td>"+estado+"</td>");
+        colEstado.attr('id', 'col_'+i);
+           
+        $(row).append(colId);
+        $(row).append(colPedidor);
+        $(row).append(colProducto);
+        $(row).append(colPrecio);
+        $(row).append(colEstado);
+
+       $('#tablaConfirmados').append(row);
+    }
+}
+
+function controlAjax(){
+    $.ajax({
+        data:  {},
+        url:   'http://localhost/IAW-PF/ajax/estadoMesa',
+        type:  'get',
+        success: function (response){
+            var respuesta = JSON.parse(response);
+            if (respuesta['error'] === undefined){
+                listarConfirmados(respuesta['data']);
+            }
+        }
+    });
+    setTimeout("controlAjax()",10000);
 }
