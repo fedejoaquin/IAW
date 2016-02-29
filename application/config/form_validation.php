@@ -67,7 +67,8 @@ $config = array(
             'label'   => 'nombre_usuario', 
             'rules'   => 'required'
         )
-  ),//Fin config
+  ),//Fin webresto/loginCliente
+    
 'cartas/altaEditar' => array(      
         array(
             'field'   => 'nombre', 
@@ -87,5 +88,16 @@ $config = array(
             'rules'   => 'required'
         )
   ),//Fin cartas/altaEditar.
-    
-); 
+   'mozo/abrirMesa' => array(      
+        array(
+            'field'   => 'n_mesa', 
+            'label'   => 'numero de mesa', 
+            'rules'   => 'required'
+        ),
+       array(
+            'field'   => 'codigo', 
+            'label'   => 'código', 
+            'rules'   => 'required'
+        )
+  ),//Fin mozo/abrirMesa. 
+); //Fin config
