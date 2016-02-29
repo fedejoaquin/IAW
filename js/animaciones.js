@@ -31,6 +31,10 @@ $( document ).ready(function(){
     });
     
     $('.modal-trigger').leanModal();
+    
+    $('#btn-asignarMozo').click(function(){
+       $('#panel-asignarMozo').show('slow'); 
+    });
 });
 
 

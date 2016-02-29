@@ -70,34 +70,29 @@ $config = array(
 ),//Fin webresto/loginCliente
     
 'cartas/altaEditar' => array(      
-    array(
-        'field'   => 'nombre', 
-        'label'   => 'Nombre carta', 
-        'rules'   => 'required'
-    ),array(
-        'field' => 'horas',
-      'rules' => 'required'
-    ),
-    array(
-      'field' => 'dias',
-      'rules' => 'required'
-    ),
-    array(
-        'field'   => 'productos', 
-        'label'   => 'productos', 
-        'rules'   => 'required'
-    )
-),//Fin cartas/altaEditar.
-'mozo/abrirMesa' => array(      
-     array(
-         'field'   => 'n_mesa', 
-         'label'   => 'numero de mesa', 
-         'rules'   => 'required'
-     ),
-    array(
-         'field'   => 'codigo', 
-         'label'   => 'código', 
-         'rules'   => 'required'
-     )
-),//Fin mozo/abrirMesa. 
+        array(
+            'field'   => 'nombre', 
+            'label'   => 'Nombre carta', 
+            'rules'   => 'required'
+        ),array(
+            'field' => 'horas',
+          'rules' => 'required'
+        ),
+        array(
+          'field' => 'dias',
+          'rules' => 'required'
+        ),
+        array(
+            'field'   => 'productos', 
+            'label'   => 'productos', 
+            'rules'   => 'required'
+        )
+  ),//Fin cartas/altaEditar.
+   'mozo/abrirMesa' => array(      
+        array(
+            'field'   => 'codigo', 
+            'label'   => 'código', 
+            'rules'   => 'required'
+        )
+  ),//Fin mozo/abrirMesa. 
 ); //Fin config

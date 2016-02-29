@@ -12,25 +12,26 @@ class Mozo extends CI_Controller {
 	}
         
         public function abrirMesa(){
+            $datos = $this->input->post();
             if($this->form_validation->run('mozo/abrirMesa') === FALSE)
             {
-                echo "no paso";
+                //echo "no paso";
+                $data['editar'] = $datos['editar'];
                 $data['funcion'] = "abrir";
                 $this->load->view('vMozo',$data);
             }
             else
             {
-                echo "paso <br>";
-                 $data = $this->input->post();
-                print_r($data);
-               
-                $data['id_empleado'] = $this->session->userdata('eid');
-                if($this->MMesasPedidores->abrir_mesa($data)){
+                $datos['id_empleado'] = $this->session->userdata('eid');
+                $datos['n_mesa'] = $datos['editar'];
+                if($this->MMesasPedidores->abrir_mesa($datos)){
                     //Caso que valida, debe recargar vista de pedidores y ver que esta asociado.
                     $this->index();
                 }
                 else{
                     //No valida, recarga la que esta, hasta que sea valida la entrada.
+                    //echo "No valido los datos  al insertar";
+                    $data['editar'] = $datos['editar'];
                     $data['funcion'] = "abrir";
                     $this->load->view('vMozo',$data);
                 }

@@ -3,19 +3,26 @@
         <thead>
           <tr>
               <th data-field="numeroMesa">Numero de Mesa</th>
-              <th data-field="mozo">Mozo a cargo</th>
+              <th data-field="vincular"></th>
           </tr>
         </thead>
         <tbody>
            <?php foreach ($mesas as $mesa){?>
           <tr>
-            <td><?php echo $mesa['numero'] ?></td>
-            <td><?php echo $mesa['nombre'] ?></td>
+            <td><?php echo 'Mesa Nº : '.$mesa['numero'] ?></td>
+            <td>
+                <form name="tabla" action="<?php echo site_url() ?>mozo/abrirMesa" method="POST">
+                    <a href="<?php echo site_url()?>mozo/abrirMesa">
+                        <button class="btn waves-effect waves-light" type="submit" value="<?php echo $mesa['numero']; ?>" name="editar">
+                            Vincular Cliente
+                        </button>
+                    </a>
+                </form>
+            </td>
           </tr>
            <?php } ?>
         </tbody>
     </table>
-    <a href ="<?php echo  site_url()?>mozo/abrirMesa" class="btn waves-effect waves-light">Abrir Mesa</a>
     <a href ="<?php echo  site_url()?>webresto/" class="btn waves-effect waves-light">Volver</a>
     
 </div>

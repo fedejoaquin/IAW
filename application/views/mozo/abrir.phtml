@@ -5,18 +5,15 @@
     ?>
         <div class="row">
             <div class="input-field col s4">
-                <input placeholder="Numero Mesa" id="n_mesa" type="text" class="validate" name="n_mesa">
-                <label for="n_mesa">Numero de mesa</label>
-            </div>
-            <div class="input-field col s4">
                 <input placeholder="Codigo" id="codigo" type="text" class="validate" name="codigo">
                 <label for="codigo">Codigo</label>
             </div>
         </div>
+       <input type="hidden" name="editar" value="<?php echo $editar ?>"> 
         <div class="col s4">
-        <input type="submit" value="Aceptar" class="btn waves-effect waves-light"/>
-        <a href ="<?php echo  site_url()?>mozo/" class="btn waves-effect waves-light">Salir</a>
-         </div>
+            <input type="submit" value="Aceptar" class="btn waves-effect waves-light"/>
+            <a href ="<?php echo  site_url()?>mozo/" class="btn waves-effect waves-light">Salir</a>
+        </div>
     </div>
         
     </form>
