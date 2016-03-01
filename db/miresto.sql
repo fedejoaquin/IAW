@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 27-02-2016 a las 15:41:22
+-- Tiempo de generación: 01-03-2016 a las 16:04:37
 -- Versión del servidor: 5.6.24
 -- Versión de PHP: 5.6.8
 
@@ -47,15 +47,15 @@ CREATE TABLE IF NOT EXISTS `cartas` (
   `id_restriccion_hora` int(10) unsigned NOT NULL,
   `nombre` tinytext NOT NULL,
   `creador` int(10) unsigned NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `cartas`
 --
 
 INSERT INTO `cartas` (`id`, `id_restriccion_dia`, `id_restriccion_hora`, `nombre`, `creador`) VALUES
-(1, 1, 1, 'Carta Default', 1),
-(2, 1, 2, 'Carta nueva', 2);
+(3, 2, 3, 'Carta uno - solo tarde', 5),
+(4, 2, 4, 'Carta dos - solo mañana', 5);
 
 -- --------------------------------------------------------
 
@@ -87,15 +87,16 @@ CREATE TABLE IF NOT EXISTS `empleados` (
   `email` tinytext NOT NULL,
   `cuit` bigint(20) unsigned NOT NULL,
   `password` text NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `empleados`
 --
 
 INSERT INTO `empleados` (`id`, `dni`, `nombre`, `direccion`, `telefono`, `email`, `cuit`, `password`) VALUES
-(2, 35795285, 'leo', 'Zapiola 1267 Dpto 10', 2914128136, 'leogilardi6@gmail.com', 20357952858, '8535e86c8118bbbb0a18ac72d15d3a2b37b18d1bce1611fc60165f322cf57386'),
-(4, 4545, 'fede', 'fede', 4545, 'fede@fede.com', 45454, '5d942a1d73fd8f28d71e6b03d2e42f44721db94b734c2edcfe6fcd48b76a74f9');
+(5, 36704824, 'fede', 'direccion', 2, 'fede@fede.com', 20367048248, '5d942a1d73fd8f28d71e6b03d2e42f44721db94b734c2edcfe6fcd48b76a74f9'),
+(6, 45454, 'leo', 'dire', 122, 'leo@leo.com', 205422, '8535e86c8118bbbb0a18ac72d15d3a2b37b18d1bce1611fc60165f322cf57386'),
+(7, 45454, 'user', 'dire', 12121, 'user@user.com', 45454, '04f8996da763b7a969b1028ee3007569eaf3a635486ddab211d512c85b9df8fb');
 
 -- --------------------------------------------------------
 
@@ -135,24 +136,21 @@ CREATE TABLE IF NOT EXISTS `info_carta` (
   `id_seccion` int(10) unsigned NOT NULL,
   `id_producto` int(10) unsigned NOT NULL,
   `id_lista_precio` int(10) unsigned NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `info_carta`
 --
 
 INSERT INTO `info_carta` (`id`, `id_carta`, `id_seccion`, `id_producto`, `id_lista_precio`) VALUES
-(1, 1, 1, 2, 1),
-(2, 1, 2, 3, 1),
-(5, 1, 2, 4, 2),
-(6, 1, 2, 6, 1),
-(7, 2, 2, 11, 2),
-(9, 1, 1, 12, 1),
-(10, 2, 1, 10, 1),
-(11, 1, 1, 8, 1),
-(12, 1, 1, 9, 1),
-(13, 1, 1, 5, 1),
-(14, 1, 1, 7, 1);
+(15, 3, 3, 13, 3),
+(16, 3, 3, 14, 3),
+(17, 3, 4, 15, 4),
+(18, 3, 4, 16, 4),
+(19, 4, 4, 15, 3),
+(20, 4, 4, 16, 3),
+(21, 4, 5, 17, 4),
+(22, 4, 5, 18, 4);
 
 -- --------------------------------------------------------
 
@@ -194,25 +192,25 @@ CREATE TABLE IF NOT EXISTS `info_lista_precio` (
   `id_producto` int(10) unsigned NOT NULL,
   `id_lista_precio` int(10) unsigned NOT NULL,
   `precio` float NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `info_lista_precio`
 --
 
 INSERT INTO `info_lista_precio` (`id`, `id_producto`, `id_lista_precio`, `precio`) VALUES
-(1, 2, 1, 15),
-(2, 3, 1, 25),
-(3, 4, 2, 2),
-(4, 5, 1, 5),
-(5, 6, 1, 8),
-(6, 7, 1, 10),
-(7, 8, 1, 5),
-(8, 9, 1, 10),
-(9, 10, 1, 5),
-(10, 11, 2, 45),
-(11, 12, 2, 45),
-(12, 12, 1, 15);
+(13, 13, 3, 1000),
+(14, 14, 3, 1000),
+(15, 15, 3, 1000),
+(16, 16, 3, 1000),
+(17, 17, 3, 1000),
+(18, 18, 3, 1000),
+(19, 13, 4, 10),
+(20, 14, 4, 10),
+(21, 15, 4, 10),
+(22, 16, 4, 10),
+(23, 17, 4, 10),
+(24, 18, 4, 10);
 
 -- --------------------------------------------------------
 
@@ -228,16 +226,26 @@ CREATE TABLE IF NOT EXISTS `info_pedidos` (
   `id_pedidor` tinytext NOT NULL,
   `fecha_e` datetime NOT NULL,
   `fecha_p` datetime DEFAULT NULL,
-  `fecha_s` datetime DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+  `fecha_s` datetime DEFAULT NULL,
+  `comentarios` tinytext NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=203 DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
 
 --
--- Volcado de datos para la tabla `info_pedidos`
+-- Estructura de tabla para la tabla `info_pedidos_promociones`
 --
 
-INSERT INTO `info_pedidos` (`id`, `id_mesa`, `id_producto`, `id_lista_precio`, `id_pedidor`, `fecha_e`, `fecha_p`, `fecha_s`) VALUES
-(3, 1, 3, 1, 'IN74LP', '2016-02-27 09:42:00', NULL, NULL),
-(4, 1, 8, 1, 'UCMN3U', '2016-02-27 00:00:00', '2016-02-27 00:14:00', NULL);
+CREATE TABLE IF NOT EXISTS `info_pedidos_promociones` (
+  `id` int(10) unsigned NOT NULL,
+  `id_mesa` int(10) unsigned NOT NULL,
+  `id_promocion` int(10) unsigned NOT NULL,
+  `id_pedidor` tinytext NOT NULL,
+  `fecha_e` datetime NOT NULL,
+  `fecha_p` datetime NOT NULL,
+  `fecha_s` datetime NOT NULL,
+  `comentarios` tinytext NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -249,19 +257,21 @@ CREATE TABLE IF NOT EXISTS `info_promociones` (
   `id` int(10) unsigned NOT NULL,
   `id_promocion` int(10) unsigned NOT NULL,
   `id_producto` int(10) unsigned NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `info_promociones`
 --
 
 INSERT INTO `info_promociones` (`id`, `id_promocion`, `id_producto`) VALUES
-(1, 3, 2),
-(2, 3, 3),
-(3, 3, 4),
-(4, 4, 7),
-(5, 4, 8),
-(6, 5, 12);
+(7, 6, 13),
+(8, 6, 14),
+(9, 7, 15),
+(10, 7, 16),
+(11, 8, 13),
+(12, 8, 17),
+(13, 9, 13),
+(14, 9, 18);
 
 -- --------------------------------------------------------
 
@@ -273,23 +283,23 @@ CREATE TABLE IF NOT EXISTS `info_roles` (
   `id` int(11) NOT NULL,
   `id_empleado` int(10) unsigned NOT NULL,
   `rol` int(10) unsigned NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `info_roles`
 --
 
 INSERT INTO `info_roles` (`id`, `id_empleado`, `rol`) VALUES
-(4, 2, 4),
-(5, 2, 5),
-(6, 2, 6),
-(7, 3, 1),
-(8, 4, 1),
-(9, 4, 3),
-(10, 4, 2),
-(11, 4, 4),
-(12, 4, 5),
-(13, 4, 6);
+(14, 5, 3),
+(15, 6, 1),
+(16, 6, 4),
+(17, 6, 5),
+(18, 7, 1),
+(19, 7, 2),
+(20, 7, 3),
+(21, 7, 4),
+(22, 7, 5),
+(23, 7, 6);
 
 -- --------------------------------------------------------
 
@@ -302,15 +312,15 @@ CREATE TABLE IF NOT EXISTS `lista_precio` (
   `nombre` tinytext NOT NULL,
   `fecha_modificacion` date NOT NULL,
   `creador` int(10) unsigned NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `lista_precio`
 --
 
 INSERT INTO `lista_precio` (`id`, `nombre`, `fecha_modificacion`, `creador`) VALUES
-(1, 'Economica', '2016-02-17', 2),
-(2, 'Cara', '2016-02-11', 2);
+(3, 'CARA', '2016-03-01', 5),
+(4, 'BARATA', '2016-03-01', 5);
 
 -- --------------------------------------------------------
 
@@ -323,14 +333,14 @@ CREATE TABLE IF NOT EXISTS `mesas` (
   `numero` smallint(5) unsigned NOT NULL,
   `abierta` tinyint(1) NOT NULL DEFAULT '0',
   `id_mozo` int(10) unsigned NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `mesas`
 --
 
 INSERT INTO `mesas` (`id`, `numero`, `abierta`, `id_mozo`) VALUES
-(1, 1, 1, 2);
+(2, 1, 1, 6);
 
 -- --------------------------------------------------------
 
@@ -342,13 +352,6 @@ CREATE TABLE IF NOT EXISTS `mesas_pedidores` (
   `id_pedidor` text NOT NULL,
   `id_mesa` int(10) unsigned NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Volcado de datos para la tabla `mesas_pedidores`
---
-
-INSERT INTO `mesas_pedidores` (`id_pedidor`, `id_mesa`) VALUES
-('46EUVU', 1);
 
 -- --------------------------------------------------------
 
@@ -367,32 +370,24 @@ CREATE TABLE IF NOT EXISTS `mesa_cuadricula` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `notificaciones`
+--
+
+CREATE TABLE IF NOT EXISTS `notificaciones` (
+  `id` int(10) unsigned NOT NULL,
+  `id_mesa` int(10) unsigned NOT NULL,
+  `producto` tinytext NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `pedidores`
 --
 
 CREATE TABLE IF NOT EXISTS `pedidores` (
   `id` text NOT NULL,
   `nombre` tinytext NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Volcado de datos para la tabla `pedidores`
---
-
-INSERT INTO `pedidores` (`id`, `nombre`) VALUES
-('46EUVU', 'fede');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `pedidos_procesados`
---
-
-CREATE TABLE IF NOT EXISTS `pedidos_procesados` (
-  `id` int(11) NOT NULL,
-  `id_info_pedido` int(10) unsigned NOT NULL,
-  `id_empleado` int(10) unsigned NOT NULL,
-  `hora_salida` time NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -404,24 +399,19 @@ CREATE TABLE IF NOT EXISTS `pedidos_procesados` (
 CREATE TABLE IF NOT EXISTS `productos` (
   `id` int(10) unsigned NOT NULL,
   `nombre` tinytext NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `productos`
 --
 
 INSERT INTO `productos` (`id`, `nombre`) VALUES
-(2, 'Cafe'),
-(3, 'Helado'),
-(4, 'Vaso Coca cola 500 cm3'),
-(5, 'Baggio'),
-(6, 'Fanta'),
-(7, 'Torta'),
-(8, 'Coñac'),
-(9, 'Pastel de papa'),
-(10, 'Noquis'),
-(11, 'Sprite'),
-(12, 'Pepsi');
+(13, 'Asado de tira'),
+(14, 'Chorizo Asado'),
+(15, 'Picada especial'),
+(16, 'Picada Chica'),
+(17, 'Vaso coca cola'),
+(18, 'Copa de vino');
 
 -- --------------------------------------------------------
 
@@ -434,16 +424,17 @@ CREATE TABLE IF NOT EXISTS `promociones` (
   `id_carta` int(10) unsigned NOT NULL,
   `nombre` tinytext NOT NULL,
   `precio` float unsigned NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `promociones`
 --
 
 INSERT INTO `promociones` (`id`, `id_carta`, `nombre`, `precio`) VALUES
-(3, 1, 'Promocion 1', 256.3),
-(4, 1, 'Promocion 2', 25),
-(5, 2, 'Promocion 3', 56);
+(6, 3, 'Promo 1 - tarde', 200),
+(7, 3, 'Promo 2 - tarde', 210),
+(8, 4, 'Promo 3 - mañana', 198),
+(9, 4, 'Promo 4 - Mañana', 205);
 
 -- --------------------------------------------------------
 
@@ -467,6 +458,7 @@ CREATE TABLE IF NOT EXISTS `reservas` (
 
 CREATE TABLE IF NOT EXISTS `restricciones_dia` (
   `id` int(10) unsigned NOT NULL,
+  `nombre` tinytext NOT NULL,
   `1` tinyint(1) NOT NULL DEFAULT '0',
   `2` tinyint(1) NOT NULL DEFAULT '0',
   `3` tinyint(1) NOT NULL DEFAULT '0',
@@ -475,14 +467,14 @@ CREATE TABLE IF NOT EXISTS `restricciones_dia` (
   `6` tinyint(1) NOT NULL DEFAULT '0',
   `0` tinyint(1) NOT NULL DEFAULT '0',
   `creador` int(10) unsigned NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `restricciones_dia`
 --
 
-INSERT INTO `restricciones_dia` (`id`, `1`, `2`, `3`, `4`, `5`, `6`, `0`, `creador`) VALUES
-(1, 1, 1, 1, 1, 1, 1, 1, 2);
+INSERT INTO `restricciones_dia` (`id`, `nombre`, `1`, `2`, `3`, `4`, `5`, `6`, `0`, `creador`) VALUES
+(2, 'Todos los dias', 1, 1, 1, 1, 1, 1, 1, 5);
 
 -- --------------------------------------------------------
 
@@ -492,6 +484,7 @@ INSERT INTO `restricciones_dia` (`id`, `1`, `2`, `3`, `4`, `5`, `6`, `0`, `cread
 
 CREATE TABLE IF NOT EXISTS `restricciones_hora` (
   `id` int(10) unsigned NOT NULL,
+  `nombre` tinytext NOT NULL,
   `0` tinyint(1) NOT NULL DEFAULT '0',
   `1` tinyint(1) NOT NULL DEFAULT '0',
   `2` tinyint(1) NOT NULL DEFAULT '0',
@@ -517,15 +510,15 @@ CREATE TABLE IF NOT EXISTS `restricciones_hora` (
   `22` tinyint(1) NOT NULL DEFAULT '0',
   `23` tinyint(1) NOT NULL DEFAULT '0',
   `creador` int(10) unsigned NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `restricciones_hora`
 --
 
-INSERT INTO `restricciones_hora` (`id`, `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `10`, `11`, `12`, `13`, `14`, `15`, `16`, `17`, `18`, `19`, `20`, `21`, `22`, `23`, `creador`) VALUES
-(1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2),
-(2, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2);
+INSERT INTO `restricciones_hora` (`id`, `nombre`, `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `10`, `11`, `12`, `13`, `14`, `15`, `16`, `17`, `18`, `19`, `20`, `21`, `22`, `23`, `creador`) VALUES
+(3, 'Solo tarde', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 5),
+(4, 'Solo mañana', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5);
 
 -- --------------------------------------------------------
 
@@ -559,15 +552,16 @@ INSERT INTO `roles` (`id`, `descripcion`) VALUES
 CREATE TABLE IF NOT EXISTS `secciones` (
   `id` int(10) unsigned NOT NULL,
   `nombre` tinytext NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `secciones`
 --
 
 INSERT INTO `secciones` (`id`, `nombre`) VALUES
-(1, 'Cafes'),
-(2, 'Postres');
+(3, 'Carnes'),
+(4, 'Fiambres'),
+(5, 'Bebidas');
 
 --
 -- Índices para tablas volcadas
@@ -640,6 +634,12 @@ ALTER TABLE `info_pedidos`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `info_pedidos_promociones`
+--
+ALTER TABLE `info_pedidos_promociones`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `info_promociones`
 --
 ALTER TABLE `info_promociones`
@@ -670,16 +670,16 @@ ALTER TABLE `mesa_cuadricula`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `notificaciones`
+--
+ALTER TABLE `notificaciones`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `pedidores`
 --
 ALTER TABLE `pedidores`
   ADD PRIMARY KEY (`id`(6));
-
---
--- Indices de la tabla `pedidos_procesados`
---
-ALTER TABLE `pedidos_procesados`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `productos`
@@ -736,7 +736,7 @@ ALTER TABLE `calificaciones`
 -- AUTO_INCREMENT de la tabla `cartas`
 --
 ALTER TABLE `cartas`
-  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT de la tabla `cuadriculas_base`
 --
@@ -746,7 +746,7 @@ ALTER TABLE `cuadriculas_base`
 -- AUTO_INCREMENT de la tabla `empleados`
 --
 ALTER TABLE `empleados`
-  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT de la tabla `facturaciones`
 --
@@ -761,7 +761,7 @@ ALTER TABLE `fecha_cuadricula`
 -- AUTO_INCREMENT de la tabla `info_carta`
 --
 ALTER TABLE `info_carta`
-  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=15;
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=23;
 --
 -- AUTO_INCREMENT de la tabla `info_cuadriculas_base`
 --
@@ -776,52 +776,57 @@ ALTER TABLE `info_cuadriculas_fecha`
 -- AUTO_INCREMENT de la tabla `info_lista_precio`
 --
 ALTER TABLE `info_lista_precio`
-  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=13;
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=25;
 --
 -- AUTO_INCREMENT de la tabla `info_pedidos`
 --
 ALTER TABLE `info_pedidos`
-  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=203;
+--
+-- AUTO_INCREMENT de la tabla `info_pedidos_promociones`
+--
+ALTER TABLE `info_pedidos_promociones`
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT de la tabla `info_promociones`
 --
 ALTER TABLE `info_promociones`
-  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=15;
 --
 -- AUTO_INCREMENT de la tabla `info_roles`
 --
 ALTER TABLE `info_roles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=24;
 --
 -- AUTO_INCREMENT de la tabla `lista_precio`
 --
 ALTER TABLE `lista_precio`
-  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT de la tabla `mesas`
 --
 ALTER TABLE `mesas`
-  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT de la tabla `mesa_cuadricula`
 --
 ALTER TABLE `mesa_cuadricula`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT de la tabla `pedidos_procesados`
+-- AUTO_INCREMENT de la tabla `notificaciones`
 --
-ALTER TABLE `pedidos_procesados`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `notificaciones`
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=13;
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=19;
 --
 -- AUTO_INCREMENT de la tabla `promociones`
 --
 ALTER TABLE `promociones`
-  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT de la tabla `reservas`
 --
@@ -831,12 +836,12 @@ ALTER TABLE `reservas`
 -- AUTO_INCREMENT de la tabla `restricciones_dia`
 --
 ALTER TABLE `restricciones_dia`
-  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT de la tabla `restricciones_hora`
 --
 ALTER TABLE `restricciones_hora`
-  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT de la tabla `roles`
 --
@@ -846,7 +851,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT de la tabla `secciones`
 --
 ALTER TABLE `secciones`
-  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

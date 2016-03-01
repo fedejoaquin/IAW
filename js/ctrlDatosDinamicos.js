@@ -1,4 +1,3 @@
-
 $( document ).ready(function(){
     controlAjax();
 });
@@ -115,7 +114,6 @@ function listarConfirmados(data){
     for(var i=0; i<productos.length;i++){
         row = $("<tr></tr>");
 
-        colId = $("<td>"+productos[i]['id']+"</td>");
         colProducto = $("<td>"+productos[i]['nombre_producto']+"</td>");
         colPrecio = $("<td> $"+productos[i]['precio']+"</td>");
        
@@ -125,10 +123,30 @@ function listarConfirmados(data){
         var estado = calcularEstado(productos[i]['fecha_p'], productos[i]['fecha_s']);
         colEstado = $("<td>"+estado+"</td>");
         colEstado.attr('id', 'col_'+i);
-           
-        $(row).append(colId);
+
         $(row).append(colPedidor);
         $(row).append(colProducto);
+        $(row).append(colPrecio);
+        $(row).append(colEstado);
+
+       $('#tablaConfirmados').append(row);
+    }
+    
+    for(var i=0; i<promociones.length;i++){
+        row = $("<tr></tr>");
+
+        colPromocion = $("<td>"+promociones[i]['nombre_promocion']+"</td>");
+        colPrecio = $("<td> $"+promociones[i]['precio']+"</td>");
+       
+        var pedidor = promociones[i]['id_pedidor'] + " | " + promociones[i]['nombre_pedidor'];
+        colPedidor = $("<td>"+pedidor+"</td>");
+        
+        var estado = calcularEstado(productos[i]['fecha_p'], productos[i]['fecha_s']);
+        colEstado = $("<td>"+estado+"</td>");
+        colEstado.attr('id', 'col_'+i);
+           
+        $(row).append(colPedidor);
+        $(row).append(colPromocion);
         $(row).append(colPrecio);
         $(row).append(colEstado);
 

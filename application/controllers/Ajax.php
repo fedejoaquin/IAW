@@ -4,6 +4,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Ajax extends CI_Controller {
      
     public function altaPedido(){
+        echo hash('sha256', 'fede').'<br>';
+        echo hash('sha256', 'leo').'<br>';
+        echo hash('sha256', 'user').'<br>';
         $resultado = array();
         if($this->chequear_vinculado()){
             //Array(tupla_1, tupla_2, ..., tupla_n)
@@ -44,8 +47,10 @@ class Ajax extends CI_Controller {
 
     /**
      * Dada una petición de un cliente, si este está logueado y vinculado a una mesa, retorna la descripción de los
-     * pedidos confirmados, así como el estado de procesamiento del producto.
-     * @return Array(Id,Id_pedidor,Nombre_pedidor, Nombre_producto, Precio, Fecha_e, Fecha_p, Fecha_s)
+     * pedidos y promociones confirmadas, así como el estado de procesamiento de cada uno de ellos.
+     * @return Productos --> Array(Id_pedidor,Nombre_pedidor, Nombre_producto, Precio, Fecha_e, Fecha_p, Fecha_s)
+     * @return Promociones --> Array(Id_pedidor,Nombre_pedidor, Nombre_promocion, Precio, Fecha_e, Fecha_p, Fecha_s)
+     * 
      */
     public function estadoMesa(){
         $resultado = array();

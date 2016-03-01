@@ -124,7 +124,6 @@
                     <table class="responsive-table">
                         <thead>
                           <tr>
-                              <th data-field="id">#ID</th>
                               <th data-field="pedidor">Pedidor</th>
                               <th data-field="producto">Producto</th>
                               <th data-field="precio">Precio</th>
@@ -147,15 +146,29 @@
                                 }
                                 
                                 foreach($pedidos_procesados as $row){
-                                    $id = $row['id'];
                                     $id_pedidor = $row['id_pedidor'];
-                                    $pedidor = $row['nombre_pedidor'] === NULL ? 'Desvinculado' : $row['nombre_pedidor'];
+                                    $pedidor = $row['nombre_pedidor'];
                                     $producto = $row['nombre_producto'];
                                     $precio = $row['precio'];
                                     $estado = calcularEstado($row['fecha_p'], $row['fecha_s']);
                             ?>
                                     <tr>
-                                        <td><?php echo $id; ?></td>
+                                        <td><?php echo $id_pedidor.' | '.$pedidor; ?></td>
+                                        <td><?php echo $producto; ?></td>
+                                        <td><?php echo '$'.$precio; ?></td>
+                                        <td><?php echo $estado; ?></td>
+                                    </tr>
+                            <?php
+                                }
+                                
+                                foreach($promociones_procesadas as $row){
+                                    $id_pedidor = $row['id_pedidor'];
+                                    $pedidor = $row['nombre_pedidor'];
+                                    $producto = $row['nombre_promocion'];
+                                    $precio = $row['precio'];
+                                    $estado = calcularEstado($row['fecha_p'], $row['fecha_s']);
+                            ?>
+                                    <tr>
                                         <td><?php echo $id_pedidor.' | '.$pedidor; ?></td>
                                         <td><?php echo $producto; ?></td>
                                         <td><?php echo '$'.$precio; ?></td>

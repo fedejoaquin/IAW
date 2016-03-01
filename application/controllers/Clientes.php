@@ -34,7 +34,8 @@ class Clientes extends CI_Controller {
      * Lista el menú actual y los pedidos, si es que el cliente está logueado y vinculado.
      * $data['info_carta' ] = Array (Secciones,nombre_producto,Precio, Id_lista_precio)
      * $data['info_promociones'] = Array(NombrePromo,Productos,Precio)
-     * $data['pedidos_procesados'] = Array(Id,Id_pedidor,Nombre_pedidor, Nombre_producto, Precio, Fecha_e, Fecha_p, Fecha_s)
+     * $data['pedidos_procesados'] = Array(Id_pedidor,Nombre_pedidor, Nombre_producto, Precio, Fecha_e, Fecha_p, Fecha_s)
+     * $data['promociones_procesadas'] = Array(Id_pedidor,Nombre_pedidor, Nombre_promocion, Precio, Fecha_e, Fecha_p, Fecha_s)
      */
     public function pedidos(){
         if($this->chequear_login_redirect()){
