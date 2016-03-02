@@ -66,6 +66,43 @@ class MCartas extends CI_Model {
         return $resultado;
     }
     
+    /**
+     * Computa y retorna los productos y precios actuales en el menú que actualmente se encuentra vigente, para la carta disponible actualmente. 
+     * @return Array(Id_producto, Precio)
+     */    
+    public function get_productos_precio_menu_actual(){
+        $carta = $this->get_carta_actual();
+        $id_carta = $carta['id'];
+                
+        $consulta = 'SELECT ic.id_producto, ilp.precio ';
+        $consulta .= 'FROM (Info_carta ic LEFT JOIN Info_lista_precio ilp ON (ic.id_lista_precio = ilp.id_lista_precio AND ic.id_producto = ilp.id_producto) ) ';
+        $consulta .= 'WHERE ic.id_carta = '.$id_carta;
+
+        $query = $this->db->query($consulta);
+        $resultado = $query->result_array();
+        
+        return $resultado;
+    }
+    
+    /**
+     * Computa y retorna las promociones y precios actuales en el menú que actualmente se encuentra vigente, para la carta disponible actualmente. 
+     * @return Array(Id_promocion, Precio)
+     */    
+    public function get_promociones_precio_menu_actual(){
+        $carta = $this->get_carta_actual();
+        $id_carta = $carta['id'];
+        
+        $consulta = 'SELECT id, precio ';
+        $consulta .= 'FROM Promociones ';
+        $consulta .= 'WHERE id_carta = '.$id_carta;
+
+        $query = $this->db->query($consulta);
+        $resultado = $query->result_array();
+        
+        return $resultado;
+    }
+    
+    
     public function get_cartas(){
         $campos = "e.nombre as creador,rd.0 as Lun,rd.1 as Mar,rd.2 as Mie,rd.3 as Jue,rd.4 as Vie,rd.5 as Sab,rd.6 as Dom,";
         $campos .="rh.0,rh.1,rh.2,rh.3,rh.4,rh.5,rh.6,rh.7,rh.8,rh.9,rh.10,rh.11,rh.12,rh.13,rh.14,rh.15,rh.16,";

@@ -2,12 +2,15 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Ajax extends CI_Controller {
-     
+    /**
+     * Computa el alta de pedidos tanto de productos como de promociones, parametrizados por un cliente.
+     * Valida que el cliente esté vinculado, y registra el pedido siempre y cuando el producto/promoción
+     * se encuentre dentro del menú actualmente habilitado; descarta aquellos productos/promociones no válidos.
+     * @return Array con el estado de la mesa, en caso de cómputo exitoso.
+     * @return Array con el error detectado, en caso de cómputo incorrecto.
+     */ 
     public function altaPedido(){
-        echo hash('sha256', 'fede').'<br>';
-        echo hash('sha256', 'leo').'<br>';
-        echo hash('sha256', 'user').'<br>';
-        $resultado = array();
+        $resultado = array();   
         if($this->chequear_vinculado()){
             //Array(tupla_1, tupla_2, ..., tupla_n)
             //Tupla(Id, Producto, Precio, Id_lp, Comentarios)
@@ -16,19 +19,28 @@ class Ajax extends CI_Controller {
             $promociones = $this->input->post('promocionesPedidas');
             
             $id_pedidor = $this->session->userdata('cid');
-            $id_mesa = $this->session->userdata('mesa_asignada')['id'];
-            
+            $id_mesa = $this->session->userdata('mesa_asignada')['id'];            
+
+            $productos_precios = $this->MCartas->get_productos_precio_menu_actual();
+            $promociones_precios = $this->MCartas->get_promociones_precio_menu_actual();
+        
             if (!empty($productos)){ 
                 foreach ($productos as $row){
-                    $this->MPedidos->solicitarProducto($id_pedidor,$id_mesa, $row['id'], $row['id_lp'], $row['comentarios']);
+                    $componente = array('id_producto' => $row['id'], 'precio' => $row['precio'] );
+                    if (in_array($componente, $productos_precios)){
+                        $this->MPedidos->solicitarProducto($id_pedidor,$id_mesa, $row['id'], $row['id_lp'], $row['comentarios']);
+                    }
                 }
             }
             
             if(!empty($promociones)){
                 foreach ($promociones as $row){
-                    $this->MPedidos->solicitarPromocion($id_pedidor,$id_mesa, $row['id'], $row['comentarios']);
+                    $componente = array('id' => $row['id'], 'precio' => $row['precio'] );
+                    if (in_array($componente, $promociones_precios)){
+                        $this->MPedidos->solicitarPromocion($id_pedidor,$id_mesa, $row['id'], $row['comentarios']);
+                    }
                 }
-            }            
+            } 
             
             if (empty($productos) && empty($promociones)){
                 $resultado['error'] = 'Con los datos subministrados, no se puede realizar la operación.';
@@ -46,7 +58,7 @@ class Ajax extends CI_Controller {
     }
 
     /**
-     * Dada una petición de un cliente, si este está logueado y vinculado a una mesa, retorna la descripción de los
+     * Dada una petición de un cliente, si éste está logueado y vinculado a una mesa, retorna la descripción de los
      * pedidos y promociones confirmadas, así como el estado de procesamiento de cada uno de ellos.
      * @return Productos --> Array(Id_pedidor,Nombre_pedidor, Nombre_producto, Precio, Fecha_e, Fecha_p, Fecha_s)
      * @return Promociones --> Array(Id_pedidor,Nombre_pedidor, Nombre_promocion, Precio, Fecha_e, Fecha_p, Fecha_s)
