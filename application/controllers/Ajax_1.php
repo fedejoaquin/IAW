@@ -1,8 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Ajax extends CI_Controller {
-     
+class Ajax_1 extends CI_Controller {
+    
     public function altaPedido(){
         $resultado = array();
         if($this->chequear_vinculado()){
@@ -69,12 +69,37 @@ class Ajax extends CI_Controller {
     * - Responde falso en caso de no estar vinculado.
     */
     private function chequear_vinculado(){
-        $resultado = $this->MMesasPedidores->get_mesa_pedidor($this->session->userdata('eid'));
+        $resultado = $this->MMesasPedidores->get_mesa_pedidor($this->session->userdata('cid'));
         $this->session->set_userdata('mesa_asignada',$resultado);
         if (count($resultado)>0){
             return true;
         }else{
             return false;
         }
-    }     
+    } 
+    
+    public function vincularCliente(){
+        $resultado = array();
+        $codigo = $this->input->post('codigoCliente');
+        $id_mesa = $this->input->post('id_mesa');
+        $valido = $this->MMesasPedidores->vincular_cliente($codigo,$id_mesa);
+        switch ($valido) {
+            case 1: $resultado['error']="La mesa a la que intenta vincular esta cerrada.";
+                break;
+            case 2: $resultado['error']="El codigo: ".$codigo." no esta vinculado al sistema.";
+                break;
+        }
+        echo json_encode($resultado);
+    }
+
+    /*
+     * Devuelve las notificaciones para un determinado mozo.
+     */
+    public function pedir_notificaciones(){
+        $id_mozo = $this->input->post('id_mozo');
+        /* el cocinero cuando coloca el pedido en salida, genera la notificacion, lo simulamos con la BD*/
+        $resultado = $this->MPedidos->getNotificaciones($id_mozo);
+        echo json_encode($resultado); 
+        
+    }
 }

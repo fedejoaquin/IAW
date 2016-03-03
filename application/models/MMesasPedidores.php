@@ -27,38 +27,60 @@ class MMesasPedidores extends CI_Model {
         $consulta = 'DELETE FROM Mesas_pedidores WHERE id_pedidor = "'.$cid.'"';
         $query = $this->db->query($consulta);
     }
-    
-    public function abrir_mesa($data){
+    public function vincular_cliente($codigo,$id_mesa){
         //Vemos si el pedidor esta vinculado.
-        $pedidorVinculado = $this->db->query('SELECT * FROM Pedidores WHERE id = "'.$data['codigo'].'"')->row_array();
-        if (count($pedidorVinculado)) {
+        $pedidorVinculado = $this->db->query('SELECT * FROM Pedidores WHERE id = "'.$codigo.'"')->row_array();
+        if (count($pedidorVinculado)){
             //Buscamos que la mesa este abierta.
-            $mesaAbierta = $this->db->query('SELECT id,abierta FROM Mesas WHERE numero = "'.$data['n_mesa'].'"')->row_array();
+            $mesaAbierta = $this->db->query('SELECT id,abierta FROM Mesas WHERE id = "'.$id_mesa.'"')->row_array();
             if($mesaAbierta['abierta'] == 0){
-                //La mesa existe, pero esta cerrada, entonces la abrimos.
-                $updateMesa = array(
-                    "numero" => $data['n_mesa'],
-                    "id_mozo" => $data['id_empleado'],
-                    "abierta" => 1
-                );
-                $this->db->where("numero",$data['n_mesa']);
-                $this->db->update("mesas",$updateMesa);
+                //La mesa existe, pero esta cerrada, entonces no se pueden realizar acciones.
+                return 1;
             }
             //Una vez que sabemos que la mesa esta disponible, insertamos al cliente.
             $insertPedidorMesa = array(
-                "id_pedidor" => $data['codigo'],
-                "id_mesa" => $mesaAbierta['id']
-                );
+                "id_pedidor" => $codigo,
+                "id_mesa" => $id_mesa
+            );
                 $this->db->insert("mesas_pedidores",$insertPedidorMesa);
-            return 1;
+            return 0;
         }
-        return 0;
+        //El pedidor no esta vinculado.
+        return 2;
     }
-    
     public function get_mesas_empleado($id_mozo){
         $consulta = 'SELECT m.id, m.numero as numero_mesa, m.abierta as estado, e.nombre FROM mesas m JOIN empleados '
                 . 'e WHERE m.id_mozo = e.id  AND e.id = '.$id_mozo.' ORDER BY m.numero';
         $resultado = $this->db->query($consulta) -> result_array();
         return $resultado;
     }
+    
+    
+//    public function abrir_mesa($data){
+//        //Vemos si el pedidor esta vinculado.
+//        $pedidorVinculado = $this->db->query('SELECT * FROM Pedidores WHERE id = "'.$data['codigo'].'"')->row_array();
+//        if (count($pedidorVinculado)) {
+//            //Buscamos que la mesa este abierta.
+//            $mesaAbierta = $this->db->query('SELECT id,abierta FROM Mesas WHERE numero = "'.$data['n_mesa'].'"')->row_array();
+//            if($mesaAbierta['abierta'] == 0){
+//                //La mesa existe, pero esta cerrada, entonces la abrimos.
+//                $updateMesa = array(
+//                    "numero" => $data['n_mesa'],
+//                    "id_mozo" => $data['id_empleado'],
+//                    "abierta" => 1
+//                );
+//                $this->db->where("numero",$data['n_mesa']);
+//                $this->db->update("mesas",$updateMesa);
+//            }
+//            //Una vez que sabemos que la mesa esta disponible, insertamos al cliente.
+//            $insertPedidorMesa = array(
+//                "id_pedidor" => $data['codigo'],
+//                "id_mesa" => $mesaAbierta['id']
+//                );
+//                $this->db->insert("mesas_pedidores",$insertPedidorMesa);
+//            return 1;
+//        }
+//        return 0;
+//    }
+    
 }

@@ -7,7 +7,7 @@ class MPedidos extends CI_Model{
      * así como la fecha de entrada, procesamiento en cocina y salida del pedido.
      * @return Array(Id_pedidor,Nombre_pedidor, Nombre_producto, Precio, Fecha_e, Fecha_p, Fecha_s)
      */  
-    public function get_productos_procesados ($mesa_id){
+    public function get_productos_procesados($mesa_id){
         
         $consulta = 'SELECT ip.id_pedidor, pe.nombre as nombre_pedidor, p.nombre as nombre_producto, ilp.precio, ip.fecha_e, ip.fecha_p, ip.fecha_s ';
         $consulta .= 'FROM (((Info_pedidos ip LEFT JOIN Productos p ON ip.id_producto = p.id) ';
@@ -18,7 +18,6 @@ class MPedidos extends CI_Model{
         
         $query = $this->db->query($consulta);
         $resultado = $query->result_array();
-                
         return $resultado;     
     }
     
@@ -79,6 +78,19 @@ class MPedidos extends CI_Model{
             'comentarios' => $comentarios
         );
         return $this->db->insert('Info_pedidos_promociones', $data);
+    }
+    
+    /*
+     * Obtiene las notificaciones para un determinado mozo, a fin de mostrarlas en la lista.
+     */
+    public function getNotificaciones($id_mozo){
+        $consulta = "SELECT m.id,m.numero, n.producto "
+                . "FROM mesas m JOIN notificaciones n "
+                . "ON m.id = n.id_mesa AND n.visto = 0 AND m.id_mozo=".$id_mozo
+                . " ORDER BY n.id";
+        $resultado = $this->db->query($consulta)->result_array();
+        return $resultado;
+        
     }
 }
 ?>

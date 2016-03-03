@@ -1,3 +1,6 @@
+<div class="txt-cabecera">
+    Administración Mesa <?php echo $editar ?>
+</div>
 <div class="row">
     <div class="col m8 s12 offset-m2">
         <ul class="tabs">
@@ -16,19 +19,21 @@
     <div class="col m8 s12 offset-m2 center-align">
         <div class="row">
             <div class="input-field col s4">
-                <input id="codigo" name="codigo" type="text" class="validate">
-                <label for="codigo">Codigo</label>
+                <input id="inputCodigo" name="codigo" type="text" class="validate">
+                <label for="inputCodigo">Codigo</label>
             </div>
         </div>
         <div class="row">
         <div class="col s4">
-            <input type="submit" value="Aceptar" class="btn waves-effect waves-light"/>
+            <a class="btn waves-effect waves-green" href="#" onclick="<?php echo "vincularCliente()"; ?>">
+                Vincular
+            </a>
         </div>
         </div>
         <div class="row">
             <form name="tabla" action="<?php echo site_url() ?>mesas/cerrar" method="POST">
             <a href="<?php echo site_url()?>mesas/cerrar">
-                <button class="btn waves-effect waves-light" type="submit" value="<?php echo $editar; ?>" name="editar">
+                <button id="id_mesa" class="btn waves-effect waves-light" type="submit" value="<?php echo $editar; ?>" name="editar">
                     Cerrar Mesa
                 </button>
             </a>

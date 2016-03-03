@@ -56,6 +56,10 @@ class Webresto extends CI_Controller {
                         //Creo un arreglo con los roles
                         $roles = array();
                         foreach($resultado as $rol){
+                            
+                            if($rol['id'] == 4){
+                                $this->session->set_userdata('cid',$id_empleado);
+                            }
                             array_push($roles,$rol['descripcion']);
                         }
 

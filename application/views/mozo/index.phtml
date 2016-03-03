@@ -12,6 +12,7 @@
               <tr>
                 <td><?php echo 'Mesa Nº : '.$mesa['numero_mesa'] ?></td>
                 <td><?php echo ($mesa['estado']==1) ? "Abierta":"Cerrada"?></td>
+                <?php if($mesa['estado']==1){ ?>
                 <td>
                     <form name="tabla" action="<?php echo site_url() ?>mozo/adminMesa" method="POST">
                         <a href="<?php echo site_url()?>mozo/adminMesa">
@@ -21,11 +22,13 @@
                         </a>
                     </form>
                 </td>
+               <?php } ?>
               </tr>
                <?php } ?>
             </tbody>
         </table>
     </div>
+    <input id="tablaNotificaciones" type="hidden" name="editar" value="<?php echo $id_empleado ?>">
     <div class="col m8 s12 offset-m2">
         <ul class="tabs">
             <li class="tab"><a class="active" href="#notificaciones">NOTIFICACIONES</a></li>
