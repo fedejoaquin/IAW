@@ -55,8 +55,8 @@ class MMesasPedidores extends CI_Model {
         return 0;
     }
     
-    public function get_mesas_abiertas($id_mozo){
-        $consulta = 'SELECT m.numero, e.nombre FROM mesas m JOIN empleados '
+    public function get_mesas_empleado($id_mozo){
+        $consulta = 'SELECT m.id, m.numero as numero_mesa, m.abierta as estado, e.nombre FROM mesas m JOIN empleados '
                 . 'e WHERE m.id_mozo = e.id  AND e.id = '.$id_mozo.' ORDER BY m.numero';
         $resultado = $this->db->query($consulta) -> result_array();
         return $resultado;

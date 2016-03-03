@@ -1,28 +1,52 @@
 <div class =" row">
-    <table class = "striped responsive-table">
-        <thead>
-          <tr>
-              <th data-field="numeroMesa">Numero de Mesa</th>
-              <th data-field="vincular"></th>
-          </tr>
-        </thead>
-        <tbody>
-           <?php foreach ($mesas as $mesa){?>
-          <tr>
-            <td><?php echo 'Mesa Nº : '.$mesa['numero'] ?></td>
-            <td>
-                <form name="tabla" action="<?php echo site_url() ?>mozo/abrirMesa" method="POST">
-                    <a href="<?php echo site_url()?>mozo/abrirMesa">
-                        <button class="btn waves-effect waves-light" type="submit" value="<?php echo $mesa['numero']; ?>" name="editar">
-                            Vincular Cliente
-                        </button>
-                    </a>
-                </form>
-            </td>
-          </tr>
-           <?php } ?>
-        </tbody>
-    </table>
+    <div class="col s12">
+        <table class = "striped responsive-table">
+            <thead>
+              <tr>
+                <th data-field="numeroMesa">Numero de Mesa</th>
+                <th data-field="estado">Estado</th>
+                <tr data-field="acciones"></tr>
+            </thead>
+            <tbody>
+               <?php foreach ($mesas as $mesa){?>
+              <tr>
+                <td><?php echo 'Mesa Nº : '.$mesa['numero_mesa'] ?></td>
+                <td><?php echo ($mesa['estado']==1) ? "Abierta":"Cerrada"?></td>
+                <td>
+                    <form name="tabla" action="<?php echo site_url() ?>mozo/adminMesa" method="POST">
+                        <a href="<?php echo site_url()?>mozo/adminMesa">
+                            <button class="btn waves-effect waves-light" type="submit" value="<?php echo $mesa['id']; ?>" name="editar">
+                                Ver Mesa
+                            </button>
+                        </a>
+                    </form>
+                </td>
+              </tr>
+               <?php } ?>
+            </tbody>
+        </table>
+    </div>
+    <div class="col m8 s12 offset-m2">
+        <ul class="tabs">
+            <li class="tab"><a class="active" href="#notificaciones">NOTIFICACIONES</a></li>
+        </ul>
+    </div>
+    <div id="notificaciones" class="row">
+        <div class="col s12">
+            <table class = "striped responsive-table tablaNotificaciones">
+                <thead>
+                  <tr>
+                    <th data-field="numeroNot">Numero</th>
+                    <th data-field="mesa">Mesa</th>
+                    <tr data-field="producto">Producto</tr>
+                    <th data-field="notificado"></th>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
     <a href ="<?php echo  site_url()?>webresto/" class="btn waves-effect waves-light">Volver</a>
-    
 </div>
+
+    
