@@ -24,7 +24,18 @@
                     <td> 
                         <a class="btn waves-effect waves-green" href="<?php echo site_url()."menu/ver/".$id; ?>"><i class="material-icons">info</i></a>
                         <a class="btn waves-effect waves-green" href="<?php echo site_url()."menu/editar/".$id; ?>"><i class="material-icons">edit</i></a>
-                        <a class="btn waves-effect waves-green" href="<?php echo site_url()."menu/eliminar/".$id; ?>"><i class="material-icons">delete</i></a>
+                        <a class='dropdown-button btn' data-activates='<?php echo 'drop'.$id; ?>'><i class="material-icons">delete</i></a>
+                        <!-- Dropdown Structure -->
+                        <ul id='<?php echo 'drop'.$id; ?>' class='dropdown-content'>
+                            <li>¿Confirma?</li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="<?php echo site_url()."menu/eliminar/".$id; ?>">Sí</a>
+                            </li>
+                            <li>
+                                <a>No</a>
+                            </li>
+                        </ul>
                     </td>
                 </tr>
             <?php

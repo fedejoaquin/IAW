@@ -1,6 +1,57 @@
 <?php 
 class MCartas extends CI_Model {
+    
+    public function eliminar($id){
+        $this->db->trans_start();
         
+        //Elimino toda la info de la carta
+        $this->db->where('id_carta', $id);
+        $resultado = $this->db->delete('Info_carta');
+        
+        if ($resultado){
+            //Elimino el encabezado de la carta
+            $this->db->where('id', $id);
+            $resultado = $this->db->delete('Cartas');
+            
+            if($resultado){
+                //Finalizo la transacción
+                $this->db->trans_complete();
+                return true;
+            }else{
+                return false;
+            }
+        }
+    }
+    
+    public function get_cartas(){
+        $consulta = 'SELECT c.id, c.nombre as nombre_menu, e.nombre as nombre_creador ';
+        $consulta .= 'FROM Cartas c LEFT JOIN Empleados e ON e.id = c.creador ';
+        
+        $query = $this->db->query($consulta);
+        $resultado = $query->result_array();
+        
+        return $resultado;
+    }
+    
+    /**
+     * Computa y retorna la carta que actualmente se encuentra vigente. Para eso chequea hora y día,
+     * y según las restricciones impuestas por el sistema, retorna arreglo con la carta vigente.
+     * @return Array(Id,Nombre)
+     */
+    private function get_carta_actual(){
+        $hora_actual = getdate()['hours'];
+        $dia_actual = getdate()['wday'];
+        
+        $consulta = 'SELECT c.id, c.nombre ';
+        $consulta .= 'FROM (Cartas c LEFT JOIN restricciones_dia rd on c.id_restriccion_dia = rd.id) ';
+        $consulta .= 'LEFT JOIN restricciones_hora rh ON c.id_restriccion_hora = rh.id ';
+        $consulta .= 'WHERE rd.'.$dia_actual.'=TRUE and rh.'.$hora_actual.'=TRUE';
+        
+        $query = $this->db->query($consulta);
+        $resultado = $query->row_array();
+        return $resultado;
+    }
+    
     /**
      * Computa y retorna el menú que actualmente se encuentra vigente, para la carta disponible actualmente. 
      * Para eso chequea la carta actual, y según ella, retorna un arreglo con aquellas secciones, precios y productos
@@ -48,25 +99,6 @@ class MCartas extends CI_Model {
     }
     
     /**
-     * Computa y retorna la carta que actualmente se encuentra vigente. Para eso chequea hora y día,
-     * y según las restricciones impuestas por el sistema, retorna arreglo con la carta vigente.
-     * @return Array(Id,Nombre)
-     */
-    private function get_carta_actual(){
-        $hora_actual = getdate()['hours'];
-        $dia_actual = getdate()['wday'];
-        
-        $consulta = 'SELECT c.id, c.nombre ';
-        $consulta .= 'FROM (Cartas c LEFT JOIN restricciones_dia rd on c.id_restriccion_dia = rd.id) ';
-        $consulta .= 'LEFT JOIN restricciones_hora rh ON c.id_restriccion_hora = rh.id ';
-        $consulta .= 'WHERE rd.'.$dia_actual.'=TRUE and rh.'.$hora_actual.'=TRUE';
-        
-        $query = $this->db->query($consulta);
-        $resultado = $query->row_array();
-        return $resultado;
-    }
-    
-    /**
      * Computa y retorna los productos y precios actuales en el menú que actualmente se encuentra vigente, para la carta disponible actualmente. 
      * @return Array(Id_producto, Precio)
      */    
@@ -101,17 +133,7 @@ class MCartas extends CI_Model {
         
         return $resultado;
     }
-    
-    public function get_cartas(){
-        $consulta = 'SELECT c.id, c.nombre as nombre_menu, e.nombre as nombre_creador ';
-        $consulta .= 'FROM Cartas c LEFT JOIN Empleados e ON e.id = c.creador ';
         
-        $query = $this->db->query($consulta);
-        $resultado = $query->result_array();
-        
-        return $resultado;
-    }
-    
     /**
      * @return Array(Id, Nombre_menu, Nombre_creador, Id_restriccion_dia, Id_restriccion_hora)
      */
@@ -128,9 +150,9 @@ class MCartas extends CI_Model {
     
     /**
      * 
-     * @return Array(Id, Nombre_restriccion, Nombre_creador)
+     * @return Array(Id, Nombre_restriccion, Nombre_creador, 0,1,2,3,...,23)
      */
-    public function get_restricciones_hora($id_carta){
+    public function get_restriccion_hora($id_carta){
         $consulta = 'SELECT r.id, r.nombre as nombre_restriccion, e.nombre as nombre_creador, ';
         $consulta .= 'r.0, r.1, r.2, r.3, r.4, r.5, r.6, r.7, r.8, r.9, r.10, r.11, r.12, ';
         $consulta .= 'r.13, r.14, r.15, r.16, r.17, r.18, r.19, r.20, r.21, r.22, r.23 ';
@@ -146,15 +168,15 @@ class MCartas extends CI_Model {
     
     /**
      * 
-     * @return Array(Id, Nombre_restriccion, Nombre_creador)
+     * @return Array(Id, Nombre_restriccion, Nombre_creador, 0,1,2,...,6)
      */
-    public function get_restricciones_dia($id_carta){
+    public function get_restriccion_dia($id_carta){
         $consulta = 'SELECT r.id, r.nombre as nombre_restriccion, e.nombre as nombre_creador, ';
         $consulta .= 'r.0, r.1, r.2, r.3, r.4, r.5, r.6 ';
         $consulta .= 'FROM ((Cartas c LEFT JOIN Restricciones_dia r ON c.id_restriccion_dia = r.id) ';
         $consulta .= 'LEFT JOIN Empleados e ON r.creador = e.id) ';
         $consulta .= 'WHERE c.id = '.$id_carta;
-
+     
         $query = $this->db->query($consulta);
         $resultado = $query->row_array();
         

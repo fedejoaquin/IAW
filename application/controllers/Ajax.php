@@ -78,6 +78,12 @@ class Ajax extends CI_Controller {
         }
     }
     
+    public function infoProductoEditable(){
+        $id = $this->input->post('id');
+        $resultado['data'] = array();
+        echo json_encode($resultado);
+    }
+    
     /**
     * Chequea si existe datos de vinculación de un cliente logueado. 
     * - Responde verdadero en caso de estar vinculado.

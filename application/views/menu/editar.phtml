@@ -1,0 +1,160 @@
+<div class="txt-cabecera">
+    Editando menú en miResto.
+</div>
+<div class="row">
+    <div class="col m8 s12 offset-m2">
+        <ul class="collapsible" data-collapsible="accordion">
+            <li> 
+                <div class="collapsible-header">Datos generales</div>
+                <div class="collapsible-body">
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <input value="<?php echo $datos['id'];?>" type="text" disabled>
+                            <label>ID Carta</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input value="<?php echo $datos['nombre_creador'];?>" type="text" disabled>
+                            <label>Creador</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s9">
+                            <input id="nombreMenu" value="<?php echo $datos['nombre_menu'];?>" type="text">
+                            <label>Nombre menú</label>
+                        </div>
+                        <a class="input-field col s1 offset-s1 btn" onclick="cambiarNombre()"><i class="material-icons">done</i></a>
+                    </div>
+                </div>
+            </li> 
+            <li> 
+                <div class="collapsible-header">Restricción Horas</div>
+                <div class="collapsible-body">
+                    <div class="row input-field">
+                        <select id="selectHoras" class="col s9">
+                            <?php foreach ( $restricciones_hora as $row ){ 
+                                    if ($row['id'] === $datos['id_restriccion_dia']){ ?>
+                                        <option class="selected" value="<?php echo $row['id']; ?>"><?php echo $row['nombre_restriccion']; ?> </option>
+                            <?php   }else{ ?>
+                                        <option value="<?php echo $row['id']; ?>"><?php echo $row['nombre_restriccion']; ?> </option>
+                            <?php   }
+                                  } 
+                            ?>
+                        </select>
+                        <label id="lblSelectHoras">Sin cambios.</label>
+                        <a class="col s1 offset-s1 btn" onclick="cambiarHoras()"><i class="material-icons">done</i></a>
+                    </div>
+                </div>
+            </li> 
+            <li> 
+                <div class="collapsible-header">Restricción Dias</div>
+                <div class="collapsible-body">
+                    <div class="row input-field">
+                        <select id="selectDias" class="col s9">
+                            <?php foreach ( $restricciones_dia as $row ){ 
+                                    if ($row['id'] === $datos['id_restriccion_hora']){ ?>
+                                        <option class="selected" value="<?php echo $row['id']; ?>"><?php echo $row['nombre_restriccion']; ?> </option>
+                            <?php   }else{ ?>
+                                        <option value="<?php echo $row['id']; ?>"><?php echo $row['nombre_restriccion']; ?> </option>
+                            <?php   }
+                                  } 
+                            ?>
+                        </select>
+                        <label id="lblSelectDias">Sin cambios.</label>
+                        <a class="col s1 offset-s1 btn" onclick="cambiarDias()"><i class="material-icons">done</i></a>
+                    </div>
+                </div>
+            </li>  
+            <li> 
+                <div class="collapsible-header">Productos</div>
+                <div class="collapsible-body">
+                    <table class="responsive-table">
+                        <thead>
+                            <td>#ID</td><td>Seccion</td><td>Producto</td><td>Lista Precio</td><td>Precio</td><td>Acciones</td>
+                        </thead>
+                        <tbody>
+                        <?php 
+                            foreach($productos as $row){
+                                $id = $row['id_producto'];
+                                $np = $row['nombre_producto'];
+                                $ns = $row['seccion_nombre'];
+                                $nlp = $row['nombre_lista_precio'];
+                                $p = $row['precio_producto'];
+                        ?>
+                            <tr>
+                                <td><?php echo $id; ?></td>
+                                <td><?php echo $ns; ?></td>
+                                <td><?php echo $np; ?></td>
+                                <td><?php echo '$'.$p; ?></td>
+                                <td><?php echo $nlp; ?></td>
+                                <td>
+                                    <a class="btn waves-effect waves-green" onClick="preEditarProducto(<?php echo $id; ?>)"><i class="material-icons">edit</i></a>
+                                    <a class='dropdown-button btn' data-activates='<?php echo 'drop'.$id; ?>'><i class="material-icons">delete</i></a>
+                                    <!-- Dropdown Structure -->
+                                    <ul id='<?php echo 'drop'.$id; ?>' class='dropdown-content'>
+                                        <li>¿Confirma?</li>
+                                        <li class="divider"></li>
+                                        <li>
+                                            <a onClick="eliminarProducto(<?php echo $id; ?>)">Sí</a>
+                                        </li>
+                                        <li>
+                                            <a>No</a>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        <?php        
+                            }
+                        ?>
+                        </tbody>
+                    </table>
+                </div>
+            </li>
+            <li> 
+                <div class="collapsible-header">Promociones</div>
+                <div class="collapsible-body">
+                    <table class="responsive-table">
+                        <thead>
+                        <td>#ID</td><td>Promoción</td><td>Precio</td><td>Acciones</td>
+                        </thead>
+                        <tbody>
+                        <?php 
+                            foreach($promociones as $row){
+                                $id = $row['id'];
+                                $n = $row['nombre'];
+                                $p = $row['precio'];
+                        ?>
+                            <tr>
+                                <td><?php echo $id; ?></td>
+                                <td><?php echo $n; ?></td>
+                                <td><?php echo '$'.$p; ?></td>
+                                <td>
+                                    <a class="btn waves-effect waves-green" href="<?php echo site_url()."promocion/ver/".$id; ?>"><i class="material-icons">info</i></a>
+                                </td>
+                            </tr>
+                        <?php        
+                            }
+                        ?>
+                        </tbody>
+                    </table>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<!-- Modal Structure -->
+<div id="editarProducto" class="modal">
+    <div class="modal-content">
+        <table class="responsive-table">
+            <thead>
+                <td>#ID</td><td>Seccion</td><td>Producto</td><td>Lista Precio</td><td>Precio</td>
+            </thead>
+            <tbody id="tablaEditarProducto">
+                
+            </tbody>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <a onClick="postEditarProducto()" class=" modal-action modal-close waves-effect waves-green btn-flat">OK</a>
+    </div>
+</div>

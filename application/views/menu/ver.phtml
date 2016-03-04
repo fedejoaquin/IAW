@@ -82,8 +82,8 @@
                         <?php 
                             foreach($productos as $row){
                                 $id = $row['id_producto'];
-                                $np = $row['nombre_producto'];
                                 $ns = $row['seccion_nombre'];
+                                $np = $row['nombre_producto'];
                                 $nlp = $row['nombre_lista_precio'];
                                 $p = $row['precio_producto'];
                         ?>
@@ -91,8 +91,8 @@
                                 <td><?php echo $id; ?></td>
                                 <td><?php echo $ns; ?></td>
                                 <td><?php echo $np; ?></td>
-                                <td><?php echo '$'.$p; ?></td>
                                 <td><?php echo $nlp; ?></td>
+                                <td><?php echo '$'.$p; ?></td>
                             </tr>
                         <?php        
                             }
@@ -104,7 +104,6 @@
             <li> 
                 <div class="collapsible-header">Promociones</div>
                 <div class="collapsible-body">
-                    <a class="btn waves-effect waves-green" href="<?php echo site_url()."promocion/add/"; ?>"><i class="material-icons">add</i></a>
                     <table class="responsive-table">
                         <thead>
                         <td>#ID</td><td>Promoción</td><td>Precio</td><td>Acciones</td>
@@ -121,8 +120,7 @@
                                 <td><?php echo $n; ?></td>
                                 <td><?php echo '$'.$p; ?></td>
                                 <td>
-                                    <a class="btn waves-effect waves-green" href="<?php echo site_url()."promocion/editar/".$id; ?>"><i class="material-icons">edit</i></a>
-                                    <a class="btn waves-effect waves-green" href="<?php echo site_url()."promocion/eliminar/".$id; ?>"><i class="material-icons">delete</i></a>
+                                    <a class="btn waves-effect waves-green" href="<?php echo site_url()."promocion/ver/".$id; ?>"><i class="material-icons">info</i></a>
                                 </td>
                             </tr>
                         <?php        

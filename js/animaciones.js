@@ -35,6 +35,11 @@ $( document ).ready(function(){
     $('#btn-asignarMozo').click(function(){
        $('#panel-asignarMozo').show('slow'); 
     });
+    
+    $(document).ready(function() {
+        $('select').material_select();
+    });
+          
 });
 
 
