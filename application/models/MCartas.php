@@ -102,21 +102,96 @@ class MCartas extends CI_Model {
         return $resultado;
     }
     
-    
     public function get_cartas(){
-        $campos = "e.nombre as creador,rd.0 as Lun,rd.1 as Mar,rd.2 as Mie,rd.3 as Jue,rd.4 as Vie,rd.5 as Sab,rd.6 as Dom,";
-        $campos .="rh.0,rh.1,rh.2,rh.3,rh.4,rh.5,rh.6,rh.7,rh.8,rh.9,rh.10,rh.11,rh.12,rh.13,rh.14,rh.15,rh.16,";
-        $campos .= "rh.17,rh.18,rh.19,rh.20,rh.21,rh.22,rh.23,c.nombre,c.id";
-        $completo = 'SELECT '.$campos.' FROM restricciones_dia rd JOIN cartas c  ON rd.id= c.id_restriccion_dia'
-                 . ' JOIN restricciones_hora rh ON rh.id= c.id_restriccion_hora JOIN empleados e WHERE c.creador = e.id';
-        $resultado  = $this->db->query($completo)->result_array();
+        $consulta = 'SELECT c.id, c.nombre as nombre_menu, e.nombre as nombre_creador ';
+        $consulta .= 'FROM Cartas c LEFT JOIN Empleados e ON e.id = c.creador ';
+        
+        $query = $this->db->query($consulta);
+        $resultado = $query->result_array();
+        
         return $resultado;
     }
     
-    public function get_productos(){
-        $consulta = ' Select * FROM Productos ORDER BY nombre';
-        $resultado = $this->db->query($consulta)->result_array();
+    /**
+     * @return Array(Id, Nombre_menu, Nombre_creador, Id_restriccion_dia, Id_restriccion_hora)
+     */
+    public function get_datos($id){
+        $consulta = 'SELECT c.id, c.nombre as nombre_menu, e.nombre as nombre_creador, c.id_restriccion_dia, c.id_restriccion_hora ';
+        $consulta .= 'FROM Cartas c LEFT JOIN Empleados e ON c.creador = e.id ';
+        $consulta .= 'WHERE C.id = '.$id;
+        
+        $query = $this->db->query($consulta);
+        $resultado = $query->row_array();
+        
         return $resultado;
     }
     
+    /**
+     * 
+     * @return Array(Id, Nombre_restriccion, Nombre_creador)
+     */
+    public function get_restricciones_hora($id_carta){
+        $consulta = 'SELECT r.id, r.nombre as nombre_restriccion, e.nombre as nombre_creador, ';
+        $consulta .= 'r.0, r.1, r.2, r.3, r.4, r.5, r.6, r.7, r.8, r.9, r.10, r.11, r.12, ';
+        $consulta .= 'r.13, r.14, r.15, r.16, r.17, r.18, r.19, r.20, r.21, r.22, r.23 ';
+        $consulta .= 'FROM ((Cartas c LEFT JOIN Restricciones_hora r ON c.id_restriccion_hora = r.id) ';
+        $consulta .= 'LEFT JOIN Empleados e ON r.creador = e.id) ';
+        $consulta .= 'WHERE c.id = '.$id_carta;
+        
+        $query = $this->db->query($consulta);
+        $resultado = $query->row_array();
+        
+        return $resultado;
+    }
+    
+    /**
+     * 
+     * @return Array(Id, Nombre_restriccion, Nombre_creador)
+     */
+    public function get_restricciones_dia($id_carta){
+        $consulta = 'SELECT r.id, r.nombre as nombre_restriccion, e.nombre as nombre_creador, ';
+        $consulta .= 'r.0, r.1, r.2, r.3, r.4, r.5, r.6 ';
+        $consulta .= 'FROM ((Cartas c LEFT JOIN Restricciones_dia r ON c.id_restriccion_dia = r.id) ';
+        $consulta .= 'LEFT JOIN Empleados e ON r.creador = e.id) ';
+        $consulta .= 'WHERE c.id = '.$id_carta;
+
+        $query = $this->db->query($consulta);
+        $resultado = $query->row_array();
+        
+        return $resultado;
+    }  
+    
+    /**
+     * 
+     * @return Array(Id_producto, Nombre_producto, Seccion_nombre, Nombre_lista_precio, Precio_producto)
+     */
+    public function get_productos($id_carta){
+        $consulta = 'SELECT p.id as id_producto, p.nombre as nombre_producto, s.nombre as seccion_nombre, lp.nombre as nombre_lista_precio, ilp.precio as precio_producto ';
+        $consulta .= 'FROM ((((Info_carta ic LEFT JOIN Productos p ON ic.id_producto = p.id) ';
+        $consulta .= 'LEFT JOIN Secciones s ON ic.id_seccion = s.id) ';
+        $consulta .= 'LEFT JOIN Info_lista_precio ilp ON ilp.id_lista_precio = ic.id_lista_precio AND ilp.id_producto = ic.id_producto) ';
+        $consulta .= 'LEFT JOIN Lista_precio lp ON lp.id = ilp.id_lista_precio) ';
+        $consulta .= 'WHERE ic.id_carta = '.$id_carta.' ';
+        $consulta .= 'ORDER BY s.nombre ASC ';
+
+        $query = $this->db->query($consulta);
+        $resultado = $query->result_array();
+        
+        return $resultado;
+    }
+    
+    /**
+     * 
+     * @return Array(Id, Nombre, Precio)
+     */
+    public function get_promociones($id_carta){
+        $consulta = 'SELECT id, nombre, precio ';
+        $consulta .= 'FROM Promociones ';
+        $consulta .= 'WHERE id_carta = '.$id_carta;
+
+        $query = $this->db->query($consulta);
+        $resultado = $query->result_array();
+        
+        return $resultado;
+    }
  }

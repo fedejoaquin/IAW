@@ -1,0 +1,137 @@
+<div class="txt-cabecera">
+    Menúes actuales en miResto.
+</div>
+<div class="row center-align">
+    <?php echo 'ID: '.$datos['id'].'<br>'; ?>
+    <?php echo 'Nombre: '.$datos['nombre_menu'].'<br>'; ?>
+    <?php echo 'Creador: '.$datos['nombre_creador'].'<br>'; ?>
+</div>
+<div class="row">
+    <div class="col m8 s12 offset-m2">
+        <ul class="collapsible" data-collapsible="accordion">
+            <li> 
+                <div class="collapsible-header">Restricción Horas</div>
+                <div class="collapsible-body">
+                    <div class="row center-align">
+                        <?php echo 'ID: '.$restricciones_hora['id'].'<br>'; ?>
+                        <?php echo 'Nombre: '.$restricciones_hora['nombre_restriccion'].'<br>'; ?>
+                        <?php echo 'Creador: '.$restricciones_hora['nombre_creador'].'<br>'; ?>
+                    </div>
+                    <table class="responsive-table">
+                        <thead>
+                            <td>00</td><td>01</td><td>02</td><td>03</td><td>04</td><td>05</td>
+                            <td>06</td><td>07</td><td>08</td><td>09</td><td>10</td><td>11</td>
+                            <td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td>
+                            <td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td>
+                        </thead>
+                        <tbody>
+                            <tr>
+                        <?php 
+                            for($i=0; $i<24; $i++){ 
+                                if ($restricciones_hora[$i] == FALSE){
+                                    $icon = '<i class="material-icons">clear</i>';  
+                                }else{
+                                    $icon = '<i class="material-icons">done</i>';
+                                }
+                                echo '<td> <a>'.$icon.'</a> </td>';
+                            }
+                        ?>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </li> 
+            <li> 
+                <div class="collapsible-header">Restricción Días</div>
+                <div class="collapsible-body">
+                    <div class="row center-align">
+                        <?php echo 'ID: '.$restricciones_dia['id'].'<br>'; ?>
+                        <?php echo 'Nombre: '.$restricciones_dia['nombre_restriccion'].'<br>'; ?>
+                        <?php echo 'Creador: '.$restricciones_dia['nombre_creador'].'<br>'; ?>
+                    </div>
+                    <table class="responsive-table">
+                        <thead>
+                            <td>Lun.</td><td>Mar.</td><td>Mier</td><td>Jue.</td>
+                            <td>Vie.</td><td>Sáb.</td><td>Dom.</td>
+                        </thead>
+                        <tbody>
+                            <tr>
+                        <?php 
+                            for($i=1; $i<8; $i++){ 
+                                if ($restricciones_dia[$i % 6] == FALSE){
+                                    $icon = '<i class="material-icons">clear</i>';  
+                                }else{
+                                    $icon = '<i class="material-icons">done</i>';
+                                }
+                                echo '<td> <a>'.$icon.'</a> </td>';
+                            }  
+                        ?>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </li> 
+            <li> 
+                <div class="collapsible-header">Productos</div>
+                <div class="collapsible-body">
+                    <table class="responsive-table">
+                        <thead>
+                            <td>#ID</td><td>Seccion</td><td>Producto</td><td>Precio</td><td>Lista Precio</td>
+                        </thead>
+                        <tbody>
+                        <?php 
+                            foreach($productos as $row){
+                                $id = $row['id_producto'];
+                                $np = $row['nombre_producto'];
+                                $ns = $row['seccion_nombre'];
+                                $nlp = $row['nombre_lista_precio'];
+                                $p = $row['precio_producto'];
+                        ?>
+                            <tr>
+                                <td><?php echo $id; ?></td>
+                                <td><?php echo $ns; ?></td>
+                                <td><?php echo $np; ?></td>
+                                <td><?php echo '$'.$p; ?></td>
+                                <td><?php echo $nlp; ?></td>
+                            </tr>
+                        <?php        
+                            }
+                        ?>
+                        </tbody>
+                    </table>
+                </div>
+            </li>
+            <li> 
+                <div class="collapsible-header">Promociones</div>
+                <div class="collapsible-body">
+                    <a class="btn waves-effect waves-green" href="<?php echo site_url()."promocion/add/"; ?>"><i class="material-icons">add</i></a>
+                    <table class="responsive-table">
+                        <thead>
+                        <td>#ID</td><td>Promoción</td><td>Precio</td><td>Acciones</td>
+                        </thead>
+                        <tbody>
+                        <?php 
+                            foreach($promociones as $row){
+                                $id = $row['id'];
+                                $n = $row['nombre'];
+                                $p = $row['precio'];
+                        ?>
+                            <tr>
+                                <td><?php echo $id; ?></td>
+                                <td><?php echo $n; ?></td>
+                                <td><?php echo '$'.$p; ?></td>
+                                <td>
+                                    <a class="btn waves-effect waves-green" href="<?php echo site_url()."promocion/editar/".$id; ?>"><i class="material-icons">edit</i></a>
+                                    <a class="btn waves-effect waves-green" href="<?php echo site_url()."promocion/eliminar/".$id; ?>"><i class="material-icons">delete</i></a>
+                                </td>
+                            </tr>
+                        <?php        
+                            }
+                        ?>
+                        </tbody>
+                    </table>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

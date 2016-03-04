@@ -1,0 +1,36 @@
+<div class="txt-cabecera">
+    Menúes actuales en miResto.
+</div>
+<div class="row">
+    <div class="col m8 s12 offset-m2">
+        <table class="responsive-table">
+            <thead>
+                <td>#ID</td>
+                <td>Nombre</td>
+                <td>Creador</td>
+                <td>Acciones</td>
+            </thead>
+            <tbody>   
+            <?php
+                foreach( $menues as $row ){
+                    $id = $row['id'];
+                    $nm = $row['nombre_menu'];
+                    $nc = $row['nombre_creador'];
+            ?>
+                <tr>
+                    <td><?php echo $id; ?></td>
+                    <td><?php echo $nm; ?></td>
+                    <td><?php echo $nc; ?></td>
+                    <td> 
+                        <a class="btn waves-effect waves-green" href="<?php echo site_url()."menu/ver/".$id; ?>"><i class="material-icons">info</i></a>
+                        <a class="btn waves-effect waves-green" href="<?php echo site_url()."menu/editar/".$id; ?>"><i class="material-icons">edit</i></a>
+                        <a class="btn waves-effect waves-green" href="<?php echo site_url()."menu/eliminar/".$id; ?>"><i class="material-icons">delete</i></a>
+                    </td>
+                </tr>
+            <?php
+                }
+            ?>
+            </tbody>
+        </table>
+    </div>
+</div>
