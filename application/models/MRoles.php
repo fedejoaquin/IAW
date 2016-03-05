@@ -7,7 +7,7 @@ class MRoles extends CI_Model{
      */ 
     public function get_roles_empleado ($id){
         
-        $consulta = 'SELECT descripcion ';
+        $consulta = 'SELECT roles.id,descripcion ';
         $consulta .= 'FROM roles JOIN info_roles ON roles.id = info_roles.rol ';
         $consulta .= 'WHERE info_roles.id_empleado="'.$id.'"';
         

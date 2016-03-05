@@ -16,7 +16,7 @@
                 <td>
                     <form name="tabla" action="<?php echo site_url() ?>mozo/adminMesa" method="POST">
                         <a href="<?php echo site_url()?>mozo/adminMesa">
-                            <button class="btn waves-effect waves-light" type="submit" value="<?php echo $mesa['id']; ?>" name="editar">
+                            <button class="btn waves-effect waves-light" type="submit" value="<?php echo $mesa['numero_mesa']; ?>" name="editar">
                                 Ver Mesa
                             </button>
                         </a>
@@ -28,7 +28,7 @@
             </tbody>
         </table>
     </div>
-    <input id="tablaNotificaciones" type="hidden" name="editar" value="<?php echo $id_empleado ?>">
+    <input id="inputNotificaciones" type="hidden" name="editar" value="<?php echo $id_empleado ?>">
     <div class="col m8 s12 offset-m2">
         <ul class="tabs">
             <li class="tab"><a class="active" href="#notificaciones">NOTIFICACIONES</a></li>
@@ -41,10 +41,10 @@
                   <tr>
                     <th data-field="numeroNot">Numero</th>
                     <th data-field="mesa">Mesa</th>
-                    <tr data-field="producto">Producto</tr>
+                    <th data-field="producto">Producto</th>
                     <th data-field="notificado"></th>
                 </thead>
-                <tbody>
+                <tbody id="tablaNotificaciones">
                 </tbody>
             </table>
         </div>

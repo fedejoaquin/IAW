@@ -96,10 +96,20 @@ class Ajax_1 extends CI_Controller {
      * Devuelve las notificaciones para un determinado mozo.
      */
     public function pedir_notificaciones(){
-        $id_mozo = $this->input->post('id_mozo');
+        $id_mozo = $this->input->get('id_mozo');
         /* el cocinero cuando coloca el pedido en salida, genera la notificacion, lo simulamos con la BD*/
-        $resultado = $this->MPedidos->getNotificaciones($id_mozo);
+        $resultado['notificaciones'] = $this->MPedidos->getNotificaciones($id_mozo);
         echo json_encode($resultado); 
+    }
+    
+     public function eliminar_notificacion(){
+         $resultado = array();
+        $not_id = $this->input->post('not_id');
         
+        $error = $this->MPedidos->eliminarNotificacion($not_id);
+        if($error){
+            $resultado['error'] = "Se produjo un error en la eliminación de la notificación";
+        }
+        echo json_encode($resultado); 
     }
 }

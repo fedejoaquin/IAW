@@ -84,13 +84,20 @@ class MPedidos extends CI_Model{
      * Obtiene las notificaciones para un determinado mozo, a fin de mostrarlas en la lista.
      */
     public function getNotificaciones($id_mozo){
-        $consulta = "SELECT m.id,m.numero, n.producto "
+        $consulta = "SELECT m.id,m.numero, n.producto,n.id not_id "
                 . "FROM mesas m JOIN notificaciones n "
-                . "ON m.id = n.id_mesa AND n.visto = 0 AND m.id_mozo=".$id_mozo
-                . " ORDER BY n.id";
+                . "ON m.id = n.id_mesa AND n.visto = 0 AND m.id_mozo= ".$id_mozo." "
+                . "ORDER BY n.id";
         $resultado = $this->db->query($consulta)->result_array();
         return $resultado;
-        
+    }
+    
+    public function eliminarNotificacion($not_id){
+        $this->db->where("id",$not_id);
+        $exito = $this->db->delete("notificaciones");
+        if($exito)
+            {return 0;}
+        return 1;
     }
 }
 ?>
