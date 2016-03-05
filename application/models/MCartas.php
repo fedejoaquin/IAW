@@ -1,6 +1,34 @@
 <?php 
 class MCartas extends CI_Model {
     
+    public function editar_nombre($id, $nombre){
+        $data = array(
+            'nombre' => $nombre,
+        );
+        $this->db->where('id', $id);
+        return $this->db->update('Cartas', $data);  
+    }
+    
+     public function editar_horas($id, $id_horas){
+        $data = array(
+            'id_restriccion_hora' => $id_horas,
+        );
+        $this->db->where('id', $id);
+        return $this->db->update('Cartas', $data);  
+    }
+    
+     public function editar_dias($id, $id_dias){
+        $data = array(
+            'id_restriccion_dia' => $id_dias,
+        );
+        $this->db->where('id', $id);
+        return $this->db->update('Cartas', $data);  
+    }
+    
+     public function eliminar_producto($id_carta, $id_producto){
+        
+    }
+       
     public function eliminar($id){
         $this->db->trans_start();
         
@@ -185,10 +213,10 @@ class MCartas extends CI_Model {
     
     /**
      * 
-     * @return Array(Id_producto, Nombre_producto, Seccion_nombre, Nombre_lista_precio, Precio_producto)
+     * @return Array(ID_producto_infocarta, Id_producto, Nombre_producto, Seccion_nombre, Nombre_lista_precio, Precio_producto)
      */
     public function get_productos($id_carta){
-        $consulta = 'SELECT p.id as id_producto, p.nombre as nombre_producto, s.nombre as seccion_nombre, lp.nombre as nombre_lista_precio, ilp.precio as precio_producto ';
+        $consulta = 'SELECT ic.id as id_producto_infocarta, p.id as id_producto, p.nombre as nombre_producto, s.nombre as seccion_nombre, lp.nombre as nombre_lista_precio, ilp.precio as precio_producto ';
         $consulta .= 'FROM ((((Info_carta ic LEFT JOIN Productos p ON ic.id_producto = p.id) ';
         $consulta .= 'LEFT JOIN Secciones s ON ic.id_seccion = s.id) ';
         $consulta .= 'LEFT JOIN Info_lista_precio ilp ON ilp.id_lista_precio = ic.id_lista_precio AND ilp.id_producto = ic.id_producto) ';

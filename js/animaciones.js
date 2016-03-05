@@ -36,10 +36,7 @@ $( document ).ready(function(){
        $('#panel-asignarMozo').show('slow'); 
     });
     
-    $(document).ready(function() {
-        $('select').material_select();
-    });
-          
+    $('select').material_select();
 });
 
 

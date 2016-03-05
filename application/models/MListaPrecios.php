@@ -1,6 +1,17 @@
 <?php
 class MListaPrecios extends CI_Model{
-
+    
+    public function get_precios_para_producto($id){
+        $consulta = 'SELECT ilp.id_lista_precio, lp.nombre as nombre_lista_precio, ilp.precio as precio_producto ';
+        $consulta .= 'FROM info_lista_precio ilp LEFT JOIN lista_precio lp ON ilp.id_lista_precio = lp.id ';
+        $consulta .= 'WHERE ilp.id_producto = '.$id;
+       
+        $query = $this->db->query($consulta);
+        $resultado = $query->result_array();
+        
+        return $resultado;
+    }
+    
     public function get_productos (){
         $consulta = "SELECT * FROM Productos";
         $resultado = $this->db->query($consulta)->result_array();

@@ -9,11 +9,11 @@
                 <div class="collapsible-body">
                     <div class="row">
                         <div class="input-field col s6">
-                            <input value="<?php echo $datos['id'];?>" type="text" disabled>
+                            <input id="idMenu" value="<?php echo $datos['id'];?>" type="text" disabled>
                             <label>ID Carta</label>
                         </div>
                         <div class="input-field col s6">
-                            <input value="<?php echo $datos['nombre_creador'];?>" type="text" disabled>
+                            <input id="creadorMenu" value="<?php echo $datos['nombre_creador'];?>" type="text" disabled>
                             <label>Creador</label>
                         </div>
                     </div>
@@ -40,7 +40,6 @@
                                   } 
                             ?>
                         </select>
-                        <label id="lblSelectHoras">Sin cambios.</label>
                         <a class="col s1 offset-s1 btn" onclick="cambiarHoras()"><i class="material-icons">done</i></a>
                     </div>
                 </div>
@@ -59,7 +58,6 @@
                                   } 
                             ?>
                         </select>
-                        <label id="lblSelectDias">Sin cambios.</label>
                         <a class="col s1 offset-s1 btn" onclick="cambiarDias()"><i class="material-icons">done</i></a>
                     </div>
                 </div>
@@ -74,27 +72,28 @@
                         <tbody>
                         <?php 
                             foreach($productos as $row){
+                                $id_producto_infocarta = $row['id_producto_infocarta'];
                                 $id = $row['id_producto'];
                                 $np = $row['nombre_producto'];
                                 $ns = $row['seccion_nombre'];
                                 $nlp = $row['nombre_lista_precio'];
                                 $p = $row['precio_producto'];
                         ?>
-                            <tr>
+                            <tr id="<?php echo 'fila'.$id_producto_infocarta; ?>">
                                 <td><?php echo $id; ?></td>
                                 <td><?php echo $ns; ?></td>
                                 <td><?php echo $np; ?></td>
-                                <td><?php echo '$'.$p; ?></td>
                                 <td><?php echo $nlp; ?></td>
+                                <td><?php echo '$'.$p; ?></td>
                                 <td>
-                                    <a class="btn waves-effect waves-green" onClick="preEditarProducto(<?php echo $id; ?>)"><i class="material-icons">edit</i></a>
+                                    <a class="btn waves-effect waves-green" onClick="preEditarProducto(<?php echo $id_producto_infocarta.",".$id; ?>)"><i class="material-icons">edit</i></a>
                                     <a class='dropdown-button btn' data-activates='<?php echo 'drop'.$id; ?>'><i class="material-icons">delete</i></a>
                                     <!-- Dropdown Structure -->
                                     <ul id='<?php echo 'drop'.$id; ?>' class='dropdown-content'>
                                         <li>¿Confirma?</li>
                                         <li class="divider"></li>
                                         <li>
-                                            <a onClick="eliminarProducto(<?php echo $id; ?>)">Sí</a>
+                                            <a onClick="eliminarProducto(<?php echo $id_producto_infocarta; ?>)">Sí</a>
                                         </li>
                                         <li>
                                             <a>No</a>
@@ -153,8 +152,22 @@
                 
             </tbody>
         </table>
-    </div>
-    <div class="modal-footer">
-        <a onClick="postEditarProducto()" class=" modal-action modal-close waves-effect waves-green btn-flat">OK</a>
+        <div class="row">
+            <div class="input-field col s6">
+                <select id="selectSeccion">
+                    
+                </select>
+                <label>Cambiar sección...</label>
+            </div>
+            <div class="input-field col s6">
+                <select id="selectListaPrecio">
+                    
+                </select>
+                <label>Cambiar Lista Precio - Precio </label>
+            </div>
+        </div>
+        <div class="row center-align">
+            <a id="btnConfirmarEdicion" class="btn">Confirmar</a>
+        </div>
     </div>
 </div>
