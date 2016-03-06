@@ -42,10 +42,6 @@ function checkNotificaciones(){
         data:  {'id_mozo':id_mozo},
         url:   'http://localhost/IAW-PF/ajax_1/pedir_notificaciones',
         type:  'get',
-        error:function(response){
-            Materialize.toast("Error", 2000,'toast-ok');
-        },
-        
         success: function (response){
             var respuesta = JSON.parse(response);
             if (respuesta['error'] === undefined){

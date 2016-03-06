@@ -99,5 +99,51 @@ class MPedidos extends CI_Model{
             {return 0;}
         return 1;
     }
+   
+    public function  pedidos_y_promos(){
+        //Consultamos los pedidos
+        $consultaPedido = "SELECT ip.id,p.nombre,ip.fecha_e,ip.fecha_p,ip.fecha_s "
+                . "FROM info_pedidos ip JOIN productos p on ip.id_producto = p.id  "
+                . "ORDER BY ip.id";
+        $pedidos = $this->db->query($consultaPedido)->result_array();
+        $resultado['pedProc'] = array();
+        $resultado['pedPend'] = array();
+        foreach ($pedidos as $pedido ) {
+            //Si tiene fecha de procesado, entonces ya esta cocinandose
+            if($pedido['fecha_s'] == NULL){
+                if($pedido['fecha_p'] !== NULL){
+                    array_push($resultado['pedProc'], $pedido); 
+                }
+                //Si no tiene fecha de procesado, entonces hay que procesarlo, por lo que es pendiente.
+                else{
+                    array_push($resultado['pedPend'], $pedido); 
+                }
+            }
+        }
+        //Consulta para pedir las promociones.
+       
+      $consultaPromo = "SELECT ipp.id,p.nombre,ipp.fecha_e,ipp.fecha_p,ipp.fecha_s,ipp.comentarios "
+                . "FROM info_pedidos_promociones ipp JOIN promociones p on ipp.id_promocion = p.id "
+                . "ORDER BY ipp.id";
+        $promos = $this->db->query($consultaPromo)->result_array();
+        $resultado['promoProc'] = array();
+        $resultado['promoPend'] = array();
+        foreach ($promos as $promo) {
+            if($promo['fecha_s'] == NULL){
+                //Si tiene fecha de procesado, entonces ya esta cocinandose
+                if($promo['fecha_p'] !== NULL){
+                    array_push($resultado['promoProc'], $promo); 
+                }
+                //Si no tiene fecha de procesado, entonces hay que procesarlo, por lo que es pendiente.
+                else{
+                    array_push($resultado['promoPend'], $promo); 
+                }
+            }
+        }
+        return $resultado;
+    }
+    
+    
+    
 }
 ?>

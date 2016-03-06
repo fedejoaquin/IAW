@@ -2,9 +2,7 @@
 <html>
 <head>
     <?php include 'componentes/recursos.phtml'; ?>
-    <script src="<?php echo site_url(); ?>js/ctrlDatosDinamicos_1.js" type="text/javascript"></script>
-    <script src="<?php echo site_url(); ?>js/ctrlPedidos_1.js" type="text/javascript"></script>
-    <script src="<?php echo site_url(); ?>js/ctrlMozo.js" type="text/javascript"></script>
+    <script src="<?php echo site_url(); ?>js/ctrlCocinero.js" type="text/javascript"></script>
 </head>
     <body>
         <?php include 'componentes/botonera.phtml'; ?> 
@@ -16,7 +14,7 @@
             );
             include 'componentes/rutaSeguimiento.phtml' 
         ?>      
-        <?php include '/mozo/'.$funcion.'.phtml'; ?>          
+        <?php include '/cocinero/'.$funcion.'.phtml'; ?>          
         <?php include 'componentes/footer.phtml'; ?>   
     </body>
 </html>

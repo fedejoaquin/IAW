@@ -112,4 +112,37 @@ class Ajax_1 extends CI_Controller {
         }
         echo json_encode($resultado); 
     }
+    
+    public function pedidos_activos(){
+        $resultado= $this->MPedidos->pedidos_y_promos();
+        echo json_encode($resultado); 
+    }
+    /*
+     * Ponemos 2 funciones, para evitar mas controles, asi como las 4 en MPedidos. es mas codigo,
+     * pero es un poco mas rapido, evaluar si conviene..ya que si bien es ajax, es bajo la mano del cocinero.
+     *  */
+    
+    
+    //FALTA LA IMPLEMENTACION DE LAS FUNCIONES EN MPEDIDOS!!
+    public function procesar_producto(){
+        $pedido_id = $this->input->post('pedido_id');
+        $tabla = $this->input->post('tabla');
+        if($tabla == "pedidos"){
+            $this->MPedidos->procesarProd($pedido_id);
+        }
+        else{
+            $this->MPedidos->procesarPromo($pedido_id);
+        }
+    }
+    
+     public function terminar_producto(){
+        $pedido_id = $this->input->post('pedido_id');
+        $tabla = $this->input->post('tabla');
+        if($tabla == "pedidos"){
+            $this->MPedidos->terminarProd($pedido_id);
+        }
+        else{
+            $this->MPedidos->terminarPromo($pedido_id);
+        }
+    }
 }

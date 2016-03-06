@@ -90,6 +90,11 @@ class Empleados extends CI_Controller {
                 $this->load->view('vEmpleados', $data);
         }
         
+        public function pedidos(){
+            $data['funcion'] = 'index';
+            $this->load->view('vCocinero', $data);
+        }
+        
 }
 
 

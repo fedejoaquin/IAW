@@ -1,0 +1,56 @@
+<div class="row center-align">
+    <div class="col m8 s12 offset-m2">
+        <ul class="tabs">
+            <li class="tab"><a class="active" href="#pendientes">Pendientes</a></li>
+            <li class="tab"><a class="active" href="#procesados">Procesados</a></li>
+        </ul>
+    </div >
+    <!-- Inicio Tabs -->
+    <div id="pendientes" class =" row">
+        <div class="col s6">
+            <table class = "striped responsive-table">
+                <thead>
+                    <th data-field="numeroMesa">Pedidos</th>
+                </thead>
+                <tbody id="pedPend">
+                </tbody>
+            </table>
+        </div>
+        <div class="col s6">
+            <table class = "striped responsive-table">
+                <thead>
+                    <th data-field="numeroMesa">Promociones</th>
+                </thead>
+                <tbody id="promoPend">
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div id="procesados" class =" row">
+        <div class="col s6">
+            <table class = "striped responsive-table">
+                <thead>
+                    <th data-field="numeroMesa">Pedidos</th>
+                </thead>
+                <tbody id="pedProc">
+                </tbody>
+            </table>
+        </div>
+        <div class="col s6">
+            <table class = "striped responsive-table">
+                <thead>
+                    <th data-field="numeroMesa">Promociones</th>
+                </thead>
+                <tbody id="promoProc">
+                </tbody>
+            </table>
+        </div>
+    </div>
+      <!-- Fin Tabs -->
+    <div class="col s12">
+        <a href ="<?php echo  site_url()?>webresto/" class="btn waves-effect waves-light">Volver</a>
+    </div>
+</div>   
+
+
+    
