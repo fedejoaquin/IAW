@@ -157,7 +157,7 @@ function listarConfirmados(data){
 function controlAjax(){
     $.ajax({
         data:  {},
-        url:   'http://localhost/IAW-PF/ajax/estadoMesa',
+        url:   '/IAW-PF/menu/estado_mesa',
         type:  'get',
         success: function (response){
             var respuesta = JSON.parse(response);

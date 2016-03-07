@@ -58,6 +58,81 @@ class Clientes extends CI_Controller {
     }
     
     /**
+     * Computa el alta de pedidos tanto de productos como de promociones, parametrizados por un cliente.
+     * Valida que el cliente esté vinculado, y registra el pedido siempre y cuando el producto/promoción
+     * se encuentre dentro del menú actualmente habilitado; descarta aquellos productos/promociones no válidos.
+     * @return Array con el estado de la mesa, en caso de cómputo exitoso.
+     * @return Array con el error detectado, en caso de cómputo incorrecto.
+     */ 
+    public function alta_pedido(){
+        $resultado = array();   
+        if($this->chequear_vinculado()){
+            //Array(tupla_1, tupla_2, ..., tupla_n)
+            //Tupla(Id, Producto, Precio, Id_lp, Comentarios)
+            $productos = $this->input->post('productosPedidos');
+            //Tupla(Id, Producto, Precio, Comentarios)
+            $promociones = $this->input->post('promocionesPedidas');
+            
+            $id_pedidor = $this->session->userdata('cid');
+            $id_mesa = $this->session->userdata('mesa_asignada')['id'];            
+
+            $productos_precios = $this->MCartas->get_productos_precio_menu_actual();
+            $promociones_precios = $this->MCartas->get_promociones_precio_menu_actual();
+        
+            if (!empty($productos)){ 
+                foreach ($productos as $row){
+                    $componente = array('id_producto' => $row['id'], 'precio' => $row['precio'] );
+                    if (in_array($componente, $productos_precios)){
+                        $this->MPedidos->solicitarProducto($id_pedidor,$id_mesa, $row['id'], $row['id_lp'], $row['comentarios']);
+                    }
+                }
+            }
+            
+            if(!empty($promociones)){
+                foreach ($promociones as $row){
+                    $componente = array('id' => $row['id'], 'precio' => $row['precio'] );
+                    if (in_array($componente, $promociones_precios)){
+                        $this->MPedidos->solicitarPromocion($id_pedidor,$id_mesa, $row['id'], $row['comentarios']);
+                    }
+                }
+            } 
+            
+            if (empty($productos) && empty($promociones)){
+                $resultado['error'] = 'Con los datos subministrados, no se puede realizar la operación.';
+                $resultado['data'] = array();
+                echo json_encode($resultado);
+            }else{
+                $this->estadoMesa();
+            }
+             
+        }else{
+            $resultado['error'] = 'El usuario actual no se encuentra vinculado a webresto.';
+            $resultado['data'] = array();
+            echo json_encode($resultado);
+        }
+    }
+
+    /**
+     * Dada una petición de un cliente, si éste está logueado y vinculado a una mesa, retorna la descripción de los
+     * pedidos y promociones confirmadas, así como el estado de procesamiento de cada uno de ellos.
+     * @return Productos --> Array(Id_pedidor,Nombre_pedidor, Nombre_producto, Precio, Fecha_e, Fecha_p, Fecha_s)
+     * @return Promociones --> Array(Id_pedidor,Nombre_pedidor, Nombre_promocion, Precio, Fecha_e, Fecha_p, Fecha_s)
+     */
+    public function estado_mesa(){
+        $resultado = array();
+        if($this->chequear_vinculado()){
+            $resultado['data'] = array();
+            $resultado['data']['productos'] = $this->MPedidos->get_productos_procesados($this->session->userdata('mesa_asignada')['id']);
+            $resultado['data']['promociones'] = $this->MPedidos->get_promociones_procesadas($this->session->userdata('mesa_asignada')['id']);        
+            echo json_encode($resultado);
+        }else{
+            $resultado['error'] = 'El usuario actual no se encuentra vinculado a webresto.';
+            $resultado['data'] = array();
+            echo json_encode($resultado);
+        }
+    }
+    
+    /**
     * Chequea si existe datos de cliente logueado. 
     * - Si no está logueado, redirige al home del sitio.
     * - Si está logueado, elimina datos de sessión y redirige a webresto/logout.

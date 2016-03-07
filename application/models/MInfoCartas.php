@@ -8,22 +8,15 @@ class MInfoCartas extends CI_Model {
         return $this->db->delete('Info_carta', $data);  
     }
     
-    public function editar_producto($id, $id_seccion = null, $id_lista_precio = null){
-        if ($id_seccion !== null){
-            if ($id_lista_precio !== null){
-                $data = array(
-                    'id_seccion' => $id_seccion,
-                    'id_lista_precio' => $id_lista_precio,
-                );
-            }else{
-                $data = array(
-                    'id_seccion' => $id_seccion,
-                );
-            }
-        }else{
-            $data = array(
-                'id_lista_precio' => $id_lista_precio,
-            );
+    public function editar_producto($id, $id_seccion = '-1', $id_lista_precio = '-1'){
+        $data = array();
+        
+        if ($id_seccion !== '-1'){
+            $data['id_seccion'] = $id_seccion;
+        }
+        
+        if ($id_lista_precio !== '-1'){
+            $data['id_lista_precio'] = $id_lista_precio;
         }
         
         $this->db->where('id', $id);

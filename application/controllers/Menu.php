@@ -48,4 +48,97 @@ class Menu extends CI_Controller {
         $data['funcion'] = 'index';
         $this->load->view('vMenu',$data);      
     }
+    
+    public function cambiar_nombre(){
+        $id = $this->input->post('id');
+        $nombre = $this->input->post('nombre');
+        
+        if ($this->MCartas->editar_nombre($id,$nombre)){
+            $resultado['data'] = array();
+            echo json_encode($resultado);
+        }else{
+            $resultado['data'] = array();
+            $resultado['error'] = 'El menú no pudo ser editado correctamente.';
+            echo json_encode($resultado);
+        }
+    }
+    
+    public function cambiar_horas(){
+        $id = $this->input->post('id');
+        $id_horas = $this->input->post('id_horas');
+        
+        if ($this->MCartas->editar_horas($id,$id_horas)){
+            $resultado['data'] = array();
+            echo json_encode($resultado);
+        }else{
+            $resultado['data'] = array();
+            $resultado['error'] = 'El menú no pudo ser editado correctamente.';
+            echo json_encode($resultado);
+        }
+    }
+    
+    public function cambiar_dias(){
+        $id = $this->input->post('id');
+        $id_dias = $this->input->post('id_dias');
+        
+        if ($this->MCartas->editar_dias($id,$id_dias)){
+            $resultado['data'] = array();
+            echo json_encode($resultado);
+        }else{
+            $resultado['data'] = array();
+            $resultado['error'] = 'El menú no pudo ser editado correctamente.';
+            echo json_encode($resultado);
+        }
+    }
+    
+    public function cambiar_info_lista(){
+        $id_prod_info_carta = $this->input->post('id');
+        $id_seccion = $this->input->post('id_seccion');
+        $id_lista_precio = $this->input->post('id_lista_precio');
+        
+        if ($this->MInfoCartas->editar_producto($id_prod_info_carta, $id_seccion, $id_lista_precio)){
+            $resultado['data'] = array();
+            echo json_encode($resultado);
+        }else{
+            $resultado['data'] = array();
+            $resultado['error'] = 'El producto no pudo ser editado correctamente.';
+            echo json_encode($resultado);
+        }           
+    }
+    
+    public function eliminar_producto(){
+        $id_p_ic= $this->input->post('id_producto_infocarta');
+        if ($this->MInfoCartas->eliminar_producto($id_p_ic)){
+            $resultado['data'] = array();
+            echo json_encode($resultado);
+        }else{
+            $resultado['data'] = array();
+            $resultado['error'] = 'El producto no pudo ser eliminado correctamente.';
+            echo json_encode($resultado);
+        }
+    }
+    
+    public function info_producto(){
+        $id = $this->input->post('id');
+        $secciones = $this->MSecciones->get_secciones();
+        $listaPrecios = $this->MListaPrecios->get_precios_para_producto($id);
+       
+        if (count($listaPrecios)>0){
+            $resultado['data'] = array();
+            $resultado['data']['secciones'] = $secciones;
+            $resultado['data']['listaPrecios'] = $listaPrecios;
+            echo json_encode($resultado);
+        }else{
+            $resultado['error'] = 'El producto indicado no existe o no puede ser editado.';
+            echo json_encode($resultado);
+        }
+    }
+    
+    public function autocompletar(){
+        $txt = $this->input->post('texto');
+        $datos = $this->MProductos->buscar($txt);
+        $resultado['data']['productos'] = $this->MProductos->buscar($txt);
+        $resultado['data']['cantidad'] = count($datos);
+        echo json_encode($resultado);
+    }
 }

@@ -2,7 +2,8 @@
 <html>
 <head>
     <?php include 'componentes/recursos.phtml'; ?>
-    <script src="<?php echo site_url(); ?>js/ctrlMenu.js" type="text/javascript"></script>
+    <script src="<?php echo site_url(); ?>js/menu/ctrlDatosDinamicos.js" type="text/javascript"></script>
+    <script src="<?php echo site_url(); ?>js/menu/ctrlMenu.js" type="text/javascript"></script>  
 </head>
     <body>
         <?php include 'componentes/botonera.phtml'; ?> 

@@ -79,7 +79,7 @@ function confirmarPedido(){
     }else{
         $.ajax({
             data:  {'productosPedidos': productos, 'promocionesPedidas':promociones},
-            url:   'http://localhost/IAW-PF/ajax/altaPedido',
+            url:   '/IAW-PF/clientes/alta_pedido',
             type:  'post',
             error: function(response){
                 Materialize.toast('Se produjo un error en la conexión.', 5000,'toast-error');
