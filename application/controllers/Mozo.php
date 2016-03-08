@@ -5,6 +5,7 @@ class Mozo extends CI_Controller {
 
 	public function index()
 	{
+           
             $data['funcion'] = 'index';
             $data['id_empleado'] = $this->session->userdata('eid');
             $data['mesas'] = $this->MMesasPedidores->get_mesas_empleado($data['id_empleado']);
@@ -14,8 +15,9 @@ class Mozo extends CI_Controller {
         public function adminMesa(){
             $data['funcion'] = 'adminMesa';
             $data['id_empleado'] = $this->session->userdata('eid');
-            $data['editar'] = $this->input->post('editar');
-            $mesa_asignada = $data['editar'];
+            $data['id_mesa'] = $this->input->post('id_mesa');
+            $data['num_mesa'] = $this->MPedidos->get_num_mesa($data['id_mesa']);
+            $mesa_asignada = $data['id_mesa'];
             $menu_actual = $this->MCartas->get_menu_actual();
             $promo_actual = $this->MCartas->get_promociones_actual();
             $pedidos_procesados = $this->MPedidos->get_productos_procesados($mesa_asignada);

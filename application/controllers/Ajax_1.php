@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Ajax_1 extends CI_Controller {
     
-    public function altaPedido(){
+    public function altaPedidoMozo(){
         $resultado = array();
         if($this->chequear_vinculado()){
             //Array(tupla_1, tupla_2, ..., tupla_n)
@@ -12,8 +12,8 @@ class Ajax_1 extends CI_Controller {
             //Tupla(Id, Producto, Precio, Comentarios)
             $promociones = $this->input->post('promocionesPedidas');
             
-            $id_pedidor = $this->session->userdata('cid');
-            $id_mesa = $this->session->userdata('mesa_asignada')['id'];
+            $id_pedidor = $this->session->userdata('eid');
+            $id_mesa = $this->input->post('id_mesa');
             
             if (!empty($productos)){ 
                 foreach ($productos as $row){
@@ -32,7 +32,10 @@ class Ajax_1 extends CI_Controller {
                 $resultado['data'] = array();
                 echo json_encode($resultado);
             }else{
-                $this->estadoMesa();
+                $resultado['data'] = array();
+                $resultado['data']['productos'] = $this->MPedidos->get_productos_procesados($id_mesa);
+                $resultado['data']['promociones'] = $this->MPedidos->get_promociones_procesadas($id_mesa);        
+                echo json_encode($resultado);
             }
              
         }else{
@@ -50,11 +53,12 @@ class Ajax_1 extends CI_Controller {
      * 
      */
     public function estadoMesa(){
+        $id_mesa = $this->input->post('id_mesa');
         $resultado = array();
         if($this->chequear_vinculado()){
             $resultado['data'] = array();
-            $resultado['data']['productos'] = $this->MPedidos->get_productos_procesados($this->session->userdata('mesa_asignada')['id']);
-            $resultado['data']['promociones'] = $this->MPedidos->get_promociones_procesadas($this->session->userdata('mesa_asignada')['id']);        
+            $resultado['data']['productos'] = $this->MPedidos->get_productos_procesados($id_mesa);
+            $resultado['data']['promociones'] = $this->MPedidos->get_promociones_procesadas($id_mesa);        
             echo json_encode($resultado);
         }else{
             $resultado['error'] = 'El usuario actual no se encuentra vinculado a webresto.';
@@ -69,8 +73,7 @@ class Ajax_1 extends CI_Controller {
     * - Responde falso en caso de no estar vinculado.
     */
     private function chequear_vinculado(){
-        $resultado = $this->MMesasPedidores->get_mesa_pedidor($this->session->userdata('cid'));
-        $this->session->set_userdata('mesa_asignada',$resultado);
+        $resultado = $this->MMesasPedidores->get_mesa_pedidor($this->session->userdata('eid'));
         if (count($resultado)>0){
             return true;
         }else{
@@ -128,7 +131,7 @@ class Ajax_1 extends CI_Controller {
         $pedido_id = $this->input->post('pedido_id');
         $tabla = $this->input->post('tabla');
         if($tabla == "pedidos"){
-            $this->MPedidos->procesarProd($pedido_id);
+            $this->MPedidos->procesarPedido($pedido_id);
         }
         else{
             $this->MPedidos->procesarPromo($pedido_id);
@@ -136,13 +139,13 @@ class Ajax_1 extends CI_Controller {
     }
     
      public function terminar_producto(){
-        $pedido_id = $this->input->post('pedido_id');
+        $tupla = $this->input->post('tupla');
         $tabla = $this->input->post('tabla');
         if($tabla == "pedidos"){
-            $this->MPedidos->terminarProd($pedido_id);
+            $this->MPedidos->terminarPedido($tupla);
         }
         else{
-            $this->MPedidos->terminarPromo($pedido_id);
+            $this->MPedidos->terminarPromo($tupla);
         }
     }
 }

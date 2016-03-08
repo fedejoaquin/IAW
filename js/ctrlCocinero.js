@@ -8,6 +8,7 @@ $( document ).ready(function(){
 });
 
 function checkPedidos(){
+    Materialize.toast('chequeo', 5000,'toast-error');
     $.ajax({
         data:  {},
         url:   'http://localhost/IAW-PF/ajax_1/pedidos_activos',
@@ -19,7 +20,6 @@ function checkPedidos(){
             var respuesta = JSON.parse(response);
             if (respuesta['error'] === undefined){
                 pedProc = respuesta['pedProc'];
-               // Materialize.toast('Elemento', 3000,'toast-ok');
                 promoProc = respuesta['promoProc'];
                 pedPend = respuesta['pedPend'];
                 promoPend = respuesta['promoPend'];
@@ -32,7 +32,6 @@ function checkPedidos(){
 }
 
 function listarPedidosPromos(){
-   // Materialize.toast(pedPend, 3000,'toast-ok');
     listarProductos(pedPend,"#pedPend","procesar");
     listarProductos(promoPend,"#promoPend","procesar");
     listarProductos(pedProc,"#pedProc","terminar");
@@ -48,59 +47,45 @@ function listarPedidosPromos(){
 
 function listarProductos(elemento,tabla,funcion){
     $(tabla).empty();
+    defaultComent = 'Sin comentarios.';
+    
     cantElem = elemento.length;
-    $("#badge"+tabla).val(cantElem);
     for(var i=0; i<cantElem;i++){
+        //Materialize.toast('Mesa: '+elemento[i]['id_mesa'], 5000,'toast-error');
         row = $("<tr></tr>");
         numPend = $("<td>"+(i+1)+"</td>");
         producto = $("<td>"+elemento[i]['nombre']+"</td>");
-        procesarProducto = $("<td><button><i class='material-icons right'>clear_all</i></button></td>");
+        comment = elemento[i]['comentarios'];
+        comentarios = $("<td></td>");
+        if(defaultComent.localeCompare(comment) !== 0)
+        {
+            comentarios = $("<td>"+elemento[i]['comentarios']+"</td>");
+        }
+        procesarProducto = $("<td><button class='btn waves-effect waves-light'><i class='material-icons right'>clear_all</i></button></td>");
         procesarProducto.attr('onclick',funcion+"("+i+",'"+tabla+"')");
          
         $(row).append(numPend);
         $(row).append(producto);
+        $(row).append(comentarios);
         $(row).append(procesarProducto);
     
         $(tabla).append(row);
     }
     
 }
-/*
-function listarProcesados(elemento,tabla){
-    $(tabla).empty();
-    for(var i=0; i<elemento.length;i++){
-        row = $("<tr></tr>");
-        numProc = $("<td>"+(i+1)+"</td>");
-        producto = $("<td>"+elemento[i]['nombre']+"</td>");
-        terminar = $("<td><button><i class='material-icons right'>clear_all</i></button></td>");
-        terminar.attr('onclick',"terminar("+i+","+tabla+")");
-        
-        $(row).append(numProc);
-        $(row).append(producto);
-        $(row).append(terminar);
-
-       $(tabla).append(row);
-    }
-}
-*/
-
 
 function procesar(posicion,tabla){
-   // Materialize.toast('Entre a procesar con Pos:'+posicion+" Tabla: "+tabla, 5000,'toast-ok');
-    var datos = array();
-    var tabla = "";
-    if(tabla === "#pedPend"){
-        Materialize.toast("Pedido", 5000,'toast-ok');
+    var datos = new Array();
+    if(tabla.localeCompare('#pedPend') === 0 ){
         datos = pedPend;
         tabla = "pedidos";
     }
     else{
-        Materialize.toast('Promo', 5000,'toast-ok');
         datos = promoPend;
         tabla = "promociones";
     }
     var tupla = datos[posicion];
-    /*$.ajax({
+   $.ajax({
             data:  {'pedido_id': tupla['id'],'tabla':tabla},
             url:   'http://localhost/IAW-PF/ajax_1/procesar_producto',
             type:  'post',
@@ -121,25 +106,24 @@ function procesar(posicion,tabla){
                     Materialize.toast(error, 10000,'toast-error');
                 }
             }
-        });*/
+        });
 }
 function terminar(posicion,tabla){
     // Materialize.toast('Entre a procesar con Pos:'+posicion+" Tabla: "+tabla, 5000,'toast-ok');
-    var datos = array();
-    var tabla = "";
-    if(tabla === "#pedProc"){
-        Materialize.toast("Pedido", 5000,'toast-ok');
-        datos = pedPend;
+    var datos = new Array();
+  
+    if(tabla.localeCompare('#pedProc') === 0){
+        datos = pedProc;
         tabla = "pedidos";
     }
     else{
-        Materialize.toast('Promo', 5000,'toast-ok');
         datos = promoProc;
         tabla = "promociones";
     }
-    var tupla = datos[posicion];
-    /*$.ajax({
-            data:  {'pedido_id': tupla['id'],'tabla':tabla},
+    tupla = datos[posicion];
+    //Materialize.toast('Numero de mesa: '+tupla['id_mesa'], 5000,'toast-error');
+    $.ajax({
+            data:  {'tupla': tupla,'tabla':tabla},
             url:   'http://localhost/IAW-PF/ajax_1/terminar_producto',
             type:  'post',
             error: function(response){
@@ -159,5 +143,5 @@ function terminar(posicion,tabla){
                     Materialize.toast(error, 10000,'toast-error');
                 }
             }
-        });*/
+        });
 }

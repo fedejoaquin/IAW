@@ -2,9 +2,6 @@
 <html>
 <head>
     <?php include 'componentes/recursos.phtml'; ?>
-    <script src="<?php echo site_url(); ?>js/ctrlDatosDinamicos_1.js" type="text/javascript"></script>
-    <script src="<?php echo site_url(); ?>js/ctrlPedidos_1.js" type="text/javascript"></script>
-    <script src="<?php echo site_url(); ?>js/ctrlMozo.js" type="text/javascript"></script>
 </head>
     <body>
         <?php include 'componentes/botonera.phtml'; ?> 
