@@ -141,7 +141,7 @@ function listarConfirmados(data){
         var pedidor = promociones[i]['id_pedidor'] + " | " + promociones[i]['nombre_pedidor'];
         colPedidor = $("<td>"+pedidor+"</td>");
         
-        var estado = calcularEstado(productos[i]['fecha_p'], productos[i]['fecha_s']);
+        var estado = calcularEstado(promociones[i]['fecha_p'], promociones[i]['fecha_s']);
         colEstado = $("<td>"+estado+"</td>");
         colEstado.attr('id', 'col_'+i);
            
@@ -157,7 +157,7 @@ function listarConfirmados(data){
 function controlAjax(){
     $.ajax({
         data:  {},
-        url:   '/IAW-PF/menu/estado_mesa',
+        url:   '/IAW-PF/clientes/estado_mesa',
         type:  'get',
         success: function (response){
             var respuesta = JSON.parse(response);

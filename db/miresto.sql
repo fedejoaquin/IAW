@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 01-03-2016 a las 16:04:37
+-- Tiempo de generación: 09-03-2016 a las 14:44:48
 -- Versión del servidor: 5.6.24
 -- Versión de PHP: 5.6.8
 
@@ -19,6 +19,8 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `miresto`
 --
+CREATE DATABASE IF NOT EXISTS `miresto` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `miresto`;
 
 -- --------------------------------------------------------
 
@@ -55,7 +57,28 @@ CREATE TABLE IF NOT EXISTS `cartas` (
 
 INSERT INTO `cartas` (`id`, `id_restriccion_dia`, `id_restriccion_hora`, `nombre`, `creador`) VALUES
 (3, 2, 3, 'Carta uno - solo tarde', 5),
-(4, 2, 4, 'Carta dos - solo mañana', 5);
+(4, 2, 3, 'Carta dos - Solo mañana', 5);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `cartas_promociones`
+--
+
+CREATE TABLE IF NOT EXISTS `cartas_promociones` (
+  `id_carta` int(10) unsigned NOT NULL,
+  `id_promocion` int(10) unsigned NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `cartas_promociones`
+--
+
+INSERT INTO `cartas_promociones` (`id_carta`, `id_promocion`) VALUES
+(3, 6),
+(3, 7),
+(4, 8),
+(4, 9);
 
 -- --------------------------------------------------------
 
@@ -94,7 +117,7 @@ CREATE TABLE IF NOT EXISTS `empleados` (
 --
 
 INSERT INTO `empleados` (`id`, `dni`, `nombre`, `direccion`, `telefono`, `email`, `cuit`, `password`) VALUES
-(5, 36704824, 'fede', 'direccion', 2, 'fede@fede.com', 20367048248, '5d942a1d73fd8f28d71e6b03d2e42f44721db94b734c2edcfe6fcd48b76a74f9'),
+(5, 36704824, 'Federico Ariel Perez Cavallero', 'direccion', 2, 'fede@fede.com', 20367048248, '5d942a1d73fd8f28d71e6b03d2e42f44721db94b734c2edcfe6fcd48b76a74f9'),
 (6, 45454, 'leo', 'dire', 122, 'leo@leo.com', 205422, '8535e86c8118bbbb0a18ac72d15d3a2b37b18d1bce1611fc60165f322cf57386'),
 (7, 45454, 'user', 'dire', 12121, 'user@user.com', 45454, '04f8996da763b7a969b1028ee3007569eaf3a635486ddab211d512c85b9df8fb');
 
@@ -136,21 +159,21 @@ CREATE TABLE IF NOT EXISTS `info_carta` (
   `id_seccion` int(10) unsigned NOT NULL,
   `id_producto` int(10) unsigned NOT NULL,
   `id_lista_precio` int(10) unsigned NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `info_carta`
 --
 
 INSERT INTO `info_carta` (`id`, `id_carta`, `id_seccion`, `id_producto`, `id_lista_precio`) VALUES
-(15, 3, 3, 13, 3),
 (16, 3, 3, 14, 3),
 (17, 3, 4, 15, 4),
 (18, 3, 4, 16, 4),
 (19, 4, 4, 15, 3),
 (20, 4, 4, 16, 3),
-(21, 4, 5, 17, 4),
-(22, 4, 5, 18, 4);
+(25, 4, 5, 17, 4),
+(50, 3, 3, 13, 3),
+(58, 3, 5, 17, 4);
 
 -- --------------------------------------------------------
 
@@ -228,7 +251,7 @@ CREATE TABLE IF NOT EXISTS `info_pedidos` (
   `fecha_p` datetime DEFAULT NULL,
   `fecha_s` datetime DEFAULT NULL,
   `comentarios` tinytext NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=203 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -242,10 +265,10 @@ CREATE TABLE IF NOT EXISTS `info_pedidos_promociones` (
   `id_promocion` int(10) unsigned NOT NULL,
   `id_pedidor` tinytext NOT NULL,
   `fecha_e` datetime NOT NULL,
-  `fecha_p` datetime NOT NULL,
-  `fecha_s` datetime NOT NULL,
+  `fecha_p` datetime DEFAULT NULL,
+  `fecha_s` datetime DEFAULT NULL,
   `comentarios` tinytext NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -421,7 +444,6 @@ INSERT INTO `productos` (`id`, `nombre`) VALUES
 
 CREATE TABLE IF NOT EXISTS `promociones` (
   `id` int(10) unsigned NOT NULL,
-  `id_carta` int(10) unsigned NOT NULL,
   `nombre` tinytext NOT NULL,
   `precio` float unsigned NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
@@ -430,11 +452,11 @@ CREATE TABLE IF NOT EXISTS `promociones` (
 -- Volcado de datos para la tabla `promociones`
 --
 
-INSERT INTO `promociones` (`id`, `id_carta`, `nombre`, `precio`) VALUES
-(6, 3, 'Promo 1 - tarde', 200),
-(7, 3, 'Promo 2 - tarde', 210),
-(8, 4, 'Promo 3 - mañana', 198),
-(9, 4, 'Promo 4 - Mañana', 205);
+INSERT INTO `promociones` (`id`, `nombre`, `precio`) VALUES
+(6, 'Promo 1 - tarde', 200),
+(7, 'Promo 2 - tarde', 210),
+(8, 'Promo 3 - mañana', 198),
+(9, 'Promo 4 - Mañana', 205);
 
 -- --------------------------------------------------------
 
@@ -761,7 +783,7 @@ ALTER TABLE `fecha_cuadricula`
 -- AUTO_INCREMENT de la tabla `info_carta`
 --
 ALTER TABLE `info_carta`
-  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=23;
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=59;
 --
 -- AUTO_INCREMENT de la tabla `info_cuadriculas_base`
 --
@@ -781,12 +803,12 @@ ALTER TABLE `info_lista_precio`
 -- AUTO_INCREMENT de la tabla `info_pedidos`
 --
 ALTER TABLE `info_pedidos`
-  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=203;
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT de la tabla `info_pedidos_promociones`
 --
 ALTER TABLE `info_pedidos_promociones`
-  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=36;
 --
 -- AUTO_INCREMENT de la tabla `info_promociones`
 --

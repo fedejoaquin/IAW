@@ -112,9 +112,10 @@ class MCartas extends CI_Model {
         $id_carta = $carta['id'];
         
         $consulta = 'SELECT p.id as id_promocion, p.nombre as nombre_promocion, pr.nombre as nombre_producto, pr.id as id_producto, p.precio ';
-        $consulta .= 'FROM ((Promociones p LEFT JOIN Info_promociones ip ON p.id = ip.id_promocion ) ';
+        $consulta .= 'FROM (((Cartas_promociones cp LEFT JOIN Promociones p ON  cp.id_promocion = p.id ) ';
+        $consulta .= 'LEFT JOIN Info_promociones ip ON p.id = ip.id_promocion ) ';
         $consulta .= 'LEFT JOIN Productos pr ON ip.id_producto = pr.id ) ';
-        $consulta .= 'WHERE p.id_carta = '.$id_carta;
+        $consulta .= 'WHERE cp.id_carta = '.$id_carta;
 
         $query = $this->db->query($consulta);
         $resultado = $query->result_array();
@@ -148,9 +149,9 @@ class MCartas extends CI_Model {
         $carta = $this->get_carta_actual();
         $id_carta = $carta['id'];
         
-        $consulta = 'SELECT id, precio ';
-        $consulta .= 'FROM Promociones ';
-        $consulta .= 'WHERE id_carta = '.$id_carta;
+        $consulta = 'SELECT p.id, p.precio ';
+        $consulta .= 'FROM ( Cartas_promociones cp LEFT JOIN Promociones p ON cp.id_promocion = p.id ) ';
+        $consulta .= 'WHERE cp.id_carta = '.$id_carta;
 
         $query = $this->db->query($consulta);
         $resultado = $query->result_array();
@@ -232,7 +233,7 @@ class MCartas extends CI_Model {
      */
     public function get_promociones($id_carta){
         $consulta = 'SELECT id, nombre, precio ';
-        $consulta .= 'FROM Promociones ';
+        $consulta .= 'FROM ( Promociones p LEFT JOIN Cartas_promociones cp ON p.id = cp.id_promocion )';
         $consulta .= 'WHERE id_carta = '.$id_carta;
 
         $query = $this->db->query($consulta);

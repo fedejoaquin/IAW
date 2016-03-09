@@ -78,6 +78,9 @@ class Clientes extends CI_Controller {
 
             $productos_precios = $this->MCartas->get_productos_precio_menu_actual();
             $promociones_precios = $this->MCartas->get_promociones_precio_menu_actual();
+            
+            //Le indico a la base de dato que toda esta operación será mediante una transacción
+            $this->db->trans_start();
         
             if (!empty($productos)){ 
                 foreach ($productos as $row){
@@ -95,16 +98,21 @@ class Clientes extends CI_Controller {
                         $this->MPedidos->solicitarPromocion($id_pedidor,$id_mesa, $row['id'], $row['comentarios']);
                     }
                 }
-            } 
+            }
+            
+            //Finalizo la transacción una vez que todos los elementos fueron dados de alta correctamente
+            $this->db->trans_complete();
             
             if (empty($productos) && empty($promociones)){
                 $resultado['error'] = 'Con los datos subministrados, no se puede realizar la operación.';
                 $resultado['data'] = array();
                 echo json_encode($resultado);
             }else{
-                $this->estadoMesa();
-            }
-             
+                $resultado['data'] = array();
+                $resultado['data']['productos'] = $this->MPedidos->get_productos_procesados($this->session->userdata('mesa_asignada')['id']);
+                $resultado['data']['promociones'] = $this->MPedidos->get_promociones_procesadas($this->session->userdata('mesa_asignada')['id']);        
+                echo json_encode($resultado);
+            }             
         }else{
             $resultado['error'] = 'El usuario actual no se encuentra vinculado a webresto.';
             $resultado['data'] = array();
