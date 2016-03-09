@@ -10,7 +10,7 @@ function checkNotificaciones(){
     
     $.ajax({
         data:  {'id_mozo':id_mozo},
-        url:   'http://localhost/IAW-PF/ajax_1/pedir_notificaciones',
+        url:   'http://localhost/IAW-PF/mozo/pedir_notificaciones',
         type:  'get',
         success: function (response){
             var respuesta = JSON.parse(response);
@@ -55,7 +55,7 @@ function vistoNotificacion(posicion){
     var tupla = notificaciones[posicion];
     $.ajax({
             data:  {'not_id': tupla['not_id']},
-            url:   'http://localhost/IAW-PF/ajax_1/eliminar_notificacion',
+            url:   'http://localhost/IAW-PF/mozo/eliminar_notificacion',
             type:  'post',
             error: function(response){
                 Materialize.toast('Se produjo un error en la conexión.', 5000,'toast-error');

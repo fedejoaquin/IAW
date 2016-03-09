@@ -8,10 +8,9 @@ $( document ).ready(function(){
 });
 
 function checkPedidos(){
-    Materialize.toast('chequeo', 5000,'toast-error');
     $.ajax({
         data:  {},
-        url:   'http://localhost/IAW-PF/ajax_1/pedidos_activos',
+        url:   'http://localhost/IAW-PF/cocinero/pedidos_activos',
         type:  'post',
         error: function(response){
                 Materialize.toast('Se produjo un error en la conexión.', 5000,'toast-error');
@@ -87,7 +86,7 @@ function procesar(posicion,tabla){
     var tupla = datos[posicion];
    $.ajax({
             data:  {'pedido_id': tupla['id'],'tabla':tabla},
-            url:   'http://localhost/IAW-PF/ajax_1/procesar_producto',
+            url:   'http://localhost/IAW-PF/cocinero/procesar_producto',
             type:  'post',
             error: function(response){
                 Materialize.toast('Se produjo un error en la conexión.', 5000,'toast-error');
@@ -124,7 +123,7 @@ function terminar(posicion,tabla){
     //Materialize.toast('Numero de mesa: '+tupla['id_mesa'], 5000,'toast-error');
     $.ajax({
             data:  {'tupla': tupla,'tabla':tabla},
-            url:   'http://localhost/IAW-PF/ajax_1/terminar_producto',
+            url:   'http://localhost/IAW-PF/cocinero/terminar_producto',
             type:  'post',
             error: function(response){
                 Materialize.toast('Se produjo un error en la conexión.', 5000,'toast-error');

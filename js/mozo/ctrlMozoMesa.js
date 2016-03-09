@@ -79,7 +79,7 @@ function confirmarPedidoMozo(mesa){
     }else{
         $.ajax({
             data:  {'productosPedidos': productos, 'promocionesPedidas':promociones,'id_mesa':mesa},
-            url:   'http://localhost/IAW-PF/ajax_1/altaPedidoMozo',
+            url:   'http://localhost/IAW-PF/mozo/altaPedidoMozo',
             type:  'post',
             error: function(response){
                 Materialize.toast('Se produjo un error en la conexión.', 5000,'toast-error');
@@ -116,7 +116,7 @@ function vincularCliente(){
     }else{
         $.ajax({
             data:  {'codigoCliente': codigo,'id_mesa':id_mesa},
-            url:   'http://localhost/IAW-PF/ajax_1/vincularCliente',
+            url:   'http://localhost/IAW-PF/mozo/vincularCliente',
             type:  'post',
             error: function(response){
                 Materialize.toast('Se produjo un error en la conexión.', 5000,'toast-error');

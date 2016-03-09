@@ -82,9 +82,10 @@ class MPedidos extends CI_Model{
     
     /*
      * Obtiene las notificaciones para un determinado mozo, a fin de mostrarlas en la lista.
+     * return Array(id,numero,producto,id_not,comentarios)
      */
     public function getNotificaciones($id_mozo){
-        $consulta = "SELECT m.id,m.numero, n.producto,n.id not_id,n.comentarios "
+        $consulta = "SELECT m.id,m.numero, n.producto,n.id as not_id,n.comentarios "
                 . "FROM mesas m JOIN notificaciones n "
                 . "ON m.id = n.id_mesa AND n.visto = 0 AND m.id_mozo= ".$id_mozo." "
                 . "ORDER BY n.id";
@@ -92,14 +93,25 @@ class MPedidos extends CI_Model{
         return $resultado;
     }
     
-    public function eliminarNotificacion($not_id){
-        $this->db->where("id",$not_id);
+    /*
+     * Elimina al notificacion con id $id_not
+     */
+    public function eliminarNotificacion($id_not){
+        $this->db->where("id",$id_not);
         $exito = $this->db->delete("notificaciones");
         if($exito)
             {return 0;}
         return 1;
     }
    
+    /*
+     * Retorna los pedidos y promociones.
+     * return $resultado['pedProc'] pedidos procesados.
+     * return $resultado['pedPend'] pedidos pendientes.
+     * return $resultado['promoProc'] promociones procesadas.
+     * return $resultado['promoPend'] promociones pendientes.
+     * Estructura Array(id,id_mesa,nombre,fecha_e,fecha_p,fecha_s,comentarios)
+     */
     public function  pedidos_y_promos(){
         //Consultamos los pedidos
         $consultaPedido = "SELECT ip.id,ip.id_mesa,p.nombre,ip.fecha_e,ip.fecha_p,ip.fecha_s,ip.comentarios "
@@ -121,7 +133,6 @@ class MPedidos extends CI_Model{
             }
         }
         //Consulta para pedir las promociones.
-       
       $consultaPromo = "SELECT ipp.id,ipp.id_mesa,p.nombre,ipp.fecha_e,ipp.fecha_p,ipp.fecha_s,ipp.comentarios "
                 . "FROM info_pedidos_promociones ipp JOIN promociones p on ipp.id_promocion = p.id "
                 . "ORDER BY ipp.id";
@@ -143,6 +154,9 @@ class MPedidos extends CI_Model{
         return $resultado;
     }
     
+    /*
+     * Procesa un determinado pedido, es decir, setea un valor para la fecha de procesado
+     */
     function procesarPedido($id_p){
         $date = date('Y-m-d H:i:s');
        $data = array(
@@ -152,7 +166,9 @@ class MPedidos extends CI_Model{
         return $this->db->update('info_pedidos', $data);  
     }
     
-    
+    /*
+     * Procesa una determinada promocion, es decir, setea un valor para la fecha de procesado
+     */
     function procesarPromo($id_p){
         $date = date('Y-m-d H:i:s');
        $data = array(
@@ -162,7 +178,9 @@ class MPedidos extends CI_Model{
         return $this->db->update('info_pedidos_promociones', $data);  
     }
     
-    
+    /*
+     * Termina un determinado pedido, es decir, setea un valor para la fecha de salida.
+     */
     function terminarPedido($tupla){
        $date = date('Y-m-d H:i:s');
        $data = array(
@@ -178,7 +196,9 @@ class MPedidos extends CI_Model{
         $this->db->insert('Notificaciones', $insertNotificaciones);
     }
     
-    
+    /*
+     * Termina una determinada promocion, es decir, setea un valor para la fecha de salida.
+     */
     function terminarPromo($tupla){
        $date = date('Y-m-d H:i:s');
        $data = array(
@@ -195,6 +215,10 @@ class MPedidos extends CI_Model{
         $this->db->insert('Notificaciones', $insertNotificaciones);
     }
     
+    /*
+     * Obtiene el numero de mesa, para un determinado id.
+     * return numero : numero de mesa solicitada.
+     */
     function get_num_mesa($id_mesa){
         $consulta = "Select numero From Mesas Where id=".$id_mesa;
         $mesa = $this->db->query($consulta)->row_array();

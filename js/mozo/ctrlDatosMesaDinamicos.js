@@ -117,7 +117,7 @@ function listarConfirmados(data){
         colProducto = $("<td>"+productos[i]['nombre_producto']+"</td>");
         colPrecio = $("<td> $"+productos[i]['precio']+"</td>");
        
-        var pedidor = productos[i]['id_pedidor'] + " | " + productos[i]['nombre_pedidor'];
+        var pedidor = productos[i]['id_pedidor'] + " | Mozo";
         colPedidor = $("<td>"+pedidor+"</td>");
         
         var estado = calcularEstado(productos[i]['fecha_p'], productos[i]['fecha_s']);
@@ -138,7 +138,7 @@ function listarConfirmados(data){
         colPromocion = $("<td>"+promociones[i]['nombre_promocion']+"</td>");
         colPrecio = $("<td> $"+promociones[i]['precio']+"</td>");
        
-        var pedidor = promociones[i]['id_pedidor'] + " | " + promociones[i]['nombre_pedidor'];
+        var pedidor = promociones[i]['id_pedidor'] + " | Mozo";
         colPedidor = $("<td>"+pedidor+"</td>");
         
         var estado = calcularEstado(promociones[i]['fecha_p'], promociones[i]['fecha_s']);
@@ -158,7 +158,7 @@ function controlAjaxMozo(){
     id_mesa = $('#id_mesa').val();
     $.ajax({
         data:  {'id_mesa':id_mesa},
-        url:   'http://localhost/IAW-PF/ajax_1/estadoMesa',
+        url:   'http://localhost/IAW-PF/mozo/estadoMesa',
         type:  'post',
         success: function (response){
             var respuesta = JSON.parse(response);
