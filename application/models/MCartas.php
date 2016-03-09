@@ -24,10 +24,6 @@ class MCartas extends CI_Model {
         $this->db->where('id', $id);
         return $this->db->update('Cartas', $data);  
     }
-    
-     public function eliminar_producto($id_carta, $id_producto){
-        
-    }
        
     public function eliminar($id){
         $this->db->trans_start();

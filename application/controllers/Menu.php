@@ -106,16 +106,30 @@ class Menu extends CI_Controller {
         }           
     }
     
+    public function alta_producto(){
+        $id_menu = $this->input->post('id_menu');
+        $id_producto = $this->input->post('id_producto');
+        $id_seccion = $this->input->post('id_seccion');
+        $id_lista_precio = $this->input->post('id_lista_precio');
+        
+        $retorno = $this->MInfoCartas->alta_producto($id_menu, $id_seccion, $id_producto, $id_lista_precio);
+        if ($retorno['valido']){
+            $resultado['data'] = $retorno['data'];
+        }else{
+            $resultado['error'] = 'El producto ya se encuentra agregado en el menú.';   
+        }
+        echo json_encode($resultado);
+    }
+    
     public function eliminar_producto(){
         $id_p_ic= $this->input->post('id_producto_infocarta');
         if ($this->MInfoCartas->eliminar_producto($id_p_ic)){
             $resultado['data'] = array();
-            echo json_encode($resultado);
         }else{
             $resultado['data'] = array();
             $resultado['error'] = 'El producto no pudo ser eliminado correctamente.';
-            echo json_encode($resultado);
         }
+        echo json_encode($resultado);
     }
     
     public function info_producto(){

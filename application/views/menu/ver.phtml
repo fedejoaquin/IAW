@@ -1,53 +1,87 @@
 <div class="txt-cabecera">
     Menúes actuales en miResto.
 </div>
-<div class="row center-align">
-    <?php echo 'ID: '.$datos['id'].'<br>'; ?>
-    <?php echo 'Nombre: '.$datos['nombre_menu'].'<br>'; ?>
-    <?php echo 'Creador: '.$datos['nombre_creador'].'<br>'; ?>
-</div>
 <div class="row">
-    <div class="col m8 s12 offset-m2">
+    <div class="col m10 s12 offset-m1">
         <ul class="collapsible" data-collapsible="accordion">
+            <li> 
+                <div class="collapsible-header">Datos generales</div>
+                <div class="collapsible-body">
+                    <div class="row">
+                        <div class="input-field col s4 m1">
+                            <input value="<?php echo $datos['id'];?>" type="text" readonly>
+                            <label>ID Carta</label>
+                        </div>
+                        <div class="input-field col s8 m4">
+                            <input value="<?php echo $datos['nombre_creador'];?>" type="text" readonly>
+                            <label>Creador</label>
+                        </div>
+                        <div class="input-field col s12 m4">
+                            <input value="<?php echo $datos['nombre_menu'];?>" type="text" readonly>
+                            <label>Nombre menú</label>
+                        </div>
+                    </div>
+                </div>
+            </li> 
             <li> 
                 <div class="collapsible-header">Restricción Horas</div>
                 <div class="collapsible-body">
-                    <div class="row center-align">
-                        <?php echo 'ID: '.$restricciones_hora['id'].'<br>'; ?>
-                        <?php echo 'Nombre: '.$restricciones_hora['nombre_restriccion'].'<br>'; ?>
-                        <?php echo 'Creador: '.$restricciones_hora['nombre_creador'].'<br>'; ?>
+                    <div class="row">
+                        <div class="input-field col s4 m1">
+                            <input value="<?php echo $restricciones_hora['id'];?>" type="text" readonly>
+                            <label>ID</label>
+                        </div>
+                        <div class="input-field col s8 m4">
+                            <input value="<?php echo $restricciones_hora['nombre_creador'];?>" type="text" readonly>
+                            <label>Creador</label>
+                        </div>
+                        <div class="input-field col s12 m4">
+                            <input value="<?php echo $restricciones_hora['nombre_restriccion'];?>" type="text" readonly>
+                            <label>Nombre restricción</label>
+                        </div>
                     </div>
-                    <table class="responsive-table">
-                        <thead>
-                            <td>00</td><td>01</td><td>02</td><td>03</td><td>04</td><td>05</td>
-                            <td>06</td><td>07</td><td>08</td><td>09</td><td>10</td><td>11</td>
-                            <td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td>
-                            <td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td>
-                        </thead>
-                        <tbody>
-                            <tr>
-                        <?php 
-                            for($i=0; $i<24; $i++){ 
-                                if ($restricciones_hora[$i] == FALSE){
-                                    $icon = '<i class="material-icons">clear</i>';  
-                                }else{
-                                    $icon = '<i class="material-icons">done</i>';
-                                }
-                                echo '<td> <a>'.$icon.'</a> </td>';
-                            }
-                        ?>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="row">
+                        <table class="responsive-table">
+                            <thead>
+                                <td>00</td><td>01</td><td>02</td><td>03</td><td>04</td><td>05</td>
+                                <td>06</td><td>07</td><td>08</td><td>09</td><td>10</td><td>11</td>
+                                <td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td>
+                                <td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                <?php 
+                                    for($i=0; $i<24; $i++){ 
+                                        if ($restricciones_hora[$i] == FALSE){
+                                            $icon = '<i class="material-icons">clear</i>';  
+                                        }else{
+                                            $icon = '<i class="material-icons">done</i>';
+                                        }
+                                        echo '<td> <a>'.$icon.'</a> </td>';
+                                    }
+                                ?>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div> 
                 </div>
             </li> 
             <li> 
                 <div class="collapsible-header">Restricción Días</div>
                 <div class="collapsible-body">
-                    <div class="row center-align">
-                        <?php echo 'ID: '.$restricciones_dia['id'].'<br>'; ?>
-                        <?php echo 'Nombre: '.$restricciones_dia['nombre_restriccion'].'<br>'; ?>
-                        <?php echo 'Creador: '.$restricciones_dia['nombre_creador'].'<br>'; ?>
+                    <div class="row">
+                        <div class="input-field col s4 m1">
+                            <input value="<?php echo $restricciones_dia['id'];?>" type="text" readonly>
+                            <label>ID</label>
+                        </div>
+                        <div class="input-field col s8 m4">
+                            <input value="<?php echo $restricciones_dia['nombre_creador'];?>" type="text" readonly>
+                            <label>Creador</label>
+                        </div>
+                        <div class="input-field col s12 m4">
+                            <input value="<?php echo $restricciones_dia['nombre_restriccion'];?>" type="text" readonly>
+                            <label>Nombre restricción</label>
+                        </div>
                     </div>
                     <table class="responsive-table">
                         <thead>

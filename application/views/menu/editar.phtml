@@ -2,27 +2,27 @@
     Editando menú en miResto.
 </div>
 <div class="row">
-    <div class="col m8 s12 offset-m2">
+    <div class="col m10 s12 offset-m1">
         <ul class="collapsible" data-collapsible="accordion">
             <li> 
                 <div class="collapsible-header">Datos generales</div>
                 <div class="collapsible-body">
                     <div class="row">
-                        <div class="input-field col s6">
-                            <input id="idMenu" value="<?php echo $datos['id'];?>" type="text" disabled>
+                        <div class="input-field col s4 m1">
+                            <input id="idMenu" value="<?php echo $datos['id'];?>" type="text" readonly>
                             <label>ID Carta</label>
                         </div>
-                        <div class="input-field col s6">
-                            <input id="creadorMenu" value="<?php echo $datos['nombre_creador'];?>" type="text" disabled>
+                        <div class="input-field col s8 m4">
+                            <input id="creadorMenu" value="<?php echo $datos['nombre_creador'];?>" type="text" readonly>
                             <label>Creador</label>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="input-field col s9">
+                        <div class="input-field col s10 m5">
                             <input id="nombreMenu" value="<?php echo $datos['nombre_menu'];?>" type="text">
                             <label>Nombre menú</label>
                         </div>
-                        <a class="input-field col s1 offset-s1 btn" onclick="cambiarNombre()"><i class="material-icons">done</i></a>
+                        <a class="input-field col s2 m1 btn" onclick="cambiarNombre()">
+                            <i class="material-icons">done</i>
+                        </a>
                     </div>
                 </div>
             </li> 
@@ -30,7 +30,7 @@
                 <div class="collapsible-header">Restricción Horas</div>
                 <div class="collapsible-body">
                     <div class="row input-field">
-                        <select id="selectHoras" class="col s9">
+                        <select id="selectHoras" class="col s10 m5">
                             <?php foreach ( $restricciones_hora as $row ){ 
                                     if ($row['id'] === $datos['id_restriccion_dia']){ ?>
                                         <option class="selected" value="<?php echo $row['id']; ?>"><?php echo $row['nombre_restriccion']; ?> </option>
@@ -40,7 +40,9 @@
                                   } 
                             ?>
                         </select>
-                        <a class="col s1 offset-s1 btn" onclick="cambiarHoras()"><i class="material-icons">done</i></a>
+                        <a class="col s2 m1 btn" onclick="cambiarHoras()">
+                            <i class="material-icons">done</i>
+                        </a>
                     </div>
                 </div>
             </li> 
@@ -48,7 +50,7 @@
                 <div class="collapsible-header">Restricción Dias</div>
                 <div class="collapsible-body">
                     <div class="row input-field">
-                        <select id="selectDias" class="col s9">
+                        <select id="selectDias" class="col s10 m5">
                             <?php foreach ( $restricciones_dia as $row ){ 
                                     if ($row['id'] === $datos['id_restriccion_hora']){ ?>
                                         <option class="selected" value="<?php echo $row['id']; ?>"><?php echo $row['nombre_restriccion']; ?> </option>
@@ -58,7 +60,9 @@
                                   } 
                             ?>
                         </select>
-                        <a class="col s1 offset-s1 btn" onclick="cambiarDias()"><i class="material-icons">done</i></a>
+                        <a class="col s2 m1 btn" onclick="cambiarDias()">
+                            <i class="material-icons">done</i>
+                        </a>
                     </div>
                 </div>
             </li>  
@@ -72,7 +76,7 @@
                         <thead>
                             <td>#ID</td><td>Seccion</td><td>Producto</td><td>Lista Precio</td><td>Precio</td><td>Acciones</td>
                         </thead>
-                        <tbody>
+                        <tbody id="tablaProductos">
                         <?php 
                             foreach($productos as $row){
                                 $id_producto_infocarta = $row['id_producto_infocarta'];
@@ -114,6 +118,9 @@
             <li> 
                 <div class="collapsible-header">Promociones</div>
                 <div class="collapsible-body">
+                    <div class="row center-align">
+                        <a class="btn waves-effect waves-green" onClick="preAltaPromocion()">Agregar Promoción</a>
+                    </div>
                     <table class="responsive-table">
                         <thead>
                         <td>#ID</td><td>Promoción</td><td>Precio</td><td>Acciones</td>
@@ -155,8 +162,9 @@
                 
             </tbody>
         </table>
-        <div class="divider"></div>
-        <div class="divider"></div>
+        <div class="row">
+            <div class="divider"></div>
+        </div>
         <div class="row">
             <div class="input-field col s12 m6">
                 <select id="selectSeccion">
@@ -168,7 +176,7 @@
                 <select id="selectListaPrecio">
                     
                 </select>
-                <label>Cambiar Lista Precio - Precio </label>
+                <label>Cambiar Lista Precio...</label>
             </div>
         </div>
         <div class="row center-align">
@@ -186,27 +194,55 @@
             </div>
         </div>
         <div class="row">
-            <div class="input-field col l4 s12">
+            <div class="input-field col m4 s12">
                 <select id="selectAltaProducto" onchange="seleccionaAltaProducto()">
                     <option value="-1" disabled selected>Sin resultados</option>
                 </select>
                 <label>Seleccionar producto.</label>   
             </div>
-           <div class="input-field col l4 s12">
-                <select id="selectAltaSeccion">
+           <div class="input-field col m4 s12">
+               <select id="selectAltaSeccion" disabled>
                     <option value="-1" disabled selected>Seleccione producto</option>
                 </select>
                 <label>Seleccionar sección.</label>   
             </div>
-            <div class="input-field col l4 s12">
-                <select id="selectAltaListaPrecio">
+            <div class="input-field col m4 s12">
+                <select id="selectAltaListaPrecio" disabled>
                     <option value="-1" disabled selected>Seleccione producto</option>
                 </select>
                 <label>Seleccionar lista precio.</label>   
             </div>
         </div>
         <div class="row center-align">
-            <a id="btnConfirmarEdicion" class="btn">Confirmar</a>
+            <a class="btn" onClick="postAltaProducto()">Confirmar</a>
+        </div>
+    </div>
+</div>
+
+<div id="altaPromocion" class="modal">
+    <div class="modal-content">
+        <div class="row">
+            <div class="input-field col m10 s12">
+                <select id="selectAltaPromocion" onchange="seleccionaAltaPromocion()">
+                </select>
+                <label>Seleccionar promoción.</label>   
+            </div>  
+            <div class="col m1 s2">
+                <a class="btn waves-effect waves-green"><i class="material-icons">info</i></a>
+            </div>
+        </div>
+        <div class="row">
+            <table class="responsive-table">
+                <thead>
+                    <td>#ID</td><td>Producto</td>
+                </thead>
+                <tbody id="tablaAltaPromocion">
+
+                </tbody>
+            </table>
+        </div>
+        <div class="row center-align">
+            <a class="btn" onClick="postAltaPromocion()">Agregar</a>
         </div>
     </div>
 </div>

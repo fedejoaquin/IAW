@@ -48,14 +48,14 @@ function vaciarCarrito(){
 function comentarProducto(posicion){
     datosComentario.id = posicion;
     datosComentario.tipo = 'producto';
-    $('#inputComentario').attr('value',productos[posicion]['comentarios']);
+    $('#inputComentario').val(productos[posicion]['comentarios']);
     $('#modalComentarios').openModal();
 }
 
 function comentarPromocion(posicion){
     datosComentario.id = posicion;
     datosComentario.tipo = 'promocion';
-    $('#inputComentario').attr('value',promociones[posicion]['comentarios']);
+    $('#inputComentario').val(promociones[posicion]['comentarios']);
     $('#modalComentarios').openModal();
 }
 
@@ -63,6 +63,10 @@ function enviarComentario(){
     var posicion =  datosComentario.id;
     var tipo = datosComentario.tipo;
     var comentario = $('#inputComentario').val();
+    
+    if (comentario.lenght === 0){
+        comentario = 'Sin comentarios.';
+    }
     
     if (tipo === 'promocion'){
         promociones[posicion]['comentarios'] = comentario;

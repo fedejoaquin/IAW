@@ -69,29 +69,93 @@ function cambiarHoras(){
 }
 
 function preAltaProducto(){
+    reset_modal_alta();
     $('#altaProducto').openModal();
 }
 
-function seleccionaAltaProducto(){
-    var id_producto = $('#selectAltaProducto').val();
+function preAltaPromocion(){
     $.ajax({
-            data:  {'id': id_producto },
-            url:   '/IAW-PF/menu/info_producto',
+            data:  {},
+            url:   '/IAW-PF/menu/promociones',
             type:  'post',
             error: function(response){
-                Materialize.toast('Se produjo un error en la conexión.', 5000,'toast-error');
-                Materialize.toast('El servidor no está respondiendo nuestra solicitud.', 5000,'toast-error');
-                Materialize.toast('No se puede obtener info del producto en este momento.', 5000,'toast-error');
+                Materialize.toast('Se produjo un error en la conexión.', 2500,'toast-error');
+                Materialize.toast('El servidor no está respondiendo nuestra solicitud.', 2500,'toast-error');
+                Materialize.toast('No se pueden obtener las promociones en este momento.', 2500,'toast-error');
             },
             success: function (response){
                 var respuesta = JSON.parse(response);
                 if (respuesta['error'] === undefined){
-                    rellenar_tabla_producto(id_producto_infocarta, respuesta['data']);
+                    listar_promociones(respuesta['data']);
                 }else{
-                    Materialize.toast('Se produjo un error al intentar modificar el producto.', 2500,'toast-error');
+                    Materialize.toast('Se produjo un error al obtener información de las promociones.', 2500,'toast-error');
                 }
             }
     });
+}
+
+function seleccionaAltaProducto(){
+    var id_producto = $('#selectAltaProducto').val();
+    if (id_producto !== '-1'){
+        $.ajax({
+                data:  {'id': id_producto },
+                url:   '/IAW-PF/menu/info_producto',
+                type:  'post',
+                error: function(response){
+                    Materialize.toast('Se produjo un error en la conexión.', 2500,'toast-error');
+                    Materialize.toast('El servidor no está respondiendo nuestra solicitud.', 2500,'toast-error');
+                    Materialize.toast('No se puede obtener info del producto en este momento.', 2500,'toast-error');
+                },
+                success: function (response){
+                    var respuesta = JSON.parse(response);
+                    if (respuesta['error'] === undefined){
+                        autocompletar_info_producto(respuesta['data']);
+                    }else{
+                        Materialize.toast('Se produjo un error al obtener información del producto.', 2500,'toast-error');
+                    }
+                }
+        });
+    }
+}
+
+function postAltaProducto(){
+    var id_producto = $('#selectAltaProducto').val();
+    var id_seccion = $('#selectAltaSeccion').val();
+    var id_listaprecio = $('#selectAltaListaPrecio').val();
+    var id_menu = $('#idMenu').val();
+    
+    if (id_producto !== '-1'){
+        if (id_seccion !== '-1'){
+            if (id_listaprecio !== '-1'){
+                $.ajax({
+                        data:  {'id_menu': id_menu, 'id_producto': id_producto, 'id_seccion': id_seccion, 'id_lista_precio': id_listaprecio },
+                        url:   '/IAW-PF/menu/alta_producto',
+                        type:  'post',
+                        error: function(response){
+                            Materialize.toast('Se produjo un error en la conexión.', 2500,'toast-error');
+                            Materialize.toast('El servidor no está respondiendo nuestra solicitud.', 2500,'toast-error');
+                            Materialize.toast('No se puede modificar el menú en este momento.', 2500,'toast-error');
+                        },
+                        success: function (response){
+                            var respuesta = JSON.parse(response);
+                            if (respuesta['error'] === undefined){
+                                agregar_nuevo_producto(respuesta['data']);
+                                Materialize.toast('Menú modificado exitosamente.', 2500,'toast-ok');
+                            }else{
+                                Materialize.toast(respuesta['error'], 2500,'toast-error');
+                            }
+                        }
+                        
+                });
+            }else{
+                Materialize.toast('Debe seleccionar una lista de precio.', 2500,'toast-error');
+            }
+        }else{
+            Materialize.toast('Debe seleccionar una sección.', 2500,'toast-error');
+        }
+    }else{
+        Materialize.toast('Debe seleccionar un producto.', 2500,'toast-error');   
+    }
 }
 
 function autocompletar(){
