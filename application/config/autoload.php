@@ -126,4 +126,6 @@ $autoload['language'] = array();
 |
 |	$autoload['model'] = array('first_model' => 'first');
 */
-$autoload['model'] = array('MEmpleados','MPedidores','MRoles','MCartas','MMesasPedidores', 'MPedidos','MRestricciones','MInfoCartas', 'MSecciones', 'MListaPrecios', 'MProductos');
+$autoload['model'] = array('MEmpleados','MPedidores','MRoles','MCartas','MMesasPedidores', 
+    'MPedidos','MRestricciones','MInfoCartas', 'MSecciones', 'MListaPrecios', 'MProductos',
+    'MPromociones');

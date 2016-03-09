@@ -1,21 +1,37 @@
-$( document ).ready(function(){
-    controlAjax();
-});
+var cliente_vista = {
 
-function listarCarrito(){
+mensaje : function(mensaje, tiempo, clase){
+    Materialize.toast(mensaje, tiempo ,clase);
+},
+
+calcular_estado : function (fecha_p, fecha_s){
+    var salida;
+    if (fecha_s !== null){
+        salida = 'Para entregar';
+    }else{
+        if (fecha_p !== null){
+            salida = 'En cocina...';
+        }else{
+            salida = 'Procesando...';
+        }
+    }
+    return salida;
+},
+
+listar_carrito : function (){
     $('#tablaCarrito').empty();
     
-    for(var i=0; i<productos.length;i++){
+    for(var i=0; i<cliente.productos.length;i++){
         row = $("<tr></tr>");
         
         colImagen = $("<td></td>");
-        colProducto = $("<td>"+productos[i]['producto']+"</td>");
-        colPrecio = $("<td> $"+productos[i]['precio']+"</td>");
-        colComentarios = $("<td>"+productos[i]['comentarios']+ "</td>");
+        colProducto = $("<td>"+cliente.productos[i]['producto']+"</td>");
+        colPrecio = $("<td> $"+cliente.productos[i]['precio']+"</td>");
+        colComentarios = $("<td>"+cliente.productos[i]['comentarios']+ "</td>");
         colAcciones = $("<td></td>");
         
         img = $("<img/>");
-        $(img).attr("src", "http://localhost/IAW-PF/img/comidas/"+productos[i]['id']+".png");
+        $(img).attr("src", "http://localhost/IAW-PF/img/comidas/"+cliente.productos[i]['id']+".png");
         
         icon_d = $("<i></i>");
         $(icon_d).attr("class", "material-icons");
@@ -27,11 +43,11 @@ function listarCarrito(){
         
         link_d = $("<a></a>");
         $(link_d).attr("class", "btn waves-effects");
-        $(link_d).attr("onclick", "quitarProducto("+i+")");
+        $(link_d).attr("onclick", "cliente.producto.quitar("+i+")");
                
         link_c = $("<a></a>");
         $(link_c).attr("class", "btn waves-effects");
-        $(link_c).attr("onclick", "comentarProducto("+i+")");
+        $(link_c).attr("onclick", "cliente.producto.comentar("+i+")");
         
         $(colImagen).append(img);
         $(link_d).append(icon_d);
@@ -47,13 +63,13 @@ function listarCarrito(){
         $('#tablaCarrito').append(row);
     }
     
-    for(var i=0; i<promociones.length;i++){
+    for(var i=0; i<cliente.promociones.length;i++){
         row = $("<tr></tr>");
         
         colImagen = $("<td></td>");
-        colNombre = $("<td>"+promociones[i]['nombre']+"</td>");
-        colPrecio = $("<td> $"+promociones[i]['precio']+"</td>");
-        colComentarios = $("<td>"+promociones[i]['comentarios']+ "</td>");
+        colNombre = $("<td>"+cliente.promociones[i]['nombre']+"</td>");
+        colPrecio = $("<td> $"+cliente.promociones[i]['precio']+"</td>");
+        colComentarios = $("<td>"+cliente.promociones[i]['comentarios']+ "</td>");
         colAcciones = $("<td></td>");
         
         img = $("<img/>");
@@ -69,11 +85,11 @@ function listarCarrito(){
         
         link_d = $("<a></a>");
         $(link_d).attr("class", "btn waves-effects");
-        $(link_d).attr("onclick", "quitarPromocion("+i+")");
+        $(link_d).attr("onclick", "cliente.promocion.quitar("+i+")");
         
         link_c = $("<a></a>");
         $(link_c).attr("class", "btn waves-effects ");
-        $(link_c).attr("onclick", "comentarPromocion("+i+")");
+        $(link_c).attr("onclick", "cliente.promocion.comentar("+i+")");
         
         $(colImagen).append(img);
         $(link_d).append(icon_d);
@@ -88,24 +104,11 @@ function listarCarrito(){
         
         $('#tablaCarrito').append(row);
     }  
-}
+},
 
-function calcularEstado(fecha_p, fecha_s){
-    var salida;
-    if (fecha_s !== null){
-        salida = 'Para entregar';
-    }else{
-        if (fecha_p !== null){
-            salida = 'En cocina...';
-        }else{
-            salida = 'Procesando...';
-        }
-    }
-    return salida;
-}
-
-function listarConfirmados(data){
-    listarCarrito();
+listar_confirmados : function(data){
+    cliente_vista.listar_carrito();
+    
     var productos = data['productos'];
     var promociones = data['promociones'];
         
@@ -120,7 +123,7 @@ function listarConfirmados(data){
         var pedidor = productos[i]['id_pedidor'] + " | " + productos[i]['nombre_pedidor'];
         colPedidor = $("<td>"+pedidor+"</td>");
         
-        var estado = calcularEstado(productos[i]['fecha_p'], productos[i]['fecha_s']);
+        var estado = cliente_vista.calcular_estado(productos[i]['fecha_p'], productos[i]['fecha_s']);
         colEstado = $("<td>"+estado+"</td>");
         colEstado.attr('id', 'col_'+i);
 
@@ -141,7 +144,7 @@ function listarConfirmados(data){
         var pedidor = promociones[i]['id_pedidor'] + " | " + promociones[i]['nombre_pedidor'];
         colPedidor = $("<td>"+pedidor+"</td>");
         
-        var estado = calcularEstado(promociones[i]['fecha_p'], promociones[i]['fecha_s']);
+        var estado = cliente_vista.calcular_estado(promociones[i]['fecha_p'], promociones[i]['fecha_s']);
         colEstado = $("<td>"+estado+"</td>");
         colEstado.attr('id', 'col_'+i);
            
@@ -152,19 +155,19 @@ function listarConfirmados(data){
 
        $('#tablaConfirmados').append(row);
     }
+},
+
+comentar : function(comentario){
+    $('#inputComentario').val(comentario);
+    $('#modalComentarios').openModal();
 }
 
-function controlAjax(){
-    $.ajax({
-        data:  {},
-        url:   '/IAW-PF/clientes/estado_mesa',
-        type:  'get',
-        success: function (response){
-            var respuesta = JSON.parse(response);
-            if (respuesta['error'] === undefined){
-                listarConfirmados(respuesta['data']);
-            }
-        }
-    });
-    setTimeout("controlAjax()",10000);
-}
+} //FIN CLIENTE_VISTA
+
+
+
+
+
+
+
+

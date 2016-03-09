@@ -121,6 +121,19 @@ class Menu extends CI_Controller {
         echo json_encode($resultado);
     }
     
+    public function alta_promocion(){
+        $id_menu = $this->input->post('id_menu');
+        $id_producto = $this->input->post('id_promocion');
+       
+        $retorno = $this->MInfoCartas->alta_promocion($id_menu, $id_producto);
+        if ($retorno['valido']){
+            $resultado['data'] = $retorno['data'];
+        }else{
+            $resultado['error'] = 'La promoción ya se encuentra agregada en el menú.';   
+        }
+        echo json_encode($resultado);
+    }
+    
     public function eliminar_producto(){
         $id_p_ic= $this->input->post('id_producto_infocarta');
         if ($this->MInfoCartas->eliminar_producto($id_p_ic)){
@@ -128,6 +141,19 @@ class Menu extends CI_Controller {
         }else{
             $resultado['data'] = array();
             $resultado['error'] = 'El producto no pudo ser eliminado correctamente.';
+        }
+        echo json_encode($resultado);
+    }
+    
+    public function eliminar_promocion(){
+        $id_carta = $this->input->post('id_menu');
+        $id_promocion = $this->input->post('id_promocion');
+        
+        if ($this->MInfoCartas->eliminar_promocion($id_carta, $id_promocion)){
+            $resultado['data'] = array();
+        }else{
+            $resultado['data'] = array();
+            $resultado['error'] = 'La promoción no pudo ser eliminada correctamente.';
         }
         echo json_encode($resultado);
     }
@@ -153,6 +179,17 @@ class Menu extends CI_Controller {
         $datos = $this->MProductos->buscar($txt);
         $resultado['data']['productos'] = $this->MProductos->buscar($txt);
         $resultado['data']['cantidad'] = count($datos);
+        echo json_encode($resultado);
+    }
+    
+    public function listar_promociones(){
+        $resultado['data']['promociones'] = $this->MPromociones->listar();
+        echo json_encode($resultado);
+    }
+    
+    public function info_promocion(){
+        $id_promocion = $this->input->post('id_promocion');
+        $resultado['data']['promocion'] = $this->MPromociones->info_promocion($id_promocion);
         echo json_encode($resultado);
     }
 }

@@ -6,7 +6,7 @@
     <div class="col m8 s12 offset-m2">
         <ul class="tabs">
             <li class="tab"><a class="active" href="#menu">MENU</a></li>
-            <li class="tab"><a href="#pedidos" onclick="listarCarrito()">PEDIDOS</a></li>  
+            <li class="tab"><a href="#pedidos" onclick="cliente_vista.listar_carrito()">PEDIDOS</a></li>  
         </ul>
     </div>
 </div>
@@ -25,30 +25,30 @@
                     <li> 
                         <div class="collapsible-header"> <?php echo $seccion_anterior; ?> </div>
                         <div class="collapsible-body">
-                        <table class="responsive-table">
-                        <tbody>          
-                        <?php
-                            //Mientras no cambie de encabezado, imprimo los elementos dentro
-                            while($indice<$cantidad && $seccion_anterior === $info_carta[$indice]['nombre_seccion']){
-                                $row = $info_carta[$indice++];
-                                $np = $row['nombre_producto'];
-                                $id = $row['id_producto'];
-                                $p = $row['precio'];
-                                $id_lp = $row['id_lista_precio'];
-                        ?>
-                            <tr>
-                                <td> <img src="<?php echo site_url().'img/comidas/'.$id.'.png'; ?>"/> </td>
-                                <td><?php echo $np; ?></td>
-                                <td><?php echo '$'.$p; ?></td>
-                                <td> 
-                                    <a class="btn waves-effect waves-green" href="#" onclick="<?php echo "agregarProducto(".$id.",'".$np."',".$p.",".$id_lp." )"; ?>"><i class="material-icons">add</i></a>
-                                </td>
-                            </tr>
-                        <?php
-                            }
-                        ?>
-                        </tbody>
-                        </table>
+                            <table class="responsive-table">
+                            <tbody>          
+                            <?php
+                                //Mientras no cambie de encabezado, imprimo los elementos dentro
+                                while($indice<$cantidad && $seccion_anterior === $info_carta[$indice]['nombre_seccion']){
+                                    $row = $info_carta[$indice++];
+                                    $np = $row['nombre_producto'];
+                                    $id = $row['id_producto'];
+                                    $p = $row['precio'];
+                                    $id_lp = $row['id_lista_precio'];
+                            ?>
+                                <tr>
+                                    <td> <img src="<?php echo site_url().'img/comidas/'.$id.'.png'; ?>"/> </td>
+                                    <td><?php echo $np; ?></td>
+                                    <td><?php echo '$'.$p; ?></td>
+                                    <td> 
+                                        <a class="btn waves-effect waves-green" onclick="<?php echo "cliente.producto.agregar(".$id.",'".$np."',".$p.",".$id_lp." )"; ?>"><i class="material-icons">add</i></a>
+                                    </td>
+                                </tr>
+                            <?php
+                                }
+                            ?>
+                            </tbody>
+                            </table>
                         </div>
                     </li> 
                     
@@ -68,31 +68,35 @@
                                 $precio_promo = $info_promociones[$indice]['precio'];
                                 $nom_promo = $info_promociones[$indice]['nombre_promocion'];
                             ?>
-                            <div class="row center-align">
-                                Precio promoción: <?php echo '$'.$precio_promo; ?>
-                                <a class="btn waves-effect waves-green" href="#" onclick="<?php echo "agregarPromocion(".$id_promo.",'".$nom_promo."',".$precio_promo.")"; ?>">
+                            <div class="row">
+                                <div class="input-field col s8 m1 offset-m5">
+                                    <input value="<?php echo '$'.$precio_promo; ?>" type="text" readonly>
+                                    <label>Costo</label>
+                                </div>
+                                <a class="input-field col s2 m1 btn" onclick="<?php echo "cliente.promocion.agregar(".$id_promo.",'".$nom_promo."',".$precio_promo.")"; ?>">
                                     <i class="material-icons">add</i>
                                 </a>
                             </div>
-                            
-                        <table class="responsive-table">
-                        <tbody>  
-                        <?php
-                            //Mientras no cambie de encabezado, imprimo los elementos dentro
-                            while($indice<$cantidad && $promo_anterior === $info_promociones[$indice]['nombre_promocion']){
-                                $row = $info_promociones[$indice++];
-                                $np = $row['nombre_producto'];
-                                $id = $row['id_producto'];
-                        ?>
-                            <tr>
-                                <td> <img src="<?php echo site_url().'img/comidas/'.$id.'.png'; ?>"/> </td>
-                                <td><?php echo $np; ?></td>
-                            </tr>
-                        <?php
-                            }
-                        ?>
-                        </tbody>
-                        </table>
+                            <div class="row">
+                                <table class="responsive-table">
+                                <tbody>  
+                                <?php
+                                    //Mientras no cambie de encabezado, imprimo los elementos dentro
+                                    while($indice<$cantidad && $promo_anterior === $info_promociones[$indice]['nombre_promocion']){
+                                        $row = $info_promociones[$indice++];
+                                        $np = $row['nombre_producto'];
+                                        $id = $row['id_producto'];
+                                ?>
+                                    <tr>
+                                        <td> <img src="<?php echo site_url().'img/comidas/'.$id.'.png'; ?>"/> </td>
+                                        <td><?php echo $np; ?></td>
+                                    </tr>
+                                <?php
+                                    }
+                                ?>
+                                </tbody>
+                                </table>
+                            </div>
                         </div>
                     </li> 
             <?php       
@@ -109,8 +113,8 @@
                 <div class="collapsible-header">Sin Confirmar</div>
                 <div class="collapsible-body">
                     <div class="row center-align">
-                        <a class="btn waves-effect" onclick="confirmarPedido()">Confirmar pedidos</a>
-                        <a class="btn waves-effect" onclick="vaciarCarrito()">Vaciar carrito</a>
+                        <a class="btn waves-effect" onclick="cliente.confirmar_pedido()">Confirmar pedidos</a>
+                        <a class="btn waves-effect" onclick="cliente.vaciar_carrito()">Vaciar carrito</a>
                     </div>
                     <table class="responsive-table">
                         <tbody id="tablaCarrito">  
@@ -192,6 +196,6 @@
         <input id="inputComentario" placeholder="Sin comentarios" type="text" maxlength="85" autocomplete="off">
     </div>
     <div class="modal-footer">
-        <a onClick="enviarComentario()" class=" modal-action modal-close waves-effect waves-green btn-flat">OK</a>
+        <a onClick="cliente.enviarComentario()" class=" modal-action modal-close waves-effect waves-green btn-flat">OK</a>
     </div>
 </div>
