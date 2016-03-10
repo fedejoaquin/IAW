@@ -1,6 +1,9 @@
 <?php 
 class MCartas extends CI_Model {
-    
+    /**
+     * Computa la edición del campo nombre por $nombre, de la carta cuyo id es $id.
+     * @return True o False indicando éxito o falla en la modificación.
+     */
     public function editar_nombre($id, $nombre){
         $data = array(
             'nombre' => $nombre,
@@ -9,7 +12,11 @@ class MCartas extends CI_Model {
         return $this->db->update('Cartas', $data);  
     }
     
-     public function editar_horas($id, $id_horas){
+    /**
+     * Computa la edición del campo restricción hora por $id_horas, de la carta cuyo id es $id.
+     * @return True o False indicando éxito o falla en la modificación.
+     */
+    public function editar_horas($id, $id_horas){
         $data = array(
             'id_restriccion_hora' => $id_horas,
         );
@@ -17,14 +24,24 @@ class MCartas extends CI_Model {
         return $this->db->update('Cartas', $data);  
     }
     
-     public function editar_dias($id, $id_dias){
+    /**
+     * Computa la edición del campo restricción día por $id_dias, de la carta cuyo id es $id.
+     * @return True o False indicando éxito o falla en la modificación.
+     */
+    public function editar_dias($id, $id_dias){
         $data = array(
             'id_restriccion_dia' => $id_dias,
         );
         $this->db->where('id', $id);
         return $this->db->update('Cartas', $data);  
     }
-       
+    
+    /**
+     * Computa la eliminación de una carta completa cuyo id es $id; para esto elimina todos los registros de productos y secciones
+     * de InfoCarta, así como también el registro en Cartas. La eliminación es controlada mediante transacciones, por lo que
+     * cualquier falla hace fallar la eliminación por completo.
+     * @return True o False indicando éxito o falla en la eliminación.
+     */
     public function eliminar($id){
         $this->db->trans_start();
         
@@ -47,6 +64,10 @@ class MCartas extends CI_Model {
         }
     }
     
+    /**
+     * Computa y retorna todas las cartas disponibles en la base de datos.
+     * @return Array(Id, Nombre_menu, Nombre_creador)
+     */
     public function get_cartas(){
         $consulta = 'SELECT c.id, c.nombre as nombre_menu, e.nombre as nombre_creador ';
         $consulta .= 'FROM Cartas c LEFT JOIN Empleados e ON e.id = c.creador ';
@@ -160,6 +181,7 @@ class MCartas extends CI_Model {
     }
         
     /**
+     * Computa y retorna todos los datos asociados a una carta cuyo id es $id.
      * @return Array(Id, Nombre_menu, Nombre_creador, Id_restriccion_dia, Id_restriccion_hora)
      */
     public function get_datos($id){
@@ -174,7 +196,7 @@ class MCartas extends CI_Model {
     }
     
     /**
-     * 
+     * Computa y retorna la restricción de hora que tiene una carta cuyo id es $id.
      * @return Array(Id, Nombre_restriccion, Nombre_creador, 0,1,2,3,...,23)
      */
     public function get_restriccion_hora($id_carta){
@@ -192,7 +214,7 @@ class MCartas extends CI_Model {
     }
     
     /**
-     * 
+     * Computa y retorna la restricción de dia que tiene una carta cuyo id es $id.
      * @return Array(Id, Nombre_restriccion, Nombre_creador, 0,1,2,...,6)
      */
     public function get_restriccion_dia($id_carta){
@@ -209,7 +231,7 @@ class MCartas extends CI_Model {
     }  
     
     /**
-     * 
+     * Computa y retorna los productos que forman parte de una carta cuyo id es $id.
      * @return Array(ID_producto_infocarta, Id_producto, Nombre_producto, Seccion_nombre, Nombre_lista_precio, Precio_producto)
      */
     public function get_productos($id_carta){
@@ -228,7 +250,7 @@ class MCartas extends CI_Model {
     }
     
     /**
-     * 
+     * Computa y retorna las promociones que forman parte de una carta cuyo id es $id.
      * @return Array(Id, Nombre, Precio)
      */
     public function get_promociones($id_carta){
@@ -241,4 +263,4 @@ class MCartas extends CI_Model {
         
         return $resultado;
     }
- }
+}

@@ -3,7 +3,28 @@ var menu = {
 idMenu : "",
 nombreMenu : "",
 
-//Funcion cambiar nombre
+eliminar : function(id){
+   $.ajax({
+        data:  {'id_menu': id },
+        url:   '/IAW-PF/menu/eliminar',
+        type:  'post',
+        error: function(response){
+            menu_vista.mensaje('Se produjo un error en la conexión.', 2500,'toast-error');
+            menu_vista.mensaje('El servidor no está respondiendo nuestra solicitud.', 2500,'toast-error');
+            menu_vista.mensaje('El no puede ser eliminado en este momento.', 2500,'toast-error');
+        },
+        success: function (response){
+            var respuesta = JSON.parse(response);
+            if (respuesta['error'] === undefined){
+                menu_vista.eliminar(id);
+                menu_vista.mensaje('El menú fue eliminado exitosamente.', 2500,'toast-ok'); 
+            }else{
+                menu_vista.mensaje(respuesta['error'], 2500,'toast-error');
+            }
+        }
+    });
+},
+
 cambiarNombre : function(){
     var id = $('#idMenu').val();
     var nombre_nuevo = $('#nombreMenu').val();

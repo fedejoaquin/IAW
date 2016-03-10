@@ -1,17 +1,9 @@
 <?php
 class MListaPrecios extends CI_Model{
     
-    public function get_precios_para_producto($id){
-        $consulta = 'SELECT ilp.id_lista_precio, lp.nombre as nombre_lista_precio, ilp.precio as precio_producto ';
-        $consulta .= 'FROM info_lista_precio ilp LEFT JOIN lista_precio lp ON ilp.id_lista_precio = lp.id ';
-        $consulta .= 'WHERE ilp.id_producto = '.$id;
-       
-        $query = $this->db->query($consulta);
-        $resultado = $query->result_array();
-        
-        return $resultado;
-    }
-    
+    /**
+     * ESTO DEBE IR EN PRODUCTO NO EN LISTA DE PRECIOS
+     */
     public function get_productos (){
         $consulta = "SELECT * FROM Productos";
         $resultado = $this->db->query($consulta)->result_array();
@@ -27,8 +19,24 @@ class MListaPrecios extends CI_Model{
         return $resultado;
     }
     
+    /**
+     * Computa y retorna todas las listas de precios que se pueden asociar a un producto cuyo id es $id.
+     * @return Array(Id_lista_precio, Nombre_lista_precio, Precio_producto)
+     */
+    public function get_precios_para_producto($id){
+        $consulta = 'SELECT ilp.id_lista_precio, lp.nombre as nombre_lista_precio, ilp.precio as precio_producto ';
+        $consulta .= 'FROM info_lista_precio ilp LEFT JOIN lista_precio lp ON ilp.id_lista_precio = lp.id ';
+        $consulta .= 'WHERE ilp.id_producto = '.$id;
+       
+        $query = $this->db->query($consulta);
+        $resultado = $query->result_array();
+        
+        return $resultado;
+    }
     
-    
+    /**
+     * WTF ??????????????????????????????????????????????
+     */
     public function get_listas_productos($productos){
         //Obtenemos las listas de precios.
         $listasPrecios = $this->get_lista_precios();

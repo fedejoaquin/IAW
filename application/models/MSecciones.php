@@ -2,7 +2,7 @@
 class MSecciones extends CI_Model {
     
     /**
-     * Retorna todas las secciones disponibles en la base de datos.
+     * Computa y retorna todas las secciones disponibles.
      * @return Array(Id, Nombre)
      */
     public function get_secciones(){

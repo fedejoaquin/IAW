@@ -17,7 +17,7 @@
                     $nm = $row['nombre_menu'];
                     $nc = $row['nombre_creador'];
             ?>
-                <tr>
+                <tr id="<?php echo 'fm'.$id; ?>">
                     <td><?php echo $id; ?></td>
                     <td><?php echo $nm; ?></td>
                     <td><?php echo $nc; ?></td>
@@ -30,7 +30,7 @@
                             <li>¿Confirma?</li>
                             <li class="divider"></li>
                             <li>
-                                <a href="<?php echo site_url()."menu/eliminar/".$id; ?>">Sí</a>
+                                <a onClick="<?php echo "menu.eliminar(".$id.")"; ?>">Sí</a>
                             </li>
                             <li>
                                 <a>No</a>

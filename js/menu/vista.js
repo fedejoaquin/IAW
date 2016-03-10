@@ -1,5 +1,9 @@
 var menu_vista = {
     
+eliminar : function(id){
+    $('#fm'+id).remove();
+},
+    
 mensaje : function(mensaje, tiempo, clase){
     Materialize.toast(mensaje, tiempo ,clase);
 },
