@@ -44,3 +44,14 @@
     color : red;
 }
 
+.btn-adminmesa{
+        width: 175px;
+}
+
+.err-vincular{
+    color: red;
+}
+
+.pass-vincular{
+    color: green;
+}

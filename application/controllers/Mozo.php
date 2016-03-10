@@ -82,7 +82,7 @@ class Mozo extends CI_Controller {
      * @return Promociones --> Array(Id_pedidor,Nombre_pedidor, Nombre_promocion, Precio, Fecha_e, Fecha_p, Fecha_s)
      * 
      */
-    public function estadoMesa(){
+    public function estado_mesa(){
         $id_mesa = $this->input->post('id_mesa');
         $resultado = array();
         if($this->chequear_vinculado()){

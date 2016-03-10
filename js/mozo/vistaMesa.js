@@ -1,21 +1,35 @@
-$( document ).ready(function(){
-    controlAjaxMozo();
-});
+var mozo_mesa_vista = {
+ mensaje : function(mensaje, tiempo, clase){
+    Materialize.toast(mensaje, tiempo ,clase);
+},
 
-function listarCarrito(){
+calcular_estado : function (fecha_p, fecha_s){
+    var salida;
+    if (fecha_s !== null){
+        salida = 'Para entregar';
+    }else{
+        if (fecha_p !== null){
+            salida = 'En cocina...';
+        }else{
+            salida = 'Procesando...';
+        }
+    }
+    return salida;
+},
+
+listar_carrito : function (){
     $('#tablaCarrito').empty();
-    
-    for(var i=0; i<productos.length;i++){
+    for(var i=0; i<mozo_mesa.productos.length;i++){
         row = $("<tr></tr>");
         
         colImagen = $("<td></td>");
-        colProducto = $("<td>"+productos[i]['producto']+"</td>");
-        colPrecio = $("<td> $"+productos[i]['precio']+"</td>");
-        colComentarios = $("<td>"+productos[i]['comentarios']+ "</td>");
+        colProducto = $("<td>"+mozo_mesa.productos[i]['producto']+"</td>");
+        colPrecio = $("<td> $"+mozo_mesa.productos[i]['precio']+"</td>");
+        colComentarios = $("<td>"+mozo_mesa.productos[i]['comentarios']+ "</td>");
         colAcciones = $("<td></td>");
         
         img = $("<img/>");
-        $(img).attr("src", "http://localhost/IAW-PF/img/comidas/"+productos[i]['id']+".png");
+        $(img).attr("src", "http://localhost/IAW-PF/img/comidas/"+mozo_mesa.productos[i]['id']+".png");
         
         icon_d = $("<i></i>");
         $(icon_d).attr("class", "material-icons");
@@ -27,11 +41,11 @@ function listarCarrito(){
         
         link_d = $("<a></a>");
         $(link_d).attr("class", "btn waves-effects");
-        $(link_d).attr("onclick", "quitarProducto("+i+")");
+        $(link_d).attr("onclick", "mozo_mesa.producto.quitar("+i+")");
                
         link_c = $("<a></a>");
         $(link_c).attr("class", "btn waves-effects");
-        $(link_c).attr("onclick", "comentarProducto("+i+")");
+        $(link_c).attr("onclick", "mozo_mesa.producto.comentar("+i+")");
         
         $(colImagen).append(img);
         $(link_d).append(icon_d);
@@ -47,13 +61,13 @@ function listarCarrito(){
         $('#tablaCarrito').append(row);
     }
     
-    for(var i=0; i<promociones.length;i++){
+    for(var i=0; i<mozo_mesa.promociones.length;i++){
         row = $("<tr></tr>");
         
         colImagen = $("<td></td>");
-        colNombre = $("<td>"+promociones[i]['nombre']+"</td>");
-        colPrecio = $("<td> $"+promociones[i]['precio']+"</td>");
-        colComentarios = $("<td>"+promociones[i]['comentarios']+ "</td>");
+        colNombre = $("<td>"+mozo_mesa.promociones[i]['nombre']+"</td>");
+        colPrecio = $("<td> $"+mozo_mesa.promociones[i]['precio']+"</td>");
+        colComentarios = $("<td>"+mozo_mesa.promociones[i]['comentarios']+ "</td>");
         colAcciones = $("<td></td>");
         
         img = $("<img/>");
@@ -69,11 +83,11 @@ function listarCarrito(){
         
         link_d = $("<a></a>");
         $(link_d).attr("class", "btn waves-effects");
-        $(link_d).attr("onclick", "quitarPromocion("+i+")");
+        $(link_d).attr("onclick", "mozo_mesa.promocion.quitar("+i+")");
         
         link_c = $("<a></a>");
         $(link_c).attr("class", "btn waves-effects ");
-        $(link_c).attr("onclick", "comentarPromocion("+i+")");
+        $(link_c).attr("onclick", "mozo_mesa.promocion.comentar("+i+")");
         
         $(colImagen).append(img);
         $(link_d).append(icon_d);
@@ -88,24 +102,11 @@ function listarCarrito(){
         
         $('#tablaCarrito').append(row);
     }  
-}
+},
 
-function calcularEstado(fecha_p, fecha_s){
-    var salida;
-    if (fecha_s !== null){
-        salida = 'Para entregar';
-    }else{
-        if (fecha_p !== null){
-            salida = 'En cocina...';
-        }else{
-            salida = 'Procesando...';
-        }
-    }
-    return salida;
-}
-
-function listarConfirmados(data){
-    listarCarrito();
+listar_confirmados : function(data){
+    mozo_mesa_vista.listar_carrito();
+    
     var productos = data['productos'];
     var promociones = data['promociones'];
         
@@ -117,10 +118,10 @@ function listarConfirmados(data){
         colProducto = $("<td>"+productos[i]['nombre_producto']+"</td>");
         colPrecio = $("<td> $"+productos[i]['precio']+"</td>");
        
-        var pedidor = productos[i]['id_pedidor'] + " | Mozo";
+        var pedidor = productos[i]['id_pedidor'] + " | " + productos[i]['nombre_pedidor'];
         colPedidor = $("<td>"+pedidor+"</td>");
         
-        var estado = calcularEstado(productos[i]['fecha_p'], productos[i]['fecha_s']);
+        var estado = mozo_mesa_vista.calcular_estado(productos[i]['fecha_p'], productos[i]['fecha_s']);
         colEstado = $("<td>"+estado+"</td>");
         colEstado.attr('id', 'col_'+i);
 
@@ -138,10 +139,10 @@ function listarConfirmados(data){
         colPromocion = $("<td>"+promociones[i]['nombre_promocion']+"</td>");
         colPrecio = $("<td> $"+promociones[i]['precio']+"</td>");
        
-        var pedidor = promociones[i]['id_pedidor'] + " | Mozo";
+        var pedidor = promociones[i]['id_pedidor'] + " | " + promociones[i]['nombre_pedidor'];
         colPedidor = $("<td>"+pedidor+"</td>");
         
-        var estado = calcularEstado(promociones[i]['fecha_p'], promociones[i]['fecha_s']);
+        var estado = mozo_mesa_vista.calcular_estado(promociones[i]['fecha_p'], promociones[i]['fecha_s']);
         colEstado = $("<td>"+estado+"</td>");
         colEstado.attr('id', 'col_'+i);
            
@@ -152,20 +153,10 @@ function listarConfirmados(data){
 
        $('#tablaConfirmados').append(row);
     }
-}
+},
 
-function controlAjaxMozo(){
-    id_mesa = $('#id_mesa').val();
-    $.ajax({
-        data:  {'id_mesa':id_mesa},
-        url:   'http://localhost/IAW-PF/mozo/estadoMesa',
-        type:  'post',
-        success: function (response){
-            var respuesta = JSON.parse(response);
-            if (respuesta['error'] === undefined){
-                listarConfirmados(respuesta['data']);
-            }
-        }
-    });
-    setTimeout("controlAjaxMozo()",10000);
+comentar : function(comentario){
+    $('#inputComentario').val(comentario);
+    $('#modalComentarios').openModal();
 }
+};

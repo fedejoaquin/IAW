@@ -87,7 +87,7 @@ class MPedidos extends CI_Model{
     public function getNotificaciones($id_mozo){
         $consulta = "SELECT m.id,m.numero, n.producto,n.id as not_id,n.comentarios "
                 . "FROM mesas m JOIN notificaciones n "
-                . "ON m.id = n.id_mesa AND n.visto = 0 AND m.id_mozo= ".$id_mozo." "
+                . "ON m.id = n.id_mesa AND m.id_mozo= ".$id_mozo." "
                 . "ORDER BY n.id";
         $resultado = $this->db->query($consulta)->result_array();
         return $resultado;

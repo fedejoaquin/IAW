@@ -2,7 +2,8 @@
 <html>
 <head>
     <?php include 'componentes/recursos.phtml'; ?>
-    <script src="<?php echo site_url(); ?>js/ctrlCocinero.js" type="text/javascript"></script>
+    <script src="<?php echo site_url(); ?>js/cocinero/vista.js" type="text/javascript"></script>
+    <script src="<?php echo site_url(); ?>js/cocinero/controlador.js" type="text/javascript"></script>
 </head>
     <body>
         <?php include 'componentes/botonera.phtml'; ?> 
@@ -10,7 +11,7 @@
             $ruta = array(
                 array('Inicio',  site_url()), 
                 array('Empleados', site_url().'empleados'),
-                array('Mozo', site_url().'mozo')
+                array('Cocinero', site_url().'empleados')
             );
             include 'componentes/rutaSeguimiento.phtml' 
         ?>      
