@@ -1,0 +1,94 @@
+<div class="txt-cabecera">
+    PROMOCIONES: EDITAR.
+</div>
+<div class="row">
+    <div class="col m10 s12 offset-m1">
+        <ul class="collapsible" data-collapsible="accordion">
+            <li> 
+                <div class="collapsible-header">Datos generales</div>
+                <div class="collapsible-body">
+                    <div class="row">
+                        <div class="input-field col s4 m1">
+                            <input id="idPromocion" value="<?php echo $datos['id'];?>" type="text" readonly>
+                            <label>ID Promo</label>
+                        </div>
+                        <div class="input-field col s4 m2">
+                            <input id="precioPromocion" value="<?php echo $datos['precio'];?>" type="text">
+                            <label>Precio</label>
+                        </div>
+                        <div class="input-field col s12 m6">
+                            <input id="nombrePromocion" value="<?php echo $datos['nombre'];?>" type="text">
+                            <label>Nombre</label>
+                        </div>
+                        <a class="input-field col s2 m1 btn" onclick="promociones.cambiarDatos()">
+                            <i class="material-icons">done</i>
+                        </a>
+                    </div>
+                </div>
+            </li>   
+            <li> 
+                <div class="collapsible-header">Productos</div>
+                <div class="collapsible-body">
+                    <div class="row center-align">
+                        <a class="btn waves-effect waves-green" onClick="promociones.producto.preAlta()">Agregar Producto</a>
+                    </div>
+                    <table class="responsive-table">
+                        <thead>
+                            <td>#ID</td><td>Producto</td><td>Acciones</td>
+                        </thead>
+                        <tbody id="tablaProductos">
+                        <?php 
+                            foreach($productos as $row){
+                                $id = $row['id_producto'];
+                                $np = $row['nombre_producto'];
+                        ?>
+                            <tr id="<?php echo 'fprod'.$id; ?>">
+                                <td><?php echo $id; ?></td>
+                                <td><?php echo $np; ?></td>
+                                <td>
+                                    <a class='dropdown-button btn' data-activates='<?php echo 'dprod'.$id; ?>'><i class="material-icons">delete</i></a>
+                                    <!-- Dropdown Structure -->
+                                    <ul id='<?php echo 'dprod'.$id; ?>' class='dropdown-content'>
+                                        <li>¿Confirma?</li>
+                                        <li class="divider"></li>
+                                        <li>
+                                            <a onClick="promociones.producto.eliminar(<?php echo $id; ?>)">Sí</a>
+                                        </li>
+                                        <li>
+                                            <a>No</a>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        <?php        
+                            }
+                        ?>
+                        </tbody>
+                    </table>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div id="altaProducto" class="modal">
+    <div class="modal-content">
+        <div class="row">
+            <div class="col s12">
+                <label id="lblBusqueda">Sin resultados..</label>
+                <input class="input-field" id="inputBusqueda" onInput="promociones.producto.autocompletar()" type="text" autocomplete="off" placeholder="Ingrese el producto a agregar..."/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col m4 s12">
+                <select id="selectAltaProducto">
+                    <option value="-1" disabled selected>Sin resultados</option>
+                </select>
+                <label>Seleccionar producto.</label>   
+            </div>
+        </div>
+        <div class="row center-align">
+            <a class="btn" onClick="promociones.producto.postAlta()">Confirmar</a>
+        </div>
+    </div>
+</div>

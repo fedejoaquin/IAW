@@ -128,4 +128,4 @@ $autoload['language'] = array();
 */
 $autoload['model'] = array('MEmpleados','MPedidores','MRoles','MCartas','MMesasPedidores', 
     'MPedidos','MRestricciones','MInfoCartas', 'MSecciones', 'MListaPrecios', 'MProductos',
-    'MPromociones');
+    'MPromociones', 'MInfoPromociones');

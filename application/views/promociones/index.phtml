@@ -1,0 +1,67 @@
+<div class="txt-cabecera">
+    PROMOCIONES.
+</div>
+<div class="row center-align">
+    <a class="btn" onClick="promociones.promocion.preAlta()">Agregar PROMO</a>
+</div>
+<div class="row">
+    <div class="col m8 s12 offset-m2">
+        <table class="responsive-table">
+            <thead>
+                <td>#ID</td>
+                <td>Nombre</td>
+                <td>Precio</td>
+                <td>Acciones</td>
+            </thead>
+            <tbody id="tablaPromociones">   
+            <?php
+                foreach( $promociones as $row ){
+                    $id = $row['id'];
+                    $nm = $row['nombre'];
+                    $nc = $row['precio'];
+            ?>
+                <tr id="<?php echo 'fp'.$id; ?>">
+                    <td><?php echo $id; ?></td>
+                    <td><?php echo $nm; ?></td>
+                    <td><?php echo '$'.$nc; ?></td>
+                    <td> 
+                        <a class="btn waves-effect waves-green" href="<?php echo site_url()."promociones/ver/".$id; ?>"><i class="material-icons">info</i></a>
+                        <a class="btn waves-effect waves-green" href="<?php echo site_url()."promociones/editar/".$id; ?>"><i class="material-icons">edit</i></a>
+                        <a class='dropdown-button btn' data-activates='<?php echo 'drop'.$id; ?>'><i class="material-icons">delete</i></a>
+                        <!-- Dropdown Structure -->
+                        <ul id='<?php echo 'drop'.$id; ?>' class='dropdown-content'>
+                            <li>¿Confirma?</li>
+                            <li class="divider"></li>
+                            <li>
+                                <a onClick="<?php echo "promociones.eliminar(".$id.")"; ?>">Sí</a>
+                            </li>
+                            <li>
+                                <a>No</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            <?php
+                }
+            ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div id="altaPromocion" class="modal">
+    <div class="modal-content">
+        <div class="row">
+            <div class="input-field col s12 m6 offset-m2">
+                <input id="nombrePromocion" placeholder="Ingrese nombre..." type="text">
+                <label>Nombre</label>
+            </div>
+            <div class="input-field col s4 m2">
+                <input id="precioPromocion" placeholder="Ingrese precio..." type="text">
+                <label>Precio</label>
+            </div>
+        </div>
+        <div class="row center-align">
+            <a class="btn" onClick="promociones.promocion.postAlta()">Confirmar</a>
+        </div>
+    </div>
+</div>

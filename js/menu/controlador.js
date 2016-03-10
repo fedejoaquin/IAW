@@ -28,24 +28,29 @@ eliminar : function(id){
 cambiarNombre : function(){
     var id = $('#idMenu').val();
     var nombre_nuevo = $('#nombreMenu').val();
-    $.ajax({
-        data:  {'id': id, 'nombre': nombre_nuevo},
-        url:   '/IAW-PF/menu/cambiar_nombre',
-        type:  'post',
-        error: function(response){
-            menu_vista.mensaje('Se produjo un error en la conexión.', 5000,'toast-error');
-            menu_vista.mensaje('El servidor no está respondiendo nuestra solicitud.', 5000,'toast-error');
-            menu_vista.mensaje('El nombre no puede ser editado en este momento.', 5000,'toast-error');
-        },
-        success: function (response){
-            var respuesta = JSON.parse(response);
-            if (respuesta['error'] === undefined){
-                menu_vista.mensaje('El nombre fue modificado exitosamente.', 2500,'toast-ok'); 
-            }else{
-                menu_vista.mensaje(respuesta['error'], 2500,'toast-error');
+    
+    if (nombre_nuevo.length <= 5 ){
+        menu_vista.mensaje('El nombre ingresado debe contener al menos 5 caracteres.', 2500, 'toast-error');
+    }else{
+        $.ajax({
+            data:  {'id': id, 'nombre': nombre_nuevo},
+            url:   '/IAW-PF/menu/cambiar_nombre',
+            type:  'post',
+            error: function(response){
+                menu_vista.mensaje('Se produjo un error en la conexión.', 5000,'toast-error');
+                menu_vista.mensaje('El servidor no está respondiendo nuestra solicitud.', 5000,'toast-error');
+                menu_vista.mensaje('El nombre no puede ser editado en este momento.', 5000,'toast-error');
+            },
+            success: function (response){
+                var respuesta = JSON.parse(response);
+                if (respuesta['error'] === undefined){
+                    menu_vista.mensaje('El nombre fue modificado exitosamente.', 2500,'toast-ok'); 
+                }else{
+                    menu_vista.mensaje(respuesta['error'], 2500,'toast-error');
+                }
             }
-        }
-    });
+        });
+    }
 },
 
 cambiarDias : function(){
@@ -166,7 +171,7 @@ producto : {
     
     autocompletar : function (){
         var texto = $('#inputBusqueda').val();
-        if (texto.length > 3){
+        if (texto.length > 2){
             $.ajax({
                 data:  { 'texto' : texto },
                 url:   '/IAW-PF/menu/autocompletar',

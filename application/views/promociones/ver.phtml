@@ -1,0 +1,52 @@
+<div class="txt-cabecera">
+    PROMOCIONES: VER.
+</div>
+<div class="row">
+    <div class="col m10 s12 offset-m1">
+        <ul class="collapsible" data-collapsible="accordion">
+            <li> 
+                <div class="collapsible-header">Datos generales</div>
+                <div class="collapsible-body">
+                    <div class="row">
+                        <div class="input-field col s4 m1">
+                            <input value="<?php echo $datos['id'];?>" type="text" readonly>
+                            <label>ID Promo</label>
+                        </div>
+                        <div class="input-field col s4 m2">
+                            <input value="<?php echo $datos['precio'];?>" type="text" readonly>
+                            <label>Precio</label>
+                        </div>
+                        <div class="input-field col s12 m6">
+                            <input value="<?php echo $datos['nombre'];?>" type="text" readonly>
+                            <label>Nombre</label>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li> 
+                <div class="collapsible-header">Productos</div>
+                <div class="collapsible-body">
+                    <table class="responsive-table">
+                        <thead>
+                            <td>#ID</td><td>Producto</td>
+                        </thead>
+                        <tbody>
+                        <?php 
+                            foreach($productos as $row){
+                                $id = $row['id_producto'];
+                                $np = $row['nombre_producto'];
+                        ?>
+                            <tr>
+                                <td><?php echo $id; ?></td>
+                                <td><?php echo $np; ?></td>
+                            </tr>
+                        <?php        
+                            }
+                        ?>
+                        </tbody>
+                    </table>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
