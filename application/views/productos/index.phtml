@@ -1,3 +1,90 @@
-<div class =" row ">
-    <p>ESTO ES PRODUCTOS</p>
+<div class="txt-cabecera">
+    PRODUCTOS.
+</div>
+<div class="row center-align">
+    <a class="btn waves-effect waves-green" onClick="productos.producto.preAlta()">AGREGAR PRODUCTO</a>
+</div>
+<div class="row">
+    <div class="col m8 s12 offset-m2">
+        <table class="responsive-table">
+            <thead>
+                <td>#ID</td>
+                <td>Imagen</td>
+                <td>Nombre</td>
+                <td>Acciones</td>
+            </thead>
+            <tbody id="tablaProductos">   
+            <?php
+                foreach( $productos as $row ){
+                    $id = $row['id'];
+                    $np = $row['nombre'];
+            ?>
+                <tr id="<?php echo 'fp'.$id; ?>">
+                    <td><?php echo $id; ?></td>
+                    <td><?php echo 'Imagen'; ?></td>
+                    <td><?php echo $np; ?></td>
+                    <td> 
+                        <a class="btn waves-effect waves-green" onClick="productos.editar(<?php echo $id; ?>)"><i class="material-icons">edit</i></a>
+                        <a class='dropdown-button btn' data-activates='<?php echo 'drop'.$id; ?>'><i class="material-icons">delete</i></a>
+                        <!-- Dropdown Structure -->
+                        <ul id='<?php echo 'drop'.$id; ?>' class='dropdown-content'>
+                            <li>¿Confirma?</li>
+                            <li class="divider"></li>
+                            <li>
+                                <a onClick="<?php echo "productos.eliminar(".$id.")"; ?>">Sí</a>
+                            </li>
+                            <li>
+                                <a>No</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            <?php
+                }
+            ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div id="altaProducto" class="modal">
+    <div class="modal-content">
+        <div class="input-field col s12 m6 offset-m2">
+            <input id="nombreProducto" placeholder="Ingrese nombre..." type="text">
+            <label>Nombre</label>
+        </div>
+        <div class="file-field input-field">
+            <div class="btn">
+                <span>File</span>
+                <input id="inputFile" type="file">
+            </div>
+            <div class="file-path-wrapper">
+                <input class="file-path validate" type="text">
+            </div>
+        </div>
+        <div class="row center-align">
+            <a class="btn" onClick="productos.producto.postAlta()">Confirmar</a>
+        </div>
+    </div>
+</div>
+
+<div id="altaProducto" class="modal">
+    <div class="modal-content">
+        <div class="input-field col s12 m6 offset-m2">
+            <input id="nombreProducto" placeholder="Ingrese nombre..." type="text">
+            <label>Nombre</label>
+        </div>
+        <div class="file-field input-field">
+            <div class="btn">
+                <span>File</span>
+                <input id="inputFile" type="file">
+            </div>
+            <div class="file-path-wrapper">
+                <input class="file-path validate" type="text">
+            </div>
+        </div>
+        <div class="row center-align">
+            <a class="btn" onClick="productos.cambiarNombre()">Confirmar</a>
+        </div>
+    </div>
 </div>

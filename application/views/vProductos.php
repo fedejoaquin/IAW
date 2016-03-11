@@ -2,17 +2,11 @@
 <html>
 <head>
     <?php include 'componentes/recursos.phtml'; ?>
+    <script src="<?php echo site_url(); ?>js/productos/vista.js" type="text/javascript"></script>
+    <script src="<?php echo site_url(); ?>js/productos/controlador.js" type="text/javascript"></script>  
 </head>
     <body>
-        <?php include 'componentes/botonera.phtml'; ?> 
-        <?php 
-            $ruta = array(
-                array('Inicio',  site_url()), 
-                array('Empleados', site_url().'empleados'),
-                array('Productos', site_url().'productos')
-            );
-            include 'componentes/rutaSeguimiento.phtml' 
-        ?>     
+        <?php include 'componentes/botonera.phtml'; ?>    
         <?php include '/productos/'.$funcion.'.phtml'; ?>            
         <?php include 'componentes/footer.phtml'; ?>   
     </body>
