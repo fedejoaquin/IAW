@@ -7,12 +7,12 @@ var cocinero_vista = {
     cocinero_vista.listarProductos(cocinero.pedPend,"#pedPend","procesar");
     cocinero_vista.listarProductos(cocinero.promoPend,"#promoPend","procesar");
     var pendientes = cocinero.pedPend.length + cocinero.promoPend.length;
-    $('#tabPendientes').html(pendientes + " Pendientes " );
+    $('#tabPendientes').html("Pendientes: "+pendientes );
    
     cocinero_vista.listarProductos(cocinero.pedProc,"#pedProc","terminar");
     cocinero_vista.listarProductos(cocinero.promoProc,"#promoProc","terminar");
     var procesados = cocinero.pedProc.length + cocinero.promoProc.length;
-    $('#tabProcesados').html(procesados + " Procesados");
+    $('#tabProcesados').html("Procesados: "+procesados);
 },
 
 listarProductos : function (elemento,tabla,funcion){
