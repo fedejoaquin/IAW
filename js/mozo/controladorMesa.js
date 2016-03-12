@@ -72,12 +72,11 @@ confirmar_pedido : function (){
 
 
 
-vincularCliente : function (){
+vincular_cliente : function (){
     codigo = $('#inputCodigo').val();
     id_mesa = $('#id_mesa').val();
     if (codigo.length !== 6){
-        $('#not-vincular').attr('class',"err-vincular");
-        $('#not-vincular').html("Datos de codigo no validos, faltan o sobran caracteres.");
+        mozo_mesa_vista.mensaje("Error: El codigo ingresado contiene longitud incorrecta.",2000,"toast-error");
         
     }else{
         $.ajax({
@@ -94,12 +93,10 @@ vincularCliente : function (){
                 var respuesta = JSON.parse(response);
                 if (respuesta['error'] === undefined){
                     $('#inputCodigo').val('');
-                    $('#not-vincular').attr('class',"pass-vincular");
-                    $('#not-vincular').html("Vinculacion Exitosa");
+                    mozo_mesa_vista.mensaje("Cliente vinculado.",2000,"toast-error");
                 }else{
                     var error = respuesta['error'];
-                    $('#not-vincular').html(error);
-                   //mozo_mesa_vista.mensaje('Error en vinculacion: ' + error, 3000,'toast-error');
+                     mozo_mesa_vista.mensaje("Error: "+error,2000,"toast-error");
                 }
             }
         });
@@ -111,6 +108,7 @@ producto : {
         mozo_mesa.productos.push(tupla);
         mozo_mesa.total += precio;
         mozo_mesa_vista.mensaje(producto + ' agregado.', 2000,'toast-ok');
+        mozo_mesa_vista.listar_carrito();
     },
     
     quitar : function( posicion ){
@@ -155,7 +153,6 @@ promocion : {
 
     control_ajax : function(){
         id_mesa = $('#id_mesa').val();
-        $('#not-vincular').html(" ");
         $.ajax({
             data:  {'id_mesa':id_mesa},
             url:   '/IAW-PF/mozo/estado_mesa',

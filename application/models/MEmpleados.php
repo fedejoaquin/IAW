@@ -93,13 +93,59 @@ class MEmpleados extends CI_Model {
         return 0;
     }
 
-    public function eliminarEmpleado($data){
-        $this->db->where("id",$data['id']);
+    /*
+     * Elimina un determinado empleado.
+     */
+    public function eliminarEmpleado($empleado){
+        $this->db->where("id",$empleado['id']);
         $this->db->delete("empleados");
         //Borramos los roles existentes.
-        $this->db->where("id_empleado",$data['id']);
+        $this->db->where("id_empleado",$empleado['id']);
         $this->db->delete("info_roles");
-
-
+    }
+    
+    /*
+     * Asocia un determinado mozo como pedidor de una mesa, tambien agrega el nombre del mozo a la lista de pedidores.
+     */
+    public function asociar_mozo_mesa($id_mozo,$id_mesa){
+        $consultaNombre= "SELECT nombre FROM empleados WHERE id = ".$id_mozo;
+        $nombreEmpleado = $this->db->query("empleados",$consultaNombre)->row_array();
+        
+        //Chequeamos que no sea ya no este asociado a la mesa.
+        $existe = "SELECT * FROM mesas_pedidores WHERE id_pedidor = ".$id_mozo." AND id_mesa=".$id_mesa;
+        $existePedidorMesa =  $this->db->query("mesas_pedidores",$existe)->row_array();
+        if (count($existePedidorMesa) == 0) {
+            $insertMesasPedidores = array(
+            'id_pedidor' => $id_mozo,
+            'id_mesa' => $id_mesa
+            );
+            $exitoMP = $this->db->insert("mesas_pedidores",$insertMesasPedidores);
+        }
+        //Chequeamos que no exista el registro, dado que podria ya ser pedidor de otra mesa.
+        $existePed = "SELECT * FROM pedidores WHERE id = ".$id_mozo." AND nombre=".$nombreEmpleado;
+        $existePedidor =  $this->db->query("pedidores",$existePed)->row_array();
+        if (count($existePedidor) == 0) {
+            $insertPedidores = array(
+                'id' => $id_mozo,
+                'nombre' => $nombreEmpleado
+            );
+            $exitoP = $this->db->insert("pedidores",$insertPedidores);
+        }
+        if($exitoMP && $exitoP)
+        {
+            return 1;
+        }
+        return 0;
+    }
+    
+    /*
+     * Elimina a un mozo como pedidor de una mesa, 
+     * no lo elimina de los pedidores, ya que puede ser pedidor de otra mesa.
+     */
+    public function desasociar_mozo_mesa($id_mozo,$id_mesa){
+        $this->db->where("id_mesa",$id_mesa);
+        $this->db->where("id_pedidor",$id_mozo);
+        $salida = $this->db->delete("mesas_pedidores");
+        return $salida;
     }
 }

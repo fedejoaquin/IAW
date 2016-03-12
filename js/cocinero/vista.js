@@ -31,7 +31,9 @@ listarProductos : function (elemento,tabla,funcion){
             comentarios = $("<td>"+elemento[i]['comentarios']+"</td>");
         }
         procesarProducto = $("<td><button class='btn waves-effect waves-light'><i class='material-icons right'>clear_all</i></button></td>");
-        procesarProducto.attr('onclick',"cocinero."+funcion+"("+i+",'"+tabla+"')");
+        accion = 'cocinero.'+funcion+'('+i+',"'+tabla+'")';
+        procesarProducto.attr("onclick",accion);
+        //procesarProducto.attr('onclick',"cocinero."+funcion+"("+i+",'"+tabla+"')");
          
         $(row).append(numPend);
         $(row).append(producto);

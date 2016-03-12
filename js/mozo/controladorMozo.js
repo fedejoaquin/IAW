@@ -8,11 +8,8 @@ notificaciones : [],
         url:   '/IAW-PF/mozo/pedir_notificaciones',
         type:  'get',
         success: function (response){
-            var respuesta = JSON.parse(response);
-            if (respuesta['error'] === undefined){
                 mozo.notificaciones = respuesta['notificaciones'];
                 mozo_vista.listarNotificaciones();
-            }
         }
     });
     setTimeout("mozo.checkNotificaciones()",3000);

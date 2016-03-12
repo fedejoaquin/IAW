@@ -154,5 +154,33 @@ class Mozo extends CI_Controller {
         echo json_encode($resultado); 
     }
     
+    /*
+     * Asocia un determinado mozo a una determinada mesa, de forma tal de que pueda realizar pedidos.
+     */
+    public function asociar_mozo_mesa(){
+        $respuesta = array();
+        $id_mozo = $this->input->post('id_mozo');
+        $id_mesa = $this->input->post('id_mesa');
+        $vinculado = $this->MEmpleados->asociar_mozo_mesa($id_mozo,$id_mesa);
+        if(!$vinculado){
+          $respuesta['error'] = "Error: El mozo no pudo vincularse con la mesa";
+        }
+        echo json_encode($respuesta);
+    }
+    
+    /*
+     * Elimina un determinado de una mesa, 
+     * de forma tal que no puede realizar mas pedidos sobre la misma
+     */
+    public function desasociar_mozo_mesa(){
+        $respuesta = array();
+        $id_mozo = $this->input->post('id_mozo');
+        $id_mesa = $this->input->post('id_mesa');
+        $desvinculado = $this->MEmpleados->desasociar_mozo_mesa($id_mozo,$id_mesa);
+        if(!$desvinculado){
+          $respuesta['error'] = "Error: El mozo no pudo desvincularse de la mesa";
+        }
+        echo json_encode($respuesta);
+    }
     
 }

@@ -18,7 +18,7 @@ class Cocinero extends CI_Controller {
     public function procesar_producto(){
         $pedido_id = $this->input->post('pedido_id');
         $tabla = $this->input->post('tabla');
-        if($tabla == "pedidos"){
+        if(strcmp($tabla,"pedidos") === 0){
             $this->MPedidos->procesarPedido($pedido_id);
         }
         else{
@@ -32,7 +32,7 @@ class Cocinero extends CI_Controller {
      public function terminar_producto(){
         $tupla = $this->input->post('tupla');
         $tabla = $this->input->post('tabla');
-        if($tabla == "pedidos"){
+        if(strcmp($tabla,"pedidos") === 0){
             $this->MPedidos->terminarPedido($tupla);
         }
         else{

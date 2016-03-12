@@ -9,7 +9,7 @@
         <ul class="tabs">
             <li class="tab"><a class="active" href="#vincular">VINCULAR</a></li>
             <li class="tab"><a href="#menu">MENU</a></li>
-            <li class="tab"><a href="#pedidos" onclick="mozo_mesa_vista.listarCarrito()">PEDIDOS</a></li>  
+            <li class="tab"><a href="#pedidos" onclick="mozo_mesa_vista.listar_carrito()">PEDIDOS</a></li>  
         </ul>
     </div>
 </div>
@@ -28,20 +28,14 @@
                                         <li>¿Confirma?</li>
                                         <li class="divider"></li>
                                         <li>
-                                            <a onClick="mozo_mesa.vincularCliente()">Sí</a>
+                                            <a onClick="mozo_mesa.vincular_cliente()">Sí</a>
                                         </li>
                                         <li>
                                             <a>No</a>
                                         </li>
             </ul>
-            
-      
         </div>
         </div>
-        <div class="row">
-            <p id="not-vincular"> </p>
-        </div>
-        
         <div class="row center-align">
             <form name="tabla" action="<?php echo site_url() ?>mesas/cerrar" method="POST">
             <a href="<?php echo site_url()?>mesas/cerrar">
