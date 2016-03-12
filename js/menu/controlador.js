@@ -1,17 +1,69 @@
 var menu = {
 
-idMenu : "",
-nombreMenu : "",
+preAlta : function(){
+    $.ajax({
+        data:  {},
+        url:   '/IAW-PF/menu/info_restricciones',
+        type:  'post',
+        error: function(response){
+            menu_vista.mensaje('Se produjo un error en la conexión.', 2500,'toast-error');
+            menu_vista.mensaje('El servidor no está respondiendo nuestra solicitud.', 2500,'toast-error');
+            menu_vista.mensaje('El menú no puede ser creado en este momento.', 2500,'toast-error');
+        },
+        success: function (response){
+            var datos = JSON.parse(response);
+            menu_vista.preAlta(datos);
+        }
+    });
+},
+
+postAlta : function(){
+    nombre = $('#nombreMenu').val();
+    id_hora = $('#selectHora').val();
+    id_dia = $('#selectDia').val();
+    
+    if (nombre.length < 5 ){
+       menu_vista.mensaje('El nombre ingresado debe contener al menos 5 caracteres.',2500,'toast-error');
+    }else{
+        if (id_dia == -1){
+           menu_vista.mensaje('Debe seleccionar una restricción de día.',2500,'toast-error');
+        }else{
+            if (id_hora == -1){
+                menu_vista.mensaje('Debe seleccionar una restricción de hora.',2500,'toast-error');
+            }else{
+                $.ajax({
+                    data:  {'nombre': nombre, 'restriccion_dia' : id_dia, 'restriccion_hora' : id_hora },
+                    url:   '/IAW-PF/menu/alta',
+                    type:  'post',
+                    error: function(response){
+                        menu_vista.mensaje('Se produjo un error en la conexión.', 2500,'toast-error');
+                        menu_vista.mensaje('El servidor no está respondiendo nuestra solicitud.', 2500,'toast-error');
+                        menu_vista.mensaje('El menú no puede ser creado en este momento.', 2500,'toast-error');
+                    },
+                    success: function (response){
+                        var respuesta = JSON.parse(response);
+                        if (respuesta['error'] === undefined){
+                            menu_vista.postAlta(respuesta['data']);
+                            menu_vista.mensaje('El menú fue creado exitosamente.', 2500,'toast-ok'); 
+                        }else{
+                            menu_vista.mensaje(respuesta['error'], 2500,'toast-error');
+                        }
+                    }
+                });
+            }
+        }
+    }
+},
 
 eliminar : function(id){
-   $.ajax({
+    $.ajax({
         data:  {'id_menu': id },
         url:   '/IAW-PF/menu/eliminar',
         type:  'post',
         error: function(response){
             menu_vista.mensaje('Se produjo un error en la conexión.', 2500,'toast-error');
             menu_vista.mensaje('El servidor no está respondiendo nuestra solicitud.', 2500,'toast-error');
-            menu_vista.mensaje('El no puede ser eliminado en este momento.', 2500,'toast-error');
+            menu_vista.mensaje('El menú no puede ser eliminado en este momento.', 2500,'toast-error');
         },
         success: function (response){
             var respuesta = JSON.parse(response);

@@ -68,23 +68,23 @@
     </div>
 </div>
 
-<div id="altaProducto" class="modal">
+<div id="editarProducto" class="modal">
     <div class="modal-content">
         <div class="input-field col s12 m6 offset-m2">
-            <input id="nombreProducto" placeholder="Ingrese nombre..." type="text">
+            <input id="nombreNuevoProducto" type="text">
             <label>Nombre</label>
         </div>
         <div class="file-field input-field">
             <div class="btn">
                 <span>File</span>
-                <input id="inputFile" type="file">
+                <input id="inputNuevoFile" type="file">
             </div>
             <div class="file-path-wrapper">
                 <input class="file-path validate" type="text">
             </div>
         </div>
         <div class="row center-align">
-            <a class="btn" onClick="productos.cambiarNombre()">Confirmar</a>
+            <a id="btnEditar" class="btn">Confirmar</a>
         </div>
     </div>
 </div>

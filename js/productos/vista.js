@@ -3,6 +3,19 @@ var productos_vista = {
 eliminar : function(id){
     $('#fp'+id).remove();
 },
+
+preEditar : function(id){
+    nombre = $('#fp'+ id).find('td:eq(2)').text(); 
+    $('#nombreNuevoProducto').val(nombre);
+    $('#inputNuevoFile').val('');
+    $('#btnEditar').attr('onClick', 'productos.cambiarNombre('+id+')');
+    $('#editarProducto').openModal();
+},
+
+postEditar : function(id, nombre){
+    $('#fp'+ id).find('td:eq(2)').text(nombre); 
+    $('#editarProducto').closeModal();
+},
     
 mensaje : function(mensaje, tiempo, clase){
     Materialize.toast(mensaje, tiempo ,clase);

@@ -22,16 +22,19 @@ eliminar : function(id){
     });
 },
 
-cambiarNombre : function(){
-    var id = $('#idProducto').val();
-    var nombre_nuevo = $('#nombreProducto').val();
+editar : function(id){
+    productos_vista.preEditar(id);
+},
+
+cambiarNombre : function(id){
+   var nombre_nuevo = $('#nombreNuevoProducto').val();
     
    if (nombre_nuevo.length < 5 ){
         productos_vista.mensaje('El nombre ingresado debe contener al menos 5 caracteres.', 2500, 'toast-error');
     }else{
          $.ajax({
             data:  {'id': id, 'nombre': nombre_nuevo },
-            url:   '/IAW-PF/productos/cambiar_nombre',
+            url:   '/IAW-PF/productos/editar',
             type:  'post',
             error: function(response){
                 productos_vista.mensaje('Se produjo un error en la conexión.', 5000,'toast-error');
@@ -41,6 +44,7 @@ cambiarNombre : function(){
             success: function (response){
                 var respuesta = JSON.parse(response);
                 if (respuesta['error'] === undefined){
+                    productos_vista.postEditar(id, nombre_nuevo);
                     productos_vista.mensaje('El nombre fue modificado exitosamente.', 2500,'toast-ok'); 
                 }else{
                     productos_vista.mensaje(respuesta['error'], 2500,'toast-error');

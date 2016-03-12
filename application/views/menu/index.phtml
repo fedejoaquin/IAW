@@ -1,6 +1,9 @@
 <div class="txt-cabecera">
     MENÚES.
 </div>
+<div class="row center-align">
+    <a class="btn waves-effect waves-green" onClick="menu.preAlta()" >AGREGAR MENU</a>
+</div>
 <div class="row">
     <div class="col m8 s12 offset-m2">
         <table class="responsive-table">
@@ -10,7 +13,7 @@
                 <td>Creador</td>
                 <td>Acciones</td>
             </thead>
-            <tbody>   
+            <tbody id="tablaMenues">   
             <?php
                 foreach( $menues as $row ){
                     $id = $row['id'];
@@ -43,5 +46,33 @@
             ?>
             </tbody>
         </table>
+    </div>
+</div>
+
+<div id="altaMenu" class="modal">
+    <div class="modal-content">
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="nombreMenu" placeholder="Ingrese nombre..." type="text">
+                <label>Nombre</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12 m6">
+                <select id="selectDia">
+                    
+                </select>
+                <label>Seleccione Rest. Día...</label>
+            </div>
+            <div class="input-field col s12 m6">
+                <select id="selectHora">
+                    
+                </select>
+                <label>Seleccione Rest. Hora...</label>
+            </div>
+        </div>
+        <div class="row center-align">
+            <a class="btn" onClick="menu.postAlta()">Confirmar</a>
+        </div>
     </div>
 </div>

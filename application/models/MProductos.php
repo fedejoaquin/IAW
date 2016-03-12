@@ -56,11 +56,11 @@ class MProductos extends CI_Model {
      */
     public function editar($id, $nombre){
         $data = array(
-            'id' => $id,
             'nombre' => $nombre
         );
         
         if (count($this->item_lista($nombre)===0)){
+            $this->db->where('id', $id);
             return $this->db->update('Productos', $data);
         }else{
             return false;

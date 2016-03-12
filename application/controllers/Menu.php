@@ -14,6 +14,31 @@ class Menu extends CI_Controller {
     }
     
     /**
+     * Computa el alta de un menu, de nombre $nombre, y tomando como restricciones de dia y hora $restriccion_dia y $restriccion_hora,
+     * así como creador a $creador, datos recibidos por POST, mediante un origen ajax.
+     * @return ['data'] = Array (Id, Nombre, Id_restriccion_dia, Id_restriccion_hora, Creador), en caso de éxito.
+     * @return ['data'] = Vacio, en caso de error.
+     * @return ['error'] = Error si corresponde. 
+     */
+    public function alta(){
+        $nombre = $this->input->post('nombre');
+        $restriccion_dia = $this->input->post('restriccion_dia');
+        $restriccion_hora = $this->input->post('restriccion_hora');
+        $id_creador = $this->session->userdata('eid');
+
+        $resultado = array();
+        $retorno = $this->MCartas->alta($nombre, $restriccion_dia, $restriccion_hora, $id_creador);
+        
+        if ($retorno['valido']){
+            $resultado['data'] = $retorno['data'];
+        }else{
+            $resultado['data'] = array();
+            $resultado['error'] = 'El menú con el nombre ingresado ya se encuentra agregado en el menú.';   
+        }
+        echo json_encode($resultado);
+    }
+    
+    /**
      * Lista toda la información de un dado menú cuyo id es $id.
      * @return ['datos'] = Array(Id, Nombre_menu, Nombre_creador, Id_restriccion_dia, Id_restriccion_hora)
      * @return ['restricciones_dia'] = Array(Id, Nombre_restriccion, Nombre_creador)
@@ -91,6 +116,7 @@ class Menu extends CI_Controller {
         if ($retorno['valido']){
             $resultado['data'] = $retorno['data'];
         }else{
+            $resultado['data'] = array();
             $resultado['error'] = 'El producto ya se encuentra agregado en el menú.';   
         }
         echo json_encode($resultado);
@@ -113,6 +139,7 @@ class Menu extends CI_Controller {
         if ($retorno['valido']){
             $resultado['data'] = $retorno['data'];
         }else{
+            $resultado['data'] = array();
             $resultado['error'] = 'La promoción ya se encuentra agregada en el menú.';   
         }
         echo json_encode($resultado);
@@ -300,6 +327,18 @@ class Menu extends CI_Controller {
     public function info_promocion(){
         $id_promocion = $this->input->post('id_promocion');
         $resultado['data']['promocion'] = $this->MPromociones->info_promocion($id_promocion);
+        echo json_encode($resultado);
+    }
+    
+    /**
+     * Computa y retorna toda la información asociada a las restricciones de horas y días actuales, dada la solicitud 
+     * recibida mediante un origen ajax.
+     * @return ['restricciones_dia'] = Array(Id, Nombre_restriccion, Nombre_creador)
+     * @return ['restricciones_hora'] = Array(Id, Nombre_restriccion, Nombre_creador)
+     */
+    public function info_restricciones(){
+        $resultado['restricciones_dia'] = $this->MRestricciones->get_restricciones_dia();
+        $resultado['restricciones_hora'] = $this->MRestricciones->get_restricciones_hora();
         echo json_encode($resultado);
     }
 }

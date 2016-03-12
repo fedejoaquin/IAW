@@ -60,7 +60,7 @@ class Productos extends CI_Controller {
         if ($this->MProductos->editar($id, $nombre)){
             $resultado['data'] = array();
         }else{
-            $resultado['error'] = 'El producto no pudo eliminarse correctamente.';
+            $resultado['error'] = 'El producto no pudo editarse correctamente.';
         }
         echo json_encode($resultado);
     }

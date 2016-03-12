@@ -1,5 +1,135 @@
 var menu_vista = {
+
+preAlta : function(datos){
+    rest_dia = datos['restricciones_dia'];
+    rest_hora = datos['restricciones_hora'];
     
+    menu_vista.resetear_select('selectHora');
+    menu_vista.resetear_select('selectDia');
+    
+    for(i=0; i<rest_dia.length; i++){
+        option_1 = $("<option></option>");
+        $(option_1).text(rest_dia[i]['nombre_restriccion']);
+        $(option_1).attr("value", rest_dia[i]['id']);
+
+        $('#selectDia').append(option_1); 
+    }
+    
+    for(i=0; i<rest_hora.length; i++){
+        option_1 = $("<option></option>");
+        $(option_1).text(rest_hora[i]['nombre_restriccion']);
+        $(option_1).attr("value", rest_hora[i]['id']);
+
+        $('#selectHora').append(option_1); 
+    }
+
+    $('#nombreMenu').val('');
+    $('#selectDia').material_select();
+    $('#selectHora').material_select();
+    $('#altaMenu').openModal();
+},
+
+postAlta : function(datos){
+    var id_menu = datos['id'];
+    var nombre = datos['nombre'];
+    var creador = datos['creador'];
+    
+    tr = $("<tr></tr>");
+    $(tr).attr('id', 'fm'+id_menu);
+
+    td = $('<td></td>');
+    $(td).text(id_menu);
+    $(tr).append(td);
+    
+    td = $('<td></td>');
+    $(td).text(nombre);
+    $(tr).append(td);
+
+    td = $('<td></td>');
+    $(td).text(creador);
+    $(tr).append(td);
+    
+    i_info = $('<i></i>');
+    $(i_info).attr('class','material-icons');
+    $(i_info).text('info');
+
+    i_edit = $('<i></i>');
+    $(i_edit).attr('class','material-icons');
+    $(i_edit).text('edit');
+
+    i_delete = $('<i></i>');
+    $(i_delete).attr('class','material-icons');
+    $(i_delete).text('delete');
+
+    /** 
+    <a class="btn waves-effect waves-green" href="IAW-PF/menu/ver/$id">
+        <i class="material-icons">edit</i>
+    </a> 
+    **/    
+    a = $('<a></a>');
+    $(a).attr('class', 'btn waves-effect waves-green');
+    $(a).attr('href', '/IAW-PF/menu/ver/'+id_menu);
+    $(a).append(i_info);
+    
+    /** 
+    <a class="btn waves-effect waves-green" href="IAW-PF/menu/editar/$id">
+        <i class="material-icons">edit</i>
+    </a> 
+    **/ 
+    a_1 = $('<a></a>');
+    $(a_1).attr('class', 'btn waves-effect waves-green');
+    $(a_1).attr('href', '/IAW-PF/menu/editar/'+id_menu);
+    $(a_1).append(i_edit);
+
+    /**
+    <a class='dropdown-button btn' data-activates='dropID'><i class="material-icons">delete</i></a>
+    **/     
+    a_2 = $('<a></a>');
+    $(a_2).attr('class', 'dropdown-button btn');
+    $(a_2).attr('data-activates', 'dm'+id_menu);
+    $(a_2).append(i_delete);
+
+    ul = $('<ul></ul>');
+    $(ul).attr('id', 'dm'+id_menu);
+    $(ul).attr('class', 'dropdown-content' );
+
+    li = $('<li></li>');
+    $(li).text('¿Confirma?');
+
+    li_2 = $('<li></li>');
+    $(li_2).attr('class','divider');
+
+    a_3 = $('<a></a>');
+    $(a_3).text('Sí');
+    $(a_3).attr('onClick','menu.eliminar('+id_menu+')');
+
+    li_3 = $('<li></li>');
+    $(li_3).append(a_3);
+
+    a_4 = $('<a></a>');
+    $(a_4).text('No');
+
+    li_4 = $('<li></li>');
+    $(li_4).append(a_4);
+
+    $(ul).append(li);
+    $(ul).append(li_2);
+    $(ul).append(li_3);
+    $(ul).append(li_4);
+
+    td = $('<td></td>');
+    $(td).append(a);
+    $(td).append(a_1);
+    $(td).append(a_2);
+    $(td).append(ul);
+    $(tr).append(td);
+
+    $('#tablaMenues').append(tr);
+    $('#altaMenu').closeModal();
+    
+    menu_vista.reset_dropdown();
+},
+
 eliminar : function(id){
     $('#fm'+id).remove();
 },

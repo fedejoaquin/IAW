@@ -1,5 +1,28 @@
 <?php 
 class MCartas extends CI_Model {
+    
+    public function alta($nombre, $id_dia, $id_hora, $id_creador){
+        $data = array(
+            'nombre' => $nombre,
+            'id_restriccion_dia' => $id_dia,
+            'id_restriccion_hora' => $id_hora,
+            'creador' => $id_creador,
+        );
+        
+        if (count($this->item_lista($nombre)) === 0 ){
+            if ($this->db->insert('Cartas', $data)){
+                $resultado['valido'] = true;
+                $resultado['data'] = $this->item_lista($nombre);
+            }else{
+                $resultado['valido'] = false;
+            }
+        }else{
+            $resultado['valido'] = false;
+        }
+        
+        return $resultado;
+    }
+    
     /**
      * Computa la edición del campo nombre por $nombre, de la carta cuyo id es $id.
      * @return True o False indicando éxito o falla en la modificación.
@@ -260,6 +283,20 @@ class MCartas extends CI_Model {
 
         $query = $this->db->query($consulta);
         $resultado = $query->result_array();
+        
+        return $resultado;
+    }
+    
+     /**
+     * Computa y retorna el registro de una con nombre $nombre, si es que existe.
+     */
+    public function item_lista($nombre){
+        $consulta = 'SELECT c.id, c.nombre, c.id_restriccion_dia, c.id_restriccion_hora, e.nombre as creador ';
+        $consulta .= 'FROM Cartas c LEFT JOIN Empleados e ON c.creador = e.id ';
+        $consulta .= 'WHERE c.nombre = "'.$nombre.'"';
+        
+        $query = $this->db->query($consulta);
+        $resultado = $query->row_array();
         
         return $resultado;
     }
