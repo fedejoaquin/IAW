@@ -20,6 +20,10 @@
     margin: 10px;
 }
 
+.txt-form-error{
+    font-size:8px;
+}
+
 .toast-ok{
     background-color: green;
 }

@@ -18,30 +18,36 @@
         <div class="input-field col s12 m4 offset-m2">
             <input placeholder="Ingrese nombre..." id="nombre" type="text" class="validate" name="nombre" value="<?php echo $empleado['nombre']; ?>">
             <label>Nombre</label>
+            <?php echo form_error('nombre', '<div class="txt-form-error">','</div>'); ?>
         </div>
         <div class="input-field col s6 m2">
             <input placeholder="Ingrese DNI..." id="dni" type="text" class="validate" name="dni" value="<?php echo $empleado['dni']; ?>">
             <label>DNI</label>
+            <?php echo form_error('dni', '<div class="txt-form-error">','</div>'); ?>
         </div>
         <div class="input-field col s6 m2">
             <input placeholder="Ingrese CUIT..." id="cuit" type="text" class="validate" name="cuit" value="<?php echo $empleado['cuit']; ?>">
             <label>CUIT</label>
+            <?php echo form_error('cuit', '<div class="txt-form-error">','</div>'); ?>
         </div>
     </div>
     <div class="row">
         <div class="input-field col s12 m4 offset-m2">
             <input placeholder="Ingrese dirección..." id="direccion" type="text" class="validate" name="direccion" value="<?php echo $empleado['direccion'];?>">
             <label>Dirección</label>
+            <?php echo form_error('direccion', '<div class="txt-form-error">','</div>'); ?>
         </div>
         <div class="input-field col s6 m2">
             <input placeholder="Ingrese teléfono..." id="telefono" type="text" class="validate" name="telefono" value="<?php echo $empleado['telefono'];?>">
             <label>Teléfono</label>
+            <?php echo form_error('telefono', '<div class="txt-form-error">','</div>'); ?>
         </div>
     </div>
     <div class="row">
         <div class="input-field col s12 m4 offset-m2">
             <input placeholder="Ingrese E-mail..." id="email" type="email" class="validate" name="email" value="<?php echo $empleado['email'];?>">
             <label data-error="Error" data-success="OK">Email</label>
+            <?php echo form_error('email', '<div class="txt-form-error">','</div>'); ?>
         </div>
         <div class="input-field col s12 m4">
             <select name="roles[]" multiple>
@@ -53,16 +59,19 @@
               <option <?php if (in_array(array('descripcion' => 'Cocinero', 'id' => '5'), $roles)){ echo 'active selected';}?> value="5">Cocinero</option>
             </select>
             <label>Seleccione roles</label>
+            <?php echo form_error('roles[]', '<div class="txt-form-error">','</div>'); ?>
         </div>
     </div>
     <div class="row">
         <div class="input-field col s6 m2 offset-m2">
             <input placeholder="Ingrese Password" id="password" type="password" class="validate" name="password">
             <label>Password</label>
+            <?php echo form_error('password', '<div class="txt-form-error">','</div>'); ?>
         </div>
         <div class="input-field col s6 m2">
            <input placeholder="Confirme password" id="passwordConf" type="password" class="validate" name="passwordConf">
            <label>Confirmar Password</label>
+           <?php echo form_error('passwordConf', '<div class="txt-form-error">','</div>'); ?>
         </div>
     </div>
     <div class="row center-align">
