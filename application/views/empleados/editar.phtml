@@ -1,0 +1,73 @@
+<div class="row txt-cabecera">
+    EMPLEADOS
+</div>
+<div class="row txt-info">
+    ..: Editando empleado :..
+</div>
+<div class="row">
+    <?php echo validation_errors(); ?>
+</div>
+<div class="row">
+    <?php 
+        $attr = array(
+            'autocomplete' => 'off'
+        );
+        echo form_open('empleados/editar/'.$empleado['id'] , $attr); 
+    ?>
+    <div class="row">
+        <div class="input-field col s12 m4 offset-m2">
+            <input placeholder="Ingrese nombre..." id="nombre" type="text" class="validate" name="nombre" value="<?php echo $empleado['nombre']; ?>">
+            <label>Nombre</label>
+        </div>
+        <div class="input-field col s6 m2">
+            <input placeholder="Ingrese DNI..." id="dni" type="text" class="validate" name="dni" value="<?php echo $empleado['dni']; ?>">
+            <label>DNI</label>
+        </div>
+        <div class="input-field col s6 m2">
+            <input placeholder="Ingrese CUIT..." id="cuit" type="text" class="validate" name="cuit" value="<?php echo $empleado['cuit']; ?>">
+            <label>CUIT</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col s12 m4 offset-m2">
+            <input placeholder="Ingrese dirección..." id="direccion" type="text" class="validate" name="direccion" value="<?php echo $empleado['direccion'];?>">
+            <label>Dirección</label>
+        </div>
+        <div class="input-field col s6 m2">
+            <input placeholder="Ingrese teléfono..." id="telefono" type="text" class="validate" name="telefono" value="<?php echo $empleado['telefono'];?>">
+            <label>Teléfono</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col s12 m4 offset-m2">
+            <input placeholder="Ingrese E-mail..." id="email" type="email" class="validate" name="email" value="<?php echo $empleado['email'];?>">
+            <label data-error="Error" data-success="OK">Email</label>
+        </div>
+        <div class="input-field col s12 m4">
+            <select name="roles[]" multiple>
+              <option <?php if (in_array(array('descripcion' => 'Admin', 'id' => '1'), $roles)){ echo 'active selected';}?> value="1">Administrador</option>
+              <option <?php if (in_array(array('descripcion' => 'Gerente', 'id' => '3'), $roles)){ echo 'active selected';}?> value="3">Gerente</option>
+              <option <?php if (in_array(array('descripcion' => 'Recepcionista', 'id' => '6'), $roles)){ echo 'active selected';}?> value="6">Recepcionista</option>
+              <option <?php if (in_array(array('descripcion' => 'Cajero', 'id' => '2'), $roles)){ echo 'active selected';}?> value="2">Cajero</option>
+              <option <?php if (in_array(array('descripcion' => 'Mozo', 'id' => '4'), $roles)){ echo 'active selected';}?> value="4">Mozo</option>
+              <option <?php if (in_array(array('descripcion' => 'Cocinero', 'id' => '5'), $roles)){ echo 'active selected';}?> value="5">Cocinero</option>
+            </select>
+            <label>Seleccione roles</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col s6 m2 offset-m2">
+            <input placeholder="Ingrese Password" id="password" type="password" class="validate" name="password">
+            <label>Password</label>
+        </div>
+        <div class="input-field col s6 m2">
+           <input placeholder="Confirme password" id="passwordConf" type="password" class="validate" name="passwordConf">
+           <label>Confirmar Password</label>
+        </div>
+    </div>
+    <div class="row center-align">
+        <input class="btn waves-effect waves-light" type="submit" value="Confirmar"/>
+        <a class="btn waves-effect waves-light" href="<?php echo site_url()?>empleados">Cancelar</a> 
+    </div>
+    </form>
+</div>

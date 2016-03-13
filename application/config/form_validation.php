@@ -42,7 +42,7 @@ $config = array(
        'rules'   => 'required|matches[password]'
     ),   
     array(
-       'field'   => 'data[]', 
+       'field'   => 'roles[]', 
        'label'   => 'Debe elegir un rol.', 
        'rules'   => 'required'
     )

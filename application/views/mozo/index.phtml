@@ -1,6 +1,7 @@
-<script src="<?php echo site_url(); ?>js/mozo/controladorMozo.js" type="text/javascript"></script>
-<script src="<?php echo site_url(); ?>js/mozo/vistaMozo.js" type="text/javascript"></script>
-<div class =" row center-align">
+<script src="<?php echo site_url(); ?>js/mozo/controlador.js" type="text/javascript"></script>
+<script src="<?php echo site_url(); ?>js/mozo/vista.js" type="text/javascript"></script>
+
+<div class="row center-align">
     <div class="col s8 offset-m2">
     <input id="inputNotificaciones" type="hidden" value="<?php echo $id_empleado ?>">
     <ul class="collapsible" data-collapsible="accordion">
@@ -21,7 +22,7 @@
                 <td><?php echo ($mesa['estado']==1) ? "Abierta":"Cerrada"?></td>
                 <?php if($mesa['estado']==1){ ?>
                 <td>
-                    <form name="tabla" action="<?php echo site_url() ?>mozo/adminMesa" method="POST">
+                    <form name="tabla" action="<?php echo site_url() ?>mozo/administrar" method="POST">
                         <a href="<?php echo site_url()?>mozo/adminMesa">
                             <button class="btn waves-effect waves-light" type="submit" value="<?php echo $mesa['id']; ?>" name="id_mesa">
                                 Ver Mesa
@@ -59,7 +60,7 @@
     </div>
 </div>
 <div class="row center-align">
-    <a href ="<?php echo  site_url()?>webresto/" class="btn waves-effect waves-light">Volver</a>
+    <a class="btn waves-effect waves-light" href="<?php echo site_url()?>intranet/" >Volver</a>
 </div>
 
 

@@ -1,5 +1,167 @@
 <?php 
 class MEmpleados extends CI_Model {
+    
+   /**
+     * Computa y retorna todos los empleados disponibles.
+     * @return Array(Id, DNI, Nombre, Direccion, Telefono, Email, Cuit, Password )
+     */
+    public function listar(){   
+        $consulta = 'SELECT id, dni, nombre ';
+        $consulta .= 'FROM Empleados ';
+        $consulta .= 'ORDER BY nombre ASC ';
+        
+        $query = $this->db->query($consulta);
+        $resultado = $query->result_array();
+        
+        return $resultado;
+    }
+    
+    /**
+     * Computa el alta de un empleado, así como también el de sus roles asocidos. La inserción es controlada mediante 
+     * transacciones, por lo que cualquier falla hace fallar la inserción por completo.
+     * @return True o False indicando éxito o falla en la inserción.
+     */
+    public function alta($datos){   
+        $password = hash('sha256',$datos['password']);
+        
+        $data = array(
+            'dni' => $datos['dni'],
+            'nombre' => $datos['nombre'],
+            'direccion' => $datos['direccion'],
+            'telefono' => $datos['telefono'],          
+            'email' => $datos['email'],
+            'cuit' => $datos['cuit'],
+            'password' => $password
+        );
+        
+        if (count($this->item_lista($datos['nombre'])) === 0 ){
+            
+            //Comienza transacción de inserción
+            $this->db->trans_start();
+            
+            //Alta del empleado
+            $this->db->insert('Empleados',$data);
+            $id = $this->item_lista($datos['nombre'])['id'];
+        
+            //Alta de los roles asignados al empleado
+            $roles = $datos['roles'];
+            for ($i=0; i< $roles.length; $i++){
+                $dataRoles = array(
+                    'id_empleado' => $id,
+                    'rol' => $roles[i],
+                );
+                $this->db->insert('Info_roles',$dataRoles);
+            }
+            
+            //Finaliza transacción de inserción exitosamente
+            $this->db->trans_complete();
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    public function editar($datos){   
+        
+        //Armamos el paquete a insertar.
+        $password = $hash_pass = hash('sha256',$datos['password']);
+        $data = array(
+            'dni' => $datos['dni'],
+            'nombre' => $datos['nombre'],
+            'direccion' => $datos['direccion'],
+            'telefono' => $datos['telefono'],          
+            'email' => $datos['email'],
+            'cuit' => $datos['cuit'],
+            'password' => $password
+        );
+        
+        //Si el nombre no se modificó, actualizo sin controlar repetición de nombre
+        if ( $datos['nombre'] === ($this->obtener_empleado_id($datos['id'])['nombre']) ){
+            
+            //Comienzo la transacción de edición
+            $this->db->trans_start();
+            
+            //Actualizamos los datos en la tabla Empleados
+            $this->db->where('id', $datos['id'] );
+            $this->db->update('Empleados', $data );
+            
+            //Borramos los roles existentes.
+            $this->db->where('id_empleado', $datos['id'] );
+            $this->db->delete('Info_roles');
+            
+            $roles = $datos['roles'];
+            $cantidad = count($roles);
+            for ($i=0; $i<$cantidad; $i++){
+                $dataRoles = array(
+                    'id_empleado' => $datos['id'],
+                    'rol' => $roles[$i],
+                );
+                $this->db->insert('Info_roles',$dataRoles);
+            }
+            
+            //Finaliza transacción de edición exitosamente
+            $this->db->trans_complete();
+            return true;
+            
+        }else{
+            //Se modificó nombre, chequeo que no exista un usuario con tal nombre.
+            if (count($this->item_lista($datos['nombre'])) === 0 ){
+                //Comienzo la transacción de edición
+                $this->db->trans_start();
+
+                //Actualizamos los datos en la tabla Empleados
+                $this->db->where('id', $datos['id'] );
+                $this->db->update('Empleados', $data );
+
+                //Borramos los roles existentes.
+                $this->db->where('id_empleado', $datos['id'] );
+                $this->db->delete('Info_roles');
+
+                $roles = $datos['roles'];
+                $cantidad = count($roles);
+                for ($i=0; $i<$cantidad; $i++){
+                    $dataRoles = array(
+                        'id_empleado' => $datos['id'],
+                        'rol' => $roles[$i],
+                    );
+                    $this->db->insert('Info_roles',$dataRoles);
+                }
+
+                //Finaliza transacción de edición exitosamente
+                $this->db->trans_complete();
+                return true;
+            }else{
+                return false;
+            }
+        }
+    }
+    
+    /**
+     * Computa la eliminación de un empleado, así como también el de sus roles asocidos. La eliminación es controlada mediante 
+     * transacciones, por lo que cualquier falla hace fallar la eliminación por completo.
+     * Recibe en $empleados, el Id del empleado a eliminar.
+     * @return True o False indicando éxito o falla en la inserción.
+     */
+    public function eliminar ( $empleado ){
+        
+        //Comienza transacción de eliminación
+        $this->db->trans_start();
+        
+        $this->db->where('id', $empleado['id'] );
+        if ($this->db->delete('Empleados')) {
+            
+            //Borramos los roles existentes.
+            $this->db->where('id_empleado', $empleado['id'] );
+            if ($this->db->delete('info_roles') ){
+                $this->db->trans_complete();
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
+    }
         
     /**
     * Computa y retorna el ID y Password asociado a un cliente cuyo nombre es $nombre.
@@ -11,99 +173,17 @@ class MEmpleados extends CI_Model {
         return $resultado;
     }
 
-    public function insertarEmpleado($data){   
-        //Chequeamos que el nombre ingresado no pertenezca a la base de datos
-        $chequeoNombre = $this->db->query('SELECT id FROM Empleados WHERE nombre="'.$data['nombre'].'"');
-        $afectadas = $chequeoNombre->row_array();
-        if (count($afectadas) > 0) {
-          return 1;
-        }
-        //Si el nombre es correcto.
-        $password = hash('sha256',$data['password']);
-        $insertEmpleados = array(
-        "dni" => $data['dni'],
-        "nombre" => $data['nombre'],
-        "direccion" => $data['direccion'],
-        "telefono" => $data['telefono'],          
-        "email" => $data['email'],
-        "cuit" => $data['cuit'],
-        "password" =>$password);
-        $this->db->insert("empleados",$insertEmpleados);
-
-        $query = $this->db->query('SELECT id FROM Empleados WHERE nombre="'.$data['nombre'].'"');
-        $id = $query->row_array()['id'];
-        //Asignamos los roles.
-        if(count($data['data'])>0){
-        $idRol= $data['data'];
-        $count = count($idRol);
-        for ($i = 0; $i < $count; $i++) {
-          $insertInfoRoles = array(
-              'id_empleado'=> $id,
-              'rol'=>$idRol[$i]);
-          $this->db->insert("info_roles",$insertInfoRoles);
-        }   }
-        return 0;
-    }
-    public function obtenerEmpleados(){   
-    $query = $this->db->query(
-            'SELECT * FROM Empleados');
-        $resultado = $query->result_array();
-        return $resultado;
-    }
-    public function obtenerEmpleadoId($id_empleado){   
-    $query = $this->db->query('SELECT * FROM Empleados WHERE id="'.$id_empleado.'"');
-    $resultado = $query->row_array();
+    public function obtener_empleado_id($id_empleado){  
+        $consulta = 'SELECT * ';
+        $consulta .= 'FROM Empleados ';
+        $consulta .= 'WHERE id = '.$id_empleado;
+        
+        $query = $this->db->query($consulta);
+        $resultado = $query->row_array();
+        
         return $resultado;
     }
 
-    public function actualizarEmpleado($data,$igual){   
-        if(!$igual){
-            $chequeoNombre = $this->db->query('SELECT id FROM Empleados WHERE nombre="'.$data['nombre'].'"');
-            $afectadas = $chequeoNombre->row_array();
-             if (count($afectadas) > 0) {
-               return 1;
-             }
-        }
-        //Armamos el paquete a insertar.
-        $password = $hash_pass = hash('sha256',$data['password']);
-        $updateEmpleado = array(
-        "dni" => $data['dni'],
-        "nombre" => $data['nombre'],
-        "direccion" => $data['direccion'],
-        "telefono" => $data['telefono'],          
-        "email" => $data['email'],
-        "cuit" => $data['cuit'],
-        "password" =>$password);
-        $this->db->where("id",$data['id']);
-        $this->db->update("empleados",$updateEmpleado);
-
-
-        //Borramos los roles existentes.
-        $this->db->where("id_empleado",$data['id']);
-        $this->db->delete("info_roles");
-        //Insertamos los nuevos.
-        $idRol= $data['data'];
-        $count = count($idRol);
-        for ($i = 0; $i < $count; $i++){
-          $insertInfoRoles = array(
-              'id_empleado'=> $data['id'],
-              'rol'=>$idRol[$i]);
-          $this->db->insert("info_roles",$insertInfoRoles);
-        }
-        return 0;
-    }
-
-    /*
-     * Elimina un determinado empleado.
-     */
-    public function eliminarEmpleado($empleado){
-        $this->db->where("id",$empleado['id']);
-        $this->db->delete("empleados");
-        //Borramos los roles existentes.
-        $this->db->where("id_empleado",$empleado['id']);
-        $this->db->delete("info_roles");
-    }
-    
     /*
      * Asocia un determinado mozo como pedidor de una mesa, tambien agrega el nombre del mozo a la lista de pedidores.
      */
@@ -147,5 +227,19 @@ class MEmpleados extends CI_Model {
         $this->db->where("id_pedidor",$id_mozo);
         $salida = $this->db->delete("mesas_pedidores");
         return $salida;
+    }
+    
+    /**
+     * Computa y retorna el registro de un empleado con nombre $nombre, si es que existe.
+     */
+    public function item_lista($nombre){
+        $consulta = 'SELECT * ';
+        $consulta .= 'FROM Empleados ';
+        $consulta .= 'WHERE nombre = "'.$nombre.'" ';
+        
+        $query = $this->db->query($consulta);
+        $resultado = $query->row_array();
+        
+        return $resultado;
     }
 }

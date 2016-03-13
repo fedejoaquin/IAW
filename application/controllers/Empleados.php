@@ -3,22 +3,40 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Empleados extends CI_Controller {
     
+    /**
+     * Lista todos los empleados actuales del sistema, permitiendo acceder, modificar y eliminar a cada uno de ellos.
+     * @return ['empleados']= Array(Id, DNI, Nombre, Direccion, Telefono, Email, Cuit, Password )
+     */
     public function index(){            
-        $resultado = $this->MEmpleados->obtenerEmpleados();    
+        $resultado = $this->MEmpleados->listar();    
         $data['empleados'] = $resultado;
         $data['funcion'] = 'index';
         $this->load->view('vEmpleados', $data); 
     }
+    
+    /**
+     * Lista todos los datos de un empleado cuyo id es $id.
+     * @return ['empleado']= Array(Id, DNI, Nombre, Direccion, Telefono, Email, Cuit, Password )
+     */
+    public function ver($id){
+        $resultado = $this->MEmpleados->obtener_empleado_id($id);
+        $resultado_1 = $this->MRoles->get_roles_empleado($id); 
+        $data['empleado'] = $resultado;
+        $data['roles'] = $resultado_1;
+        $data['funcion'] = 'ver';
+        $this->load->view('vEmpleados', $data); 
+    }
         
-    /*
-     * Funcion que da el alta de un empleado.
+    /**
+     * Computa el alta de un empleados, con los datos recibidos por POST, desde el formulario de alta. 
+     * En caso de éxito, redirige a empledos; caso contrario, retorna a formulario de alta.
      */
     public function alta(){
         if ($this->form_validation->run('empleados/altaEditar') == FALSE){
             $data['funcion'] = 'alta';
             $this->load->view('vEmpleados', $data);
         }else{
-            if(!$this->MEmpleados->insertarEmpleado($this->input->post())){
+            if( $this->MEmpleados->alta( $this->input->post() )){
                 redirect(site_url()."empleados");
             }else{
                 $data['funcion'] = 'alta';
@@ -27,38 +45,43 @@ class Empleados extends CI_Controller {
         }
     }
     
-    public function editar(){
+    /**
+     * Computa la edición de un empleados cuyos datos provienen del formulario editar, recibido por POST.
+     * En caso de edición exitosa, redirige a empleados; caso contrario, redirige a empleados editar.
+     */
+    public function editar($id){
         $datos = $this->input->post();
+        $datos['id'] = $id;
+        
         if ($this->form_validation->run('empleados/altaEditar') == FALSE){
-            $data['editar'] = $datos['editar'];
-            $data['empleado'] = $this->MEmpleados->obtenerEmpleadoId($datos['editar']);
-            $data['funcion'] = 'modificacion';
+
+            $data['empleado'] = $this->MEmpleados->obtener_empleado_id($id);
+            $data['roles'] = $this->MRoles->get_roles_empleado($id);
+            $data['funcion'] = 'editar';
             $this->load->view('vEmpleados', $data);
+           
         }else{
-            $datos['id']=$datos['editar'];
-            $resultado = $this->MEmpleados->obtenerEmpleadoId($datos['editar']);
-            if($resultado['nombre']===$datos['nombre']){
-                $this->MEmpleados->actualizarEmpleado($datos,1);
+            if ($this->MEmpleados->editar( $datos )){
                 redirect(site_url()."empleados");
             }else{
-                if($this->MEmpleados->actualizarEmpleado($datos,0)){
-                    $data['empleado'] = $datos;
-                    $data['empleado']['nombre']='';
-                    $data['funcion'] = 'modificacion';
-                    $this->load->view('vEmpleados', $data);
-                }
-                else{
-                    redirect(site_url()."empleados");
-                }
+                $data['empleado'] = $datos;
+                $data['empleado']['nombre'] = '';
+                $data['funcion'] = 'editar';
+                $this->load->view('vEmpleados', $data);
             }
         }
     }
-       
+    
+    /**
+     * Computa la eliminación de un empleados cuyo id es $id_empleado, recibido por POST.
+     * Redirige a empleados.
+     */
     public function eliminar(){
         $id_empleado = $this->input->post('eliminar');
         $datos = $this->input->post();
         $datos['id'] = $id_empleado;
-        $this->MEmpleados->eliminarEmpleado($datos);
+        
+        $this->MEmpleados->eliminar($datos);
         redirect(site_url()."empleados");
     }   
 }

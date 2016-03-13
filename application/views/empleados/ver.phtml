@@ -1,0 +1,49 @@
+<div class="row txt-cabecera">
+    EMPLEADOS
+</div>
+<div class="row txt-info">
+    ..: Información completa empleado :..
+</div>
+<div class="row">
+    <div class="row">
+        <div class="input-field col s12 m4 offset-m2">
+            <input type="text" class="validate" value="<?php echo $empleado['nombre']; ?>" readonly>
+            <label>Nombre</label>
+        </div>
+        <div class="input-field col s6 m2">
+            <input type="text" class="validate"value="<?php echo $empleado['dni']; ?>" readonly>
+            <label>DNI</label>
+        </div>
+        <div class="input-field col s6 m2">
+            <input type="text" class="validate" value="<?php echo $empleado['cuit']; ?>" readonly>
+            <label>CUIT</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col s12 m4 offset-m2">
+            <input type="text" class="validate" value="<?php echo $empleado['direccion'];?>" readonly>
+            <label>Dirección</label>
+        </div>
+        <div class="input-field col s6 m2">
+            <input type="text" class="validate" value="<?php echo $empleado['telefono'];?>" readonly>
+            <label>Teléfono</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col s12 m4 offset-m2">
+            <input type="text" class="validate" value="<?php echo $empleado['email'];?>" readonly>
+            <label>Email</label>
+        </div>
+        <div class="input-field col s12 m4">
+            <select multiple>
+            <?php foreach ($roles as $rol ){ ?>
+                <option active selected> <?php echo $rol['descripcion']; ?> </option>
+            <?php } ?>
+            </select>
+            <label>Roles asignados</label>
+        </div>
+    </div>
+    <div class="row center-align">
+        <a class="btn waves-effect waves-light" href="<?php echo site_url()?>empleados">Volver</a> 
+    </div>
+</div>
