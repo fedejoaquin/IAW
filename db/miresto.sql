@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
+-- version 4.5.5.1
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 09-03-2016 a las 17:49:15
--- Versión del servidor: 10.1.10-MariaDB
--- Versión de PHP: 7.0.2
+-- Tiempo de generación: 20-03-2016 a las 23:49:00
+-- Versión del servidor: 5.6.24
+-- Versión de PHP: 5.6.8
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `miresto`
 --
-CREATE DATABASE IF NOT EXISTS `miresto` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+CREATE DATABASE IF NOT EXISTS `miresto` DEFAULT CHARACTER SET latin1 COLLATE latin1_spanish_ci;
 USE `miresto`;
 
 -- --------------------------------------------------------
@@ -59,7 +59,7 @@ CREATE TABLE `cartas` (
 
 INSERT INTO `cartas` (`id`, `id_restriccion_dia`, `id_restriccion_hora`, `nombre`, `creador`) VALUES
 (3, 2, 3, 'Carta uno - solo tarde', 5),
-(4, 2, 3, 'Carta dos - Solo mañana', 5);
+(4, 2, 4, 'Carta dos - Solo mañana', 5);
 
 -- --------------------------------------------------------
 
@@ -81,7 +81,8 @@ INSERT INTO `cartas_promociones` (`id_carta`, `id_promocion`) VALUES
 (3, 6),
 (3, 7),
 (4, 8),
-(4, 9);
+(4, 9),
+(9, 6);
 
 -- --------------------------------------------------------
 
@@ -122,7 +123,7 @@ CREATE TABLE `empleados` (
 --
 
 INSERT INTO `empleados` (`id`, `dni`, `nombre`, `direccion`, `telefono`, `email`, `cuit`, `password`) VALUES
-(5, 36704824, 'Federico Ariel Perez Cavallero', 'direccion', 2, 'fede@fede.com', 20367048248, '5d942a1d73fd8f28d71e6b03d2e42f44721db94b734c2edcfe6fcd48b76a74f9'),
+(5, 36704824, 'Federico Joaquin', 'Undiano 69 - 1 - 13', 2392487559, 'fedejoaquin.mail@gmail.com', 20367048248, '5d942a1d73fd8f28d71e6b03d2e42f44721db94b734c2edcfe6fcd48b76a74f9'),
 (6, 45454, 'leo', 'dire', 122, 'leo@leo.com', 205422, '8535e86c8118bbbb0a18ac72d15d3a2b37b18d1bce1611fc60165f322cf57386'),
 (7, 45454, 'user', 'dire', 12121, 'user@user.com', 45454, '04f8996da763b7a969b1028ee3007569eaf3a635486ddab211d512c85b9df8fb');
 
@@ -176,12 +177,12 @@ CREATE TABLE `info_carta` (
 INSERT INTO `info_carta` (`id`, `id_carta`, `id_seccion`, `id_producto`, `id_lista_precio`) VALUES
 (16, 3, 3, 14, 3),
 (17, 3, 4, 15, 4),
-(18, 3, 4, 16, 4),
-(19, 4, 4, 15, 3),
-(20, 4, 4, 16, 3),
 (25, 4, 5, 17, 4),
 (50, 3, 3, 13, 3),
-(58, 3, 5, 17, 4);
+(59, 4, 5, 18, 4),
+(60, 3, 4, 16, 4),
+(61, 4, 3, 13, 3),
+(62, 4, 3, 14, 3);
 
 -- --------------------------------------------------------
 
@@ -244,7 +245,8 @@ INSERT INTO `info_lista_precio` (`id`, `id_producto`, `id_lista_precio`, `precio
 (21, 15, 4, 10),
 (22, 16, 4, 10),
 (23, 17, 4, 10),
-(24, 18, 4, 10);
+(24, 18, 4, 10),
+(25, 28, 3, 25);
 
 -- --------------------------------------------------------
 
@@ -308,7 +310,10 @@ INSERT INTO `info_promociones` (`id`, `id_promocion`, `id_producto`) VALUES
 (11, 8, 13),
 (12, 8, 17),
 (13, 9, 13),
-(14, 9, 18);
+(14, 9, 18),
+(19, 6, 18),
+(20, 6, 15),
+(21, 6, 16);
 
 -- --------------------------------------------------------
 
@@ -328,16 +333,18 @@ CREATE TABLE `info_roles` (
 --
 
 INSERT INTO `info_roles` (`id`, `id_empleado`, `rol`) VALUES
-(14, 5, 3),
-(15, 6, 1),
-(16, 6, 4),
-(17, 6, 5),
 (18, 7, 1),
 (19, 7, 2),
 (20, 7, 3),
 (21, 7, 4),
 (22, 7, 5),
-(23, 7, 6);
+(23, 7, 6),
+(37, 5, 1),
+(38, 5, 3),
+(39, 5, 6),
+(46, 6, 1),
+(47, 6, 4),
+(48, 6, 5);
 
 -- --------------------------------------------------------
 
@@ -371,7 +378,7 @@ DROP TABLE IF EXISTS `mesas`;
 CREATE TABLE `mesas` (
   `id` int(10) UNSIGNED NOT NULL,
   `numero` smallint(5) UNSIGNED NOT NULL,
-  `abierta` tinyint(1) NOT NULL DEFAULT '0',
+  `estado` tinytext NOT NULL,
   `id_mozo` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -379,8 +386,9 @@ CREATE TABLE `mesas` (
 -- Volcado de datos para la tabla `mesas`
 --
 
-INSERT INTO `mesas` (`id`, `numero`, `abierta`, `id_mozo`) VALUES
-(2, 1, 1, 6);
+INSERT INTO `mesas` (`id`, `numero`, `estado`, `id_mozo`) VALUES
+(2, 1, 'Abierta', 6),
+(3, 2, 'Cerrada', 6);
 
 -- --------------------------------------------------------
 
@@ -419,9 +427,7 @@ DROP TABLE IF EXISTS `notificaciones`;
 CREATE TABLE `notificaciones` (
   `id` int(10) UNSIGNED NOT NULL,
   `id_mesa` int(10) UNSIGNED NOT NULL,
-  `producto` tinytext NOT NULL,
-  `visto` tinyint(1) NOT NULL DEFAULT '0',
-  `comentarios` tinytext NOT NULL
+  `mensaje` tinytext NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -453,8 +459,8 @@ CREATE TABLE `productos` (
 --
 
 INSERT INTO `productos` (`id`, `nombre`) VALUES
-(13, 'Asado de tira'),
-(14, 'Chorizo Asado'),
+(13, 'Chorizo Asado'),
+(14, 'Asado de tira'),
 (15, 'Picada especial'),
 (16, 'Picada Chica'),
 (17, 'Vaso coca cola'),
@@ -478,10 +484,10 @@ CREATE TABLE `promociones` (
 --
 
 INSERT INTO `promociones` (`id`, `nombre`, `precio`) VALUES
-(6, 'Promo 1 - tarde', 200),
-(7, 'Promo 2 - tarde', 210),
-(8, 'Promo 3 - mañana', 198),
-(9, 'Promo 4 - Mañana', 205);
+(6, 'Promo 1 : tarde', 200),
+(7, 'Promo 2: Tarde', 210),
+(8, 'Promo 3: mañana', 198),
+(9, 'Promo 4: mañana', 205);
 
 -- --------------------------------------------------------
 
@@ -815,7 +821,7 @@ ALTER TABLE `fecha_cuadricula`
 -- AUTO_INCREMENT de la tabla `info_carta`
 --
 ALTER TABLE `info_carta`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 --
 -- AUTO_INCREMENT de la tabla `info_cuadriculas_base`
 --
@@ -830,27 +836,27 @@ ALTER TABLE `info_cuadriculas_fecha`
 -- AUTO_INCREMENT de la tabla `info_lista_precio`
 --
 ALTER TABLE `info_lista_precio`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 --
 -- AUTO_INCREMENT de la tabla `info_pedidos`
 --
 ALTER TABLE `info_pedidos`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 --
 -- AUTO_INCREMENT de la tabla `info_pedidos_promociones`
 --
 ALTER TABLE `info_pedidos_promociones`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 --
 -- AUTO_INCREMENT de la tabla `info_promociones`
 --
 ALTER TABLE `info_promociones`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 --
 -- AUTO_INCREMENT de la tabla `info_roles`
 --
 ALTER TABLE `info_roles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 --
 -- AUTO_INCREMENT de la tabla `lista_precio`
 --
@@ -860,7 +866,7 @@ ALTER TABLE `lista_precio`
 -- AUTO_INCREMENT de la tabla `mesas`
 --
 ALTER TABLE `mesas`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT de la tabla `mesa_cuadricula`
 --
@@ -870,12 +876,12 @@ ALTER TABLE `mesa_cuadricula`
 -- AUTO_INCREMENT de la tabla `notificaciones`
 --
 ALTER TABLE `notificaciones`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 --
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 --
 -- AUTO_INCREMENT de la tabla `promociones`
 --
