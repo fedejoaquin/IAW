@@ -1,5 +1,23 @@
 <?php
 $config = array(
+'productos/alta' => array(
+    array(
+        'field'   => 'nombre', 
+        'label'   => 'Nombre de producto', 
+        'rules'   => 'required'
+    ),
+    
+),//Fin productos/alta
+    
+'productos/editar' => array(
+    array(
+        'field'   => 'nombre', 
+        'label'   => 'Nombre de producto', 
+        'rules'   => 'required'
+    ),
+    
+),//Fin productos/alta
+    
 'empleados/altaEditar' => array(      
     array(
         'field'   => 'nombre', 

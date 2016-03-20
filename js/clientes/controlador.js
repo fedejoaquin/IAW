@@ -7,15 +7,16 @@ total : 0,
 
 vaciar_carrito : function (){
     if (cliente.productos.length===0 && cliente.promociones.length===0){
-        cliente_vista.mensaje('No hay nada en el carrito.', 2000,'toast-error');
+        auxiliar.mensaje('No hay nada en el carrito.', 2500,'toast-error');
     }else{
         cliente.productos = new Array();
         cliente.promociones = new Array();
-        cliente.precio = 0;
+        cliente.total = 0;
         cliente_vista.listar_carrito();
-        cliente_vista.mensaje('Se vació correctamente el carrito.', 2000,'toast-ok');
+        auxiliar.mensaje('Se vació correctamente el carrito.', 2500,'toast-ok');
     }
-},
+    
+}, //FIN VACIAR CARRITO
 
 enviar_comentario : function (){
     var posicion =  cliente.datosComentario.id;
@@ -32,47 +33,49 @@ enviar_comentario : function (){
         cliente.productos[posicion]['comentarios'] = comentario;
     }
     cliente_vista.listar_carrito();
-    cliente_vista.mensaje('Comentario adherido.', 2000,'toast-ok');
-},
+    auxiliar.mensaje('Comentario adherido.', 2500,'toast-ok');
+    
+}, //FIN ENVIAR_COMENTARIO
 
 confirmar_pedido : function (){
     if (cliente.productos.length===0 && cliente.promociones.length===0){
-        cliente_vista.mensaje('No hay nada en el carrito.', 2000,'toast-error');
+        auxiliar.mensaje('No hay nada en el carrito.', 2500,'toast-error');
     }else{
+        auxiliar.espera.lanzar();
         $.ajax({
             data:  {'productosPedidos': cliente.productos, 'promocionesPedidas': cliente.promociones},
             url:   '/IAW-PF/clientes/alta_pedido',
             type:  'post',
             error: function(response){
-                cliente_vista.mensaje('Se produjo un error en la conexión.', 5000,'toast-error');
-                cliente_vista.mensaje('El servidor no está respondiendo nuestra solicitud.', 5000,'toast-error');
-                cliente_vista.mensaje('En 10 segundos el sistema reintentará automáticamente.', 10000,'toast-error');
+                auxiliar.espera.detener();
+                auxiliar.mensaje('Se produjo un error en la conexión.', 5000,'toast-error');
+                auxiliar.mensaje('El servidor no está respondiendo nuestra solicitud.', 5000,'toast-error');
+                auxiliar.mensaje('En 10 segundos el sistema reintentará automáticamente.', 10000,'toast-error');
                 setTimeout(function(){ confirmarPedido(); }, 10000);    
             },
             success: function (response){
                 var respuesta = JSON.parse(response);
+                auxiliar.espera.detener();
                 if (respuesta['error'] === undefined){
                     cliente.productos = new Array();
                     cliente.promociones = new Array();
-                    cliente.precio = 0;
+                    cliente.total = 0;
                     cliente_vista.listar_confirmados(respuesta['data']);
-                    cliente_vista.mensaje('Pedidos y/o promociones confirmadas.', 2000,'toast-ok');
+                    auxiliar.mensaje('Pedidos y/o promociones confirmadas.', 2500,'toast-ok');
                 }else{
-                    var error = respuesta['error'];
-                    cliente.vaciar_carrito();
-                    cliente_vista.listar_carrito();
-                    cliente_vista.mensaje('Error: ' + error, 10000,'toast-error');
+                    auxiliar.mensaje(respuesta['error'], 5000,'toast-error');
                 }
             }
         });
     }
-},
+    
+}, //FIN CONFIRMAR PEDIDO
 
 control_ajax : function(){
     $.ajax({
         data:  {},
         url:   '/IAW-PF/clientes/estado_mesa',
-        type:  'get',
+        type:  'post',
         success: function (response){
             var respuesta = JSON.parse(response);
             if (respuesta['error'] === undefined){
@@ -81,14 +84,15 @@ control_ajax : function(){
         }
     });
     setTimeout("cliente.control_ajax()",10000);
-},
+    
+}, //FIN CONTROL AJAX
 
 producto : {
     agregar : function( id, producto, precio, id_lp ){
         var tupla = {'id':id,'producto':producto,'precio':precio, 'id_lp': id_lp, 'comentarios':'Sin comentarios.'}; 
         cliente.productos.push(tupla);
         cliente.total += precio;
-        cliente_vista.mensaje(producto + ' agregado.', 2000,'toast-ok');
+        auxiliar.mensaje(producto + ' agregado.', 2000,'toast-ok');
     },
     
     quitar : function( posicion ){
@@ -96,7 +100,7 @@ producto : {
         cliente.productos.splice(posicion,1);
         cliente.total -= tupla['precio'];
         cliente_vista.listar_carrito();
-        cliente_vista.mensaje(tupla['producto'] + ' eliminado correctamente.', 2000,'toast-error');
+        auxiliar.mensaje(tupla['producto'] + ' eliminado correctamente.', 2000,'toast-error');
     },
     
     comentar : function (posicion){
@@ -112,7 +116,7 @@ promocion : {
         var tupla = {'id':id,'nombre': nombre, 'precio':precio, 'comentarios':'Sin comentarios.'}; 
         cliente.promociones.push(tupla);
         cliente.total += precio;
-        cliente_vista.mensaje('Promoción agregada.', 2000,'toast-ok');
+        auxiliar.mensaje('Promoción agregada.', 2000,'toast-ok');
     },
     
     quitar : function ( posicion ){
@@ -120,7 +124,7 @@ promocion : {
         cliente.promociones.splice(posicion,1);
         cliente.total -= tupla['precio'];
         cliente_vista.listar_carrito();
-        cliente_vista.mensaje('Promoción eliminada correctamente.', 2000,'toast-error');
+        auxiliar.mensaje('Promoción eliminada correctamente.', 2000,'toast-error');
     },
     
     comentar : function(posicion){
@@ -130,8 +134,8 @@ promocion : {
     }
     
 }//FIN PROMOCION
-}//FIN CLIENTES
 
+}//FIN CLIENTES
 
 $( document ).ready(function(){
     cliente.control_ajax();

@@ -2,6 +2,16 @@
     <h3>VISTA DE ADMIN</h3>
 </div>
 
+<?php 
+
+    $hora_actual = getdate()['hours'];
+        $dia_actual = getdate()['wday'];
+        echo $hora_actual."<br>";
+        echo $dia_actual;
+
+
+?>
+
 <div class="row center-align">
-    <a class="btn waves-effect waves-light" href="<?php echo site_url()?>clientes/" >Volver</a>
+    <a class="btn waves-effect waves-light tooltipped" data-tooltip="Volver a roles" href="<?php echo site_url()?>intranet" >Volver</a>
 </div>

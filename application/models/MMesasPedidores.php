@@ -20,47 +20,37 @@ class MMesasPedidores extends CI_Model {
     }
     
     /**
-     * Computa la desvinculación de un cliente con una dada mesa a la que ya se encuetra
-     * vinculado.
-     */  
-    public function desvincular($cid){
-        $consulta = 'DELETE FROM Mesas_pedidores WHERE id_pedidor = "'.$cid.'"';
-        $query = $this->db->query($consulta);
-    }
-    
-    
-    public function vincular_cliente($codigo,$id_mesa){
-        //Vemos si el pedidor esta vinculado.
-        $pedidorVinculado = $this->db->query('SELECT * FROM Pedidores WHERE id = "'.$codigo.'"')->row_array();
-        if (count($pedidorVinculado)){
-            //Buscamos que la mesa este abierta.
-            $mesaAbierta = $this->db->query('SELECT id,abierta FROM Mesas WHERE id = "'.$id_mesa.'"')->row_array();
-            if($mesaAbierta['abierta'] == 0){
-                //La mesa existe, pero esta cerrada, entonces no se pueden realizar acciones.
-                return 1;
-            }
-            //Una vez que sabemos que la mesa esta disponible, insertamos al cliente.
-            $insertPedidorMesa = array(
-                "id_pedidor" => $codigo,
-                "id_mesa" => $id_mesa
-            );
-                $this->db->insert("mesas_pedidores",$insertPedidorMesa);
-            return 0;
-        }
-        //El pedidor no esta vinculado.
-        return 2;
-    }
-    /*
-     * Computa las mesas asociadas a un determinado empleado.
-     * @param $id_mozo id del empleado.
-     * @return Array(id,numero_mesa,estado,nombre)
+     * Computa y retorna la lista de clientes vinculados a una mesa cuyo id es $id_mesa.
+     * $resultado = Array ( Id_pedidor, Nombre )
      */
-    public function get_mesas_empleado($id_mozo){
-        $consulta = 'SELECT m.id, m.numero as numero_mesa, m.abierta as estado, e.nombre FROM mesas m JOIN empleados '
-                . 'e WHERE m.id_mozo = e.id  AND e.id = '.$id_mozo.' ORDER BY m.numero';
-        $resultado = $this->db->query($consulta) -> result_array();
+    public function get_clientes_vinculados($id_mesa){
+        $consulta = 'SELECT mp.id_pedidor, p.nombre ';
+        $consulta .= 'FROM Mesas_pedidores mp LEFT JOIN Pedidores p ON mp.id_pedidor = p.id ';
+        $consulta .= 'WHERE mp.id_mesa='.$id_mesa;
+        
+        $query = $this->db->query($consulta);
+        $resultado = $query->result_array();
+                
         return $resultado;
     }
     
+    /**
+     * Cumputa el alta de un pedidor cuyo id es $id_cliente, en la mesa cuyo id es $id_mesa.
+     * @return True o False en caso de operación exitosa o fallida respectivamente.
+     */
+    public function vincular_cliente($id_mesa, $id_cliente){       
+        $data = array(
+            "id_pedidor" => $id_cliente,
+            "id_mesa" => $id_mesa
+        );
+        return $this->db->insert("Mesas_pedidores",$data);
+    }
     
+    /**
+     * Computa la baja de un pedidor cuyo id es $id_cliente, en la mesa que se haya vinculado.
+     */  
+    public function desvincular($id_cliente){
+        $consulta = 'DELETE FROM Mesas_pedidores WHERE id_pedidor = "'.$cid.'"';
+        $query = $this->db->query($consulta);
+    }
 }

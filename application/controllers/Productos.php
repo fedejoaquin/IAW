@@ -14,33 +14,51 @@ class Productos extends CI_Controller {
     }
 
     /**
-     * Computa el alta de un producto, si es que ya no existe.
-     * @return ['data'] = Array(Id, Producto), en caso de alta exitosa.
-     * @return ['data'] = Vacio, en caso de alta fallida.
-     * @return ['error'] = Error si corresponde.
+     * Computa el alta de un producto, con los datos recibidos por POST, desde el formulario de alta. 
+     * En caso de éxito, redirige a productos; caso contrario, retorna a formulario de alta.
      */
     public function alta(){
-        $nombre = $this->input->post('nombre');
-
-        $retorno = $this->MProductos->alta($nombre);
-        if ($retorno['valido']){
-            $resultado['data'] = $retorno['data'];
+        if ($this->form_validation->run('productos/alta') == FALSE){
+            $data['funcion'] = 'alta';
+            $this->load->view('vProductos', $data);
         }else{
-            $resultado['data'] = array();
-            $resultado['error'] = 'El producto no pudo eliminarse correctamente.';
+            if (empty($_FILES['foto_producto'])){
+                $data['foto_producto_error'] = 'Imagen requerida ( .PNG | Hasta 100 KB. )';
+                $data['funcion'] = 'alta';
+                $this->load->view('vProductos', $data);
+            }else{
+                $name = $_FILES['foto_producto']['name'];
+                $extension = end(explode('.', $name ));
+                $size = $_FILES['foto_producto']['size'];
+                if (($extension !== 'png') || ($size > 102400)){
+                    $data['foto_producto_error'] = 'Imagen requerida ( .PNG | Hasta 100 KB. )';
+                    $data['funcion'] = 'alta';
+                    $this->load->view('vProductos', $data);
+                }else{
+                    $nombre = $this->input->post('nombre');
+                    $retorno = $this->MProductos->alta($nombre);
+                    if( $retorno['valido'] ){
+                        $file = $retorno['data']['id'].".png";
+                        $destino = "img/comidas/";
+                        move_uploaded_file($_FILES['foto_producto']['tmp_name'],$destino.$file);
+                        redirect(site_url()."productos");
+                    }else{
+                        $data['funcion'] = 'alta';
+                        $this->load->view('vProductos', $data);
+                    }   
+                }
+            } 
         }
-        echo json_encode($resultado);
     }
 
     /**
-     * Computa la eliminación de un producto cuyo id es $id, recibido por POST, mediante
-     * un origen ajax.
-     * @return ['data'] = Vacio, en caso de baja exitosa.
-     * @return ['error'] = Error si corresponde.
+     * Computa la eliminación de un producto cuyo id es $id.
+     * Redirige a productos.
      */
     public function eliminar(){
         $id = $this->input->post('id_producto');
         if ($this->MProductos->eliminar($id)){
+            unlink("img/comidas/".$id.".png");
             $resultado['data'] = array();
         }else{
             $resultado['error'] = 'El producto no pudo eliminarse correctamente.';
@@ -49,19 +67,57 @@ class Productos extends CI_Controller {
     }
 
     /**
-     * Computa la modificación del campo nombre por $nombre, de un producto cuyo id es $id, 
-     * recibido por POST, mediante un origen ajax.
-     * @return ['data'] = Vacio, en caso de modificación exitosa.
-     * @return ['error'] = Error si corresponde.
+     * 
      */
-    public function editar(){
-        $id = $this->input->post('id');
-        $nombre = $this->input->post('nombre');
-        if ($this->MProductos->editar($id, $nombre)){
-            $resultado['data'] = array();
+    public function editar($id){
+        $datos = $this->input->post();
+        if ($this->form_validation->run('productos/editar') == FALSE){
+            $datos = $this->MProductos->get_producto($id);
+            if (count($datos)!==0){
+                $data['id'] = $id;
+                $data['nombre'] = $datos['nombre'];
+                $data['funcion'] = 'editar';
+                $this->load->view('vProductos', $data);
+            }else{
+                redirect(site_url()."productos");
+            }
         }else{
-            $resultado['error'] = 'El producto no pudo editarse correctamente.';
+            if ($_FILES['foto_producto']['error']>0){
+                if ($this->MProductos->editar( $id, $datos['nombre'] )){
+                    redirect(site_url()."productos");
+                }else{
+                    $data['id'] = $id;
+                    $data['nombre'] = '';
+                    $data['nombre_error'] = "El nombre del producto ya existe.";
+                    $data['funcion'] = 'editar';
+                    $this->load->view('vProductos', $data);
+                }
+            }else{
+                $name = $_FILES['foto_producto']['name'];
+                $extension = end(explode('.', $name ));
+                $size = $_FILES['foto_producto']['size'];
+                if (($extension !== 'png') || ($size > 102400)){
+                    $data['id'] = $id;
+                    $data['nombre'] = $datos['nombre'];
+                    $data['foto_producto_error'] = 'Imagen requerida ( .PNG | Hasta 100 KB. )';
+                    $data['funcion'] = 'editar';
+                    $this->load->view('vProductos', $data);
+                }else{
+                    if ($this->MProductos->editar( $id, $datos['nombre'] )){
+                        unlink("/img/comidas/".$id.".png");
+                        $file = $id.".png";
+                        $destino = "img/comidas/";
+                        move_uploaded_file($_FILES['foto_producto']['tmp_name'],$destino.$file);
+                        redirect(site_url()."productos");
+                    }else{
+                        $data['id'] = $id;
+                        $data['nombre'] = '';
+                        $data['nombre_error'] = "El nombre del producto ya existe.";
+                        $data['funcion'] = 'editar';
+                        $this->load->view('vProductos', $data);
+                    }
+                }
+            }
         }
-        echo json_encode($resultado);
     }
 }

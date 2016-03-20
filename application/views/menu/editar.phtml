@@ -1,5 +1,8 @@
 <div class="txt-cabecera">
-    MENÚES: EDITAR.
+    MENÚES
+</div>
+<div class="txt-info">
+    ..: Editando menú :..
 </div>
 <div class="row">
     <div class="col m10 s12 offset-m1">
@@ -74,7 +77,16 @@
                     </div>
                     <table class="responsive-table">
                         <thead>
-                            <td>#ID</td><td>Seccion</td><td>Producto</td><td>Lista Precio</td><td>Precio</td><td>Acciones</td>
+                            <tr>
+                                <th>#ID</th>
+                                <th>Seccion</th>
+                                <th>Producto</th>
+                                <th>Lista Precio</th>
+                                <th>Precio</th>
+                                <th>Editar..</th>
+                                <th>Eliminar..</th>
+                            </tr>
+                            
                         </thead>
                         <tbody id="tablaProductos">
                         <?php 
@@ -93,8 +105,14 @@
                                 <td><?php echo $nlp; ?></td>
                                 <td><?php echo '$'.$p; ?></td>
                                 <td>
-                                    <a class="btn waves-effect waves-green" onClick="menu.producto.preEditar(<?php echo $id_producto_infocarta.",".$id; ?>)"><i class="material-icons">edit</i></a>
-                                    <a class='dropdown-button btn' data-activates='<?php echo 'dprod'.$id; ?>'><i class="material-icons">delete</i></a>
+                                    <a class="btn waves-effect waves-green" onClick="menu.producto.preEditar(<?php echo $id_producto_infocarta.",".$id; ?>)">
+                                        <i class="material-icons">edit</i>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a class="dropdown-button btn" data-activates='<?php echo 'dprod'.$id; ?>'>
+                                        <i class="material-icons">delete</i>
+                                    </a>
                                     <!-- Dropdown Structure -->
                                     <ul id='<?php echo 'dprod'.$id; ?>' class='dropdown-content'>
                                         <li>¿Confirma?</li>
@@ -123,7 +141,13 @@
                     </div>
                     <table class="responsive-table">
                         <thead>
-                        <td>#ID</td><td>Promoción</td><td>Precio</td><td>Acciones</td>
+                            <tr>
+                                <th>#ID</th>
+                                <th>Promoción</th>
+                                <th>Precio</th>
+                                <th>Ver..</th>
+                                <th>Eliminar..</th>
+                            </tr>
                         </thead>
                         <tbody id="tablaPromocion">
                         <?php 
@@ -137,8 +161,14 @@
                                 <td><?php echo $n; ?></td>
                                 <td><?php echo '$'.$p; ?></td>
                                 <td>
-                                    <a class="btn waves-effect waves-green" href="<?php echo site_url()."promociones/ver/".$id; ?>"><i class="material-icons">info</i></a>
-                                    <a class='dropdown-button btn' data-activates='<?php echo 'dprom'.$id; ?>'><i class="material-icons">delete</i></a>
+                                    <a class="btn waves-effect waves-green" href="<?php echo site_url()."promociones/ver/".$id; ?>">
+                                        <i class="material-icons">info</i>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a class="dropdown-button btn" data-activates='<?php echo 'dprom'.$id; ?>'>
+                                        <i class="material-icons">delete</i>
+                                    </a>
                                     <!-- Dropdown Structure -->
                                     <ul id='<?php echo 'dprom'.$id; ?>' class='dropdown-content'>
                                         <li>¿Confirma?</li>
@@ -261,4 +291,7 @@
             <a class="btn" onClick="menu.promocion.postAlta()">Agregar</a>
         </div>
     </div>
+</div>
+<div class="row center-align">
+    <a class="btn waves-effect waves-light tooltipped" data-tooltip="Volver a menu" href="<?php echo site_url()?>menu">Volver</a> 
 </div>

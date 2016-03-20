@@ -1,45 +1,5 @@
 <?php
 class MPedidos extends CI_Model{
-
-    /**
-     * Computa y retorna los pedidos procesados por el sistema para una dada mesa.
-     * Los valores de retorno son el nombre de pedidor y producto, precio del producto,
-     * así como la fecha de entrada, procesamiento en cocina y salida del pedido.
-     * @return Array(Id_pedidor,Nombre_pedidor, Nombre_producto, Precio, Fecha_e, Fecha_p, Fecha_s)
-     */  
-    public function get_productos_procesados($mesa_id){
-        
-        $consulta = 'SELECT ip.id_pedidor, pe.nombre as nombre_pedidor, p.nombre as nombre_producto, ilp.precio, ip.fecha_e, ip.fecha_p, ip.fecha_s ';
-        $consulta .= 'FROM (((Info_pedidos ip LEFT JOIN Productos p ON ip.id_producto = p.id) ';
-        $consulta .= 'LEFT JOIN Info_lista_precio ilp ON ilp.id_lista_precio = ip.id_lista_precio AND ilp.id_producto = p.id) ';
-        $consulta .= 'LEFT JOIN Pedidores pe ON ip.id_pedidor = pe.id ) ';
-        $consulta .= 'WHERE ip.id_mesa = "'.$mesa_id.'" ';
-        $consulta .= 'ORDER BY pe.nombre ASC';
-        
-        $query = $this->db->query($consulta);
-        $resultado = $query->result_array();
-        return $resultado;     
-    }
-    
-    /**
-     * Computa y retorna las promociones procesadas por el sistema para una dada mesa.
-     * Los valores de retorno son el nombre de pedidor y promocion, precio de la promocion,
-     * así como la fecha de entrada, procesamiento en cocina y salida del pedido.
-     * @return Array(Id_pedidor,Nombre_pedidor, Nombre_promocion, Precio, Fecha_e, Fecha_p, Fecha_s)
-     */  
-    public function get_promociones_procesadas ($mesa_id){
-        
-        $consulta = 'SELECT pe.id as id_pedidor, pe.nombre as nombre_pedidor, p.nombre as nombre_promocion, p.precio, ipp.fecha_e, ipp.fecha_p, ipp.fecha_s ';
-        $consulta .= 'FROM ((Info_pedidos_promociones ipp LEFT JOIN Promociones p ON ipp.id_promocion = p.id) ';
-        $consulta .= 'LEFT JOIN Pedidores pe ON pe.id = ipp.id_pedidor) ';
-        $consulta .= 'WHERE ipp.id_mesa = '.$mesa_id.' ';
-        $consulta .= 'ORDER BY pe.nombre ';
-        
-        $query = $this->db->query($consulta);
-        $resultado = $query->result_array();
-                
-        return $resultado;     
-    }
     
     /**
      * Computa la generación de un pedido de producto teniendo en cuenta que:
@@ -80,150 +40,195 @@ class MPedidos extends CI_Model{
         return $this->db->insert('Info_pedidos_promociones', $data);
     }
     
+    /**
+     * Computa y retorna los pedidos procesados por el sistema para una dada mesa.
+     * Los valores de retorno son el nombre de pedidor y producto, precio del producto,
+     * así como la fecha de entrada, procesamiento en cocina y salida del pedido.
+     * @return Array(Id_pedidor,Nombre_pedidor, Nombre_producto, Precio, Fecha_e, Fecha_p, Fecha_s)
+     */  
+    public function get_productos_procesados($mesa_id){
+        
+        $consulta = 'SELECT ip.id_pedidor, pe.nombre as nombre_pedidor, p.nombre as nombre_producto, ilp.precio, ip.fecha_e, ip.fecha_p, ip.fecha_s ';
+        $consulta .= 'FROM (((Info_pedidos ip LEFT JOIN Productos p ON ip.id_producto = p.id) ';
+        $consulta .= 'LEFT JOIN Info_lista_precio ilp ON ilp.id_lista_precio = ip.id_lista_precio AND ilp.id_producto = p.id) ';
+        $consulta .= 'LEFT JOIN Pedidores pe ON ip.id_pedidor = pe.id ) ';
+        $consulta .= 'WHERE ip.id_mesa = "'.$mesa_id.'" ';
+        $consulta .= 'ORDER BY pe.nombre ASC';
+        
+        $query = $this->db->query($consulta);
+        $resultado = $query->result_array();
+        return $resultado;     
+    }
+    
+    /**
+     * Computa y retorna las promociones procesadas por el sistema para una dada mesa.
+     * Los valores de retorno son el nombre de pedidor y promocion, precio de la promocion,
+     * así como la fecha de entrada, procesamiento en cocina y salida del pedido.
+     * @return Array(Id_pedidor,Nombre_pedidor, Nombre_promocion, Precio, Fecha_e, Fecha_p, Fecha_s)
+     */  
+    public function get_promociones_procesadas ($mesa_id){
+        
+        $consulta = 'SELECT ipp.id_pedidor, pe.nombre as nombre_pedidor, p.nombre as nombre_promocion, p.precio, ipp.fecha_e, ipp.fecha_p, ipp.fecha_s ';
+        $consulta .= 'FROM ((Info_pedidos_promociones ipp LEFT JOIN Promociones p ON ipp.id_promocion = p.id) ';
+        $consulta .= 'LEFT JOIN Pedidores pe ON pe.id = ipp.id_pedidor) ';
+        $consulta .= 'WHERE ipp.id_mesa = '.$mesa_id.' ';
+        $consulta .= 'ORDER BY pe.nombre ';
+        
+        $query = $this->db->query($consulta);
+        $resultado = $query->result_array();
+                
+        return $resultado;     
+    }
+     
     /*
-     * Obtiene las notificaciones para un determinado mozo, a fin de mostrarlas en la lista.
-     * return Array(id,numero,producto,id_not,comentarios)
+     * Retorna los pedidos y promociones, tanto pendientes como procesados.
+     * return ['productosPendientes'] = Array = (ID, Nombre, Fecha_e, Comentarios).
+     * return ['productosProcesados'] = Array = (ID, Nombre, Fecha_p, Comentarios).
+     * return ['promocionesPendientes'] = Array = (ID, Nombre, Fecha_e, Comentarios).
+     * return ['promocionesProcesadas'] = Array = (ID, Nombre, Fecha_p, Comentarios).
      */
-    public function getNotificaciones($id_mozo){
-        $consulta = "SELECT m.id,m.numero, n.producto,n.id as not_id,n.comentarios "
-                . "FROM mesas m JOIN notificaciones n "
-                . "ON m.id = n.id_mesa AND m.id_mozo= ".$id_mozo." "
-                . "ORDER BY n.id";
-        $resultado = $this->db->query($consulta)->result_array();
+    public function get_pedidos_promociones(){
+        
+        //Productos pendientes
+        //Array = (ID, Nombre, Fecha_e, Comentarios)
+        $consulta = 'SELECT ip.id, p.nombre, ip.fecha_e, ip.comentarios ';
+        $consulta .= 'FROM Info_pedidos ip LEFT JOIN Productos p ON ip.id_producto = p.id ';
+        $consulta .= 'WHERE ip.fecha_p IS NULL ';
+        $consulta .= 'ORDER BY ip.fecha_e ASC ';
+        
+        $query = $this->db->query($consulta);
+        $productos_pendientes = $query->result_array();
+                
+        //Productos procesados
+        //Array = (ID, Nombre, Fecha_p, Comentarios)
+        $consulta = 'SELECT ip.id, p.nombre, ip.fecha_p, ip.comentarios ';
+        $consulta .= 'FROM Info_pedidos ip LEFT JOIN Productos p ON ip.id_producto = p.id ';
+        $consulta .= 'WHERE ip.fecha_p IS NOT NULL AND ip.fecha_s IS NULL ';
+        $consulta .= 'ORDER BY ip.fecha_p ASC ';
+        
+        $query = $this->db->query($consulta);
+        $productos_procesados = $query->result_array();
+        
+        //Promociones pendientes
+        //Array = (ID, Nombre, Fecha_e, Comentarios)
+        $consulta = 'SELECT ip.id, p.nombre, ip.fecha_e, ip.comentarios ';
+        $consulta .= 'FROM Info_pedidos_promociones ip LEFT JOIN Promociones p ON ip.id_promocion = p.id ';
+        $consulta .= 'WHERE ip.fecha_p IS NULL ';
+        $consulta .= 'ORDER BY ip.fecha_e ASC ';
+        
+        $query = $this->db->query($consulta);
+        $promociones_pendientes = $query->result_array();
+                
+        //Promociones procesadas
+        //Array = (ID, Nombre, Fecha_p, Comentarios)
+        $consulta = 'SELECT ip.id, p.nombre, ip.fecha_p, ip.comentarios ';
+        $consulta .= 'FROM Info_pedidos_promociones ip LEFT JOIN Promociones p ON ip.id_promocion = p.id ';
+        $consulta .= 'WHERE ip.fecha_p IS NOT NULL AND ip.fecha_s IS NULL ';
+        $consulta .= 'ORDER BY ip.fecha_p ASC ';
+        
+        $query = $this->db->query($consulta);
+        $promociones_procesadas = $query->result_array();
+        
+        $resultado['productosPendientes'] = $productos_pendientes;
+        $resultado['productosProcesados'] = $productos_procesados;
+        $resultado['promocionesPendientes'] = $promociones_pendientes;
+        $resultado['promocionesProcesadas'] = $promociones_procesadas;
+        
         return $resultado;
     }
     
-    /*
-     * Elimina al notificacion con id $id_not
+    /**
+     * Computa y retorna la información extendida correspondiente a un dado pedido de producto, cuyo identificación
+     * es $id.
+     * @return ['data'] = Array(ID, Id_mesa, Numero_mesa, Nombre_mozo, Id_pedidor, Nombre_pedidor, Fecha_e, Fecha_p )
      */
-    public function eliminarNotificacion($id_not){
-        $this->db->where("id",$id_not);
-        $exito = $this->db->delete("notificaciones");
-        if($exito)
-            {return 0;}
-        return 1;
-    }
-   
-    /*
-     * Retorna los pedidos y promociones.
-     * return $resultado['pedProc'] pedidos procesados.
-     * return $resultado['pedPend'] pedidos pendientes.
-     * return $resultado['promoProc'] promociones procesadas.
-     * return $resultado['promoPend'] promociones pendientes.
-     * Estructura Array(id,id_mesa,nombre,fecha_e,fecha_p,fecha_s,comentarios)
-     */
-    public function  pedidos_y_promos(){
-        //Consultamos los pedidos
-        $consultaPedido = "SELECT ip.id,ip.id_mesa,p.nombre,ip.fecha_e,ip.fecha_p,ip.fecha_s,ip.comentarios "
-                . "FROM info_pedidos ip JOIN productos p on ip.id_producto = p.id  "
-                . "ORDER BY ip.id";
-        $pedidos = $this->db->query($consultaPedido)->result_array();
-        $resultado['pedProc'] = array();
-        $resultado['pedPend'] = array();
-        foreach ($pedidos as $pedido ) {
-            //Si tiene fecha de procesado, entonces ya esta cocinandose
-            if($pedido['fecha_s'] == NULL){
-                if($pedido['fecha_p'] !== NULL){
-                    array_push($resultado['pedProc'], $pedido); 
-                }
-                //Si no tiene fecha de procesado, entonces hay que procesarlo, por lo que es pendiente.
-                else{
-                    array_push($resultado['pedPend'], $pedido); 
-                }
-            }
-        }
-        //Consulta para pedir las promociones.
-      $consultaPromo = "SELECT ipp.id,ipp.id_mesa,p.nombre,ipp.fecha_e,ipp.fecha_p,ipp.fecha_s,ipp.comentarios "
-                . "FROM info_pedidos_promociones ipp JOIN promociones p on ipp.id_promocion = p.id "
-                . "ORDER BY ipp.id";
-        $promos = $this->db->query($consultaPromo)->result_array();
-        $resultado['promoProc'] = array();
-        $resultado['promoPend'] = array();
-        foreach ($promos as $promo) {
-            if($promo['fecha_s'] == NULL){
-                //Si tiene fecha de procesado, entonces ya esta cocinandose
-                if($promo['fecha_p'] !== NULL){
-                    array_push($resultado['promoProc'], $promo); 
-                }
-                //Si no tiene fecha de procesado, entonces hay que procesarlo, por lo que es pendiente.
-                else{
-                    array_push($resultado['promoPend'], $promo); 
-                }
-            }
-        }
+    public function info_pedido_producto($id){
+        $consulta = 'SELECT ip.id, ip.id_mesa, m.numero as numero_mesa, e.nombre as nombre_mozo, ip.id_pedidor, p.nombre as nombre_pedidor, ';
+        $consulta .= ' ip.fecha_e, ip.fecha_p ';
+        $consulta .= 'FROM ((( Info_pedidos ip LEFT JOIN Mesas m ON ip.id_mesa = m.id ) ';
+        $consulta .= 'LEFT JOIN Empleados e ON m.id_mozo = e.id ) ';
+        $consulta .= 'LEFT JOIN Pedidores p ON ip.id_pedidor = p.id ) ';
+        $consulta .= 'WHERE ip.id = '.$id;
+        
+        $query = $this->db->query($consulta);
+        $resultado = $query->row_array();
+        
         return $resultado;
     }
     
-    /*
-     * Procesa un determinado pedido, es decir, setea un valor para la fecha de procesado
+    /**
+     * Computa y retorna la información extendida correspondiente a un dado pedido de producto, cuyo identificación
+     * es $id.
+     * @return ['data'] = Array(ID, Id_mesa, Numero_mesa, Nombre_mozo, Id_pedidor, Nombre_pedidor, Fecha_e, Fecha_p)
      */
-    function procesarPedido($id_p){
+    public function info_pedido_promocion($id){
+        $consulta = 'SELECT ip.id, ip.id_mesa, m.numero as numero_mesa, e.nombre as nombre_mozo, ip.id_pedidor, p.nombre as nombre_pedidor, ';
+        $consulta .= ' ip.fecha_e, ip.fecha_p ';
+        $consulta .= 'FROM ((( Info_pedidos_promociones ip LEFT JOIN Mesas m ON ip.id_mesa = m.id ) ';
+        $consulta .= 'LEFT JOIN Empleados e ON m.id_mozo = e.id ) ';
+        $consulta .= 'LEFT JOIN Pedidores p ON ip.id_pedidor = p.id ) ';
+        $consulta .= 'WHERE ip.id = '.$id;
+        
+        $query = $this->db->query($consulta);
+        $resultado = $query->row_array();
+        
+        return $resultado;
+    }
+    
+    /**
+     * Computa el procesamiento de un producto cuyo id es $id. El procesamiento consiste en asignarle una fecha y 
+     * hora en su atributo fecha_p, indicando que el producto está siendo preparado desde la cocina.
+     * @return True o False, en caso de éxito o fracaso.
+     */
+    function procesar_pedido($id){
         $date = date('Y-m-d H:i:s');
-       $data = array(
+        $data = array(
             'fecha_p' => $date,
         );
-        $this->db->where('id', $id_p);
+        $this->db->where('id', $id);
         return $this->db->update('info_pedidos', $data);  
     }
     
-    /*
-     * Procesa una determinada promocion, es decir, setea un valor para la fecha de procesado
+    /**
+     * Computa el procesamiento de una promoción cuyo id es $id. El procesamiento consiste en asignarle una fecha y 
+     * hora en su atributo fecha_p, indicando que la promoción está siendo preparada desde la cocina.
+     * @return True o False, en caso de éxito o fracaso.
      */
-    function procesarPromo($id_p){
+    function procesar_promocion($id){
         $date = date('Y-m-d H:i:s');
-       $data = array(
+        $data = array(
             'fecha_p' => $date,
         );
-        $this->db->where('id', $id_p);
+        $this->db->where('id', $id);
         return $this->db->update('info_pedidos_promociones', $data);  
     }
     
-    /*
-     * Termina un determinado pedido, es decir, setea un valor para la fecha de salida.
+    /**
+     * Computa la finalización de un pedido de producto cuya identificación es $id. Para esto, en su atributo fecha_s
+     * le sete el dia y hora actual, indicando que se encuetra listo para entregar.
+     * @return True o False en caso de operación exitosa o fallida respectivamente.
      */
-    function terminarPedido($tupla){
-       $date = date('Y-m-d H:i:s');
-       $data = array(
+    function finalizar_producto($id){
+        $date = date('Y-m-d H:i:s');
+        $data = array(
             'fecha_s' => $date,
         );
-        $this->db->where('id', $tupla['id']);
-        $this->db->update('info_pedidos', $data);  
-        $insertNotificaciones = array(
-            'id_mesa' => $tupla['id_mesa'],
-            'producto'=> $tupla['nombre'],
-            'comentarios' => $tupla['comentarios']
-        );
-        $this->db->insert('Notificaciones', $insertNotificaciones);
+        $this->db->where('id', $id);
+        return $this->db->update('info_pedidos', $data);
     }
     
-    /*
-     * Termina una determinada promocion, es decir, setea un valor para la fecha de salida.
+    /**
+     * Computa la finalización de una promoción cuya identificación es $id. Para esto, en su atributo fecha_s
+     * le sete el dia y hora actual, indicando que se encuetra lista para entregar.
+     * @return True o False en caso de operación exitosa o fallida respectivamente.
      */
-    function terminarPromo($tupla){
-       $date = date('Y-m-d H:i:s');
-       $data = array(
+    function finalizar_promocion($id){
+        $date = date('Y-m-d H:i:s');
+        $data = array(
             'fecha_s' => $date,
         );
-        $this->db->where('id', $tupla['id']);
-        $this->db->update('info_pedidos_promociones', $data);  
-        
-        $insertNotificaciones = array(
-            'id_mesa' => $tupla['id_mesa'],
-            'producto'=> $tupla['nombre'],
-            'comentarios' => $tupla['comentarios']
-        );
-        $this->db->insert('Notificaciones', $insertNotificaciones);
+        $this->db->where('id', $id);
+        return $this->db->update('info_pedidos_promociones', $data);
     }
-    
-    /*
-     * Obtiene el numero de mesa, para un determinado id.
-     * return numero : numero de mesa solicitada.
-     */
-    function get_num_mesa($id_mesa){
-        $consulta = "Select numero From Mesas Where id=".$id_mesa;
-        $mesa = $this->db->query($consulta)->row_array();
-        return $mesa['numero'];
-    }
-    
 }
 ?>

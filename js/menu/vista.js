@@ -119,7 +119,13 @@ postAlta : function(datos){
 
     td = $('<td></td>');
     $(td).append(a);
+    $(tr).append(td);
+    
+    td = $('<td></td>');
     $(td).append(a_1);
+    $(tr).append(td);
+    
+    td = $('<td></td>');
     $(td).append(a_2);
     $(td).append(ul);
     $(tr).append(td);
@@ -127,15 +133,11 @@ postAlta : function(datos){
     $('#tablaMenues').append(tr);
     $('#altaMenu').closeModal();
     
-    menu_vista.reset_dropdown();
+    auxiliar.reset_dropdown();
 },
 
 eliminar : function(id){
     $('#fm'+id).remove();
-},
-    
-mensaje : function(mensaje, tiempo, clase){
-    Materialize.toast(mensaje, tiempo ,clase);
 },
 
 resetear_select : function ( nombre ){
@@ -146,18 +148,6 @@ resetear_select : function ( nombre ){
     
     $('#'+nombre).empty();
     $('#'+nombre).append(option);
-},
-
-reset_dropdown : function (){
-    $('.dropdown-button').dropdown({
-        inDuration: 300,
-        outDuration: 225,
-        constrain_width: false, // Does not change width of dropdown to that of the activator
-        hover: false, // Activate on hover
-        gutter: 0, // Spacing from edge
-        belowOrigin: false, // Displays dropdown below the button
-        alignment: 'left' // Displays dropdown with edge aligned to the left of button
-    });
 },
 
 producto : {
@@ -321,6 +311,9 @@ producto : {
 
         td = $('<td></td>');
         $(td).append(a);
+        $(tr).append(td);
+        
+        td = $('<td></td>');
         $(td).append(a_1);
         $(td).append(ul);
         $(tr).append(td);
@@ -328,7 +321,7 @@ producto : {
         $('#tablaProductos').append(tr);
         
         menu_vista.producto.cerrar_modal();
-        menu_vista.reset_dropdown();
+        auxiliar.reset_dropdown();
     },
     
     eliminar : function(id){
@@ -341,6 +334,7 @@ producto : {
         $('#btnConfirmarEdicion').attr("onClick", "menu.producto.postEditar("+id_producto_infocarta+")");
 
         row_clonada = $('#fprod'+id_producto_infocarta).clone();
+        $(row_clonada).find("td:last").remove();
         $(row_clonada).find("td:last").remove();
         $('#tablaEditarProducto').append(row_clonada);
 
@@ -478,6 +472,9 @@ promocion : {
 
         td = $('<td></td>');
         $(td).append(a);
+        $(tr).append(td);
+        
+        td = $('<td></td>');
         $(td).append(a_1);
         $(td).append(ul);
         $(tr).append(td);
@@ -485,7 +482,7 @@ promocion : {
         $('#tablaPromocion').append(tr);
         $('#altaPromocion').closeModal();
 
-        menu_vista.reset_dropdown();
+        auxiliar.reset_dropdown();
     },
     
     eliminar : function(id){

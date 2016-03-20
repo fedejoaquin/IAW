@@ -5,55 +5,50 @@ class Clientes extends CI_Controller {
     
     /**
      * Index de Clientes. Chequea que esté logueado y/o vinculado.
-     * - En caso de estar logueado, muetra el index.
-     * - En caso de estar logueado y vinculado, muestra el index.
+     * - En caso de estar logueado como cliente, muetra el index.
+     * - En caso de estar logueado como cliente y vinculado, muestra el index.
+     * - En caso de estar logueado como empleado, redirige a intranet.
      * - En caso no estar logueado, redirige al home de webresto.
      */
     public function index(){
-        if($this->chequear_login_redirect()){
-            $this->chequear_vinculado();
-            $data['funcion'] = 'index';
-            $this->load->view('vClientes',$data);
-        }
+        $this->chequear_login_redirect();
+        $this->chequear_vinculado();
+        $data['funcion'] = 'index';
+        $this->load->view('vClientes',$data);
     }
     
     /**
      * Info de Clientes. Chequea que esté logueado y/o vinculado.
      * - En caso de estar logueado y/o vinculado, muetra la info actual.
+     * - En caso de estar logueado como empleado, redirige a intranet.
      * - En caso no estar logueado, redirige al home de webresto.
      */
     public function info(){
-        if($this->chequear_login_redirect()){
-            $this->chequear_vinculado();
-            $data['funcion'] = 'info';
-            $this->load->view('vClientes',$data);
-        }
+        $this->chequear_login_redirect();
+        $this->chequear_vinculado();
+        $data['funcion'] = 'info';
+        $this->load->view('vClientes',$data);
     }
     
     /**
      * Lista el menú actual y los pedidos, si es que el cliente está logueado y vinculado.
      * $data['info_carta' ] = Array (Secciones,nombre_producto,Precio, Id_lista_precio)
+     * $data['nombre_carta'] = nombre de la carta actual
      * $data['info_promociones'] = Array(NombrePromo,Productos,Precio)
-     * $data['pedidos_procesados'] = Array(Id_pedidor,Nombre_pedidor, Nombre_producto, Precio, Fecha_e, Fecha_p, Fecha_s)
-     * $data['promociones_procesadas'] = Array(Id_pedidor,Nombre_pedidor, Nombre_promocion, Precio, Fecha_e, Fecha_p, Fecha_s)
-     */
+     * 
+     *  */
     public function pedidos(){
-        if($this->chequear_login_redirect()){
-            if($this->chequear_vinculado_redirect()){
-                $menu_actual = $this->MCartas->get_menu_actual();
-                $promo_actual = $this->MCartas->get_promociones_actual();
-                $pedidos_procesados = $this->MPedidos->get_productos_procesados($this->session->userdata('mesa_asignada')['id']);
-                $promociones_procesadas = $this->MPedidos->get_promociones_procesadas($this->session->userdata('mesa_asignada')['id']);
-                
-                $data['id_carta'] = $menu_actual['id_carta'];
-                $data['nombre_carta'] = $menu_actual['nombre_carta'];
-                $data['info_carta'] = $menu_actual['info_carta'];
-                $data['info_promociones'] = $promo_actual;
-                $data['pedidos_procesados'] = $pedidos_procesados;
-                $data['promociones_procesadas'] = $promociones_procesadas;
-                $data['funcion'] = 'pedidos';
-                $this->load->view('vClientes', $data);
-            }
+        $this->chequear_login_redirect();
+        if($this->chequear_vinculado_redirect()){
+            $menu_actual = $this->MCartas->get_menu_actual();
+            $promo_actual = $this->MCartas->get_promociones_actual();
+            
+            $data['id_carta'] = $menu_actual['id_carta'];
+            $data['nombre_carta'] = $menu_actual['nombre_carta'];
+            $data['info_carta'] = $menu_actual['info_carta'];
+            $data['info_promociones'] = $promo_actual;
+            $data['funcion'] = 'pedidos';
+            $this->load->view('vClientes', $data);
         }
     }
     
@@ -74,50 +69,54 @@ class Clientes extends CI_Controller {
             $promociones = $this->input->post('promocionesPedidas');
             
             $id_pedidor = $this->session->userdata('cid');
-            $id_mesa = $this->session->userdata('mesa_asignada')['id'];            
+            $id_mesa = $this->session->userdata('mesa_asignada')['id'];       
+            
+            if ($this->MMesas->cliente_habilitado($id_mesa)){
 
-            $productos_precios = $this->MCartas->get_productos_precio_menu_actual();
-            $promociones_precios = $this->MCartas->get_promociones_precio_menu_actual();
-            
-            //Le indico a la base de dato que toda esta operación será mediante una transacción
-            $this->db->trans_start();
-        
-            if (!empty($productos)){ 
-                foreach ($productos as $row){
-                    $componente = array('id_producto' => $row['id'], 'precio' => $row['precio'] );
-                    if (in_array($componente, $productos_precios)){
-                        $this->MPedidos->solicitarProducto($id_pedidor,$id_mesa, $row['id'], $row['id_lp'], $row['comentarios']);
+                $productos_precios = $this->MCartas->get_productos_precio_menu_actual();
+                $promociones_precios = $this->MCartas->get_promociones_precio_menu_actual();
+
+                //Le indico a la base de dato que toda esta operación será mediante una transacción
+                $this->db->trans_start();
+
+                if (!empty($productos)){ 
+                    foreach ($productos as $row){
+                        $componente = array('id_producto' => $row['id'], 'precio' => $row['precio'] );
+                        if (in_array($componente, $productos_precios)){
+                            $this->MPedidos->solicitarProducto($id_pedidor,$id_mesa, $row['id'], $row['id_lp'], $row['comentarios']);
+                        }
                     }
                 }
-            }
-            
-            if(!empty($promociones)){
-                foreach ($promociones as $row){
-                    $componente = array('id' => $row['id'], 'precio' => $row['precio'] );
-                    if (in_array($componente, $promociones_precios)){
-                        $this->MPedidos->solicitarPromocion($id_pedidor,$id_mesa, $row['id'], $row['comentarios']);
+
+                if(!empty($promociones)){
+                    foreach ($promociones as $row){
+                        $componente = array('id' => $row['id'], 'precio' => $row['precio'] );
+                        if (in_array($componente, $promociones_precios)){
+                            $this->MPedidos->solicitarPromocion($id_pedidor,$id_mesa, $row['id'], $row['comentarios']);
+                        }
                     }
                 }
-            }
-            
-            //Finalizo la transacción una vez que todos los elementos fueron dados de alta correctamente
-            $this->db->trans_complete();
-            
-            if (empty($productos) && empty($promociones)){
-                $resultado['error'] = 'Con los datos subministrados, no se puede realizar la operación.';
-                $resultado['data'] = array();
-                echo json_encode($resultado);
+
+                //Finalizo la transacción una vez que todos los elementos fueron dados de alta correctamente
+                $this->db->trans_complete();
+
+                if (empty($productos) && empty($promociones)){
+                    $resultado['error'] = 'Con los datos subministrados, no se puede realizar la operación.';
+                    $resultado['data'] = array();
+                }else{
+                    $resultado['data'] = array();
+                    $resultado['data']['productos'] = $this->MPedidos->get_productos_procesados($this->session->userdata('mesa_asignada')['id']);
+                    $resultado['data']['promociones'] = $this->MPedidos->get_promociones_procesadas($this->session->userdata('mesa_asignada')['id']);
+                } 
             }else{
+                $resultado['error'] = 'La mesa no se encuentra habilitada para realizar pedidos.';
                 $resultado['data'] = array();
-                $resultado['data']['productos'] = $this->MPedidos->get_productos_procesados($this->session->userdata('mesa_asignada')['id']);
-                $resultado['data']['promociones'] = $this->MPedidos->get_promociones_procesadas($this->session->userdata('mesa_asignada')['id']);        
-                echo json_encode($resultado);
-            }             
+            }
         }else{
             $resultado['error'] = 'El usuario actual no se encuentra vinculado a webresto.';
             $resultado['data'] = array();
-            echo json_encode($resultado);
         }
+        echo json_encode($resultado);
     }
 
     /**
@@ -146,23 +145,23 @@ class Clientes extends CI_Controller {
     * - Si está logueado, elimina datos de sessión y redirige a webresto/logout.
     */
     public function logout(){
-        if($this->chequear_login_redirect()){
-            redirect(site_url().'webresto/logout');
-        }
+        $this->chequear_login_redirect();
+        redirect(site_url().'webresto/logout');
     }
             
     /**
-    * Chequea si existe datos de cliente logueado. 
-    * - Si la session indica que ya se logueó, entonces retorna verdadero.
-    * - Si la session indica que no se logueó, entonces redirige al home de webresto y retorna false.
+    * Chequea los datos de session. 
+    * - Si la session indica que ya se logueó, y es como empleado, redirige a intranet.
+    * - Si la session indica que ya se logueó, y es como cliente, no redirige.
+    * - Si la session indica que no se logueó, entonces redirige a webresto.
     */
    private function chequear_login_redirect(){
-        if ($this->session->userdata('cid') === NULL){
-            $data['funcion'] = 'index';
-            $this->load->view('vWebresto',$data);
-            return false;
+        if (!($this->session->userdata('eid') === NULL )){
+            redirect(site_url().'intranet');
         }else{
-            return true;
+            if ($this->session->userdata('cid') === NULL){
+                redirect(site_url().'webresto');
+            }
         }
     }
     

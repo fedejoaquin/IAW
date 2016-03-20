@@ -9,8 +9,8 @@ class Empleados extends CI_Controller {
      */
     public function index(){            
         $resultado = $this->MEmpleados->listar();    
-        $data['empleados'] = $resultado;
         $data['funcion'] = 'index';
+        $data['empleados'] = $resultado;
         $this->load->view('vEmpleados', $data); 
     }
     
@@ -21,9 +21,10 @@ class Empleados extends CI_Controller {
     public function ver($id){
         $resultado = $this->MEmpleados->obtener_empleado_id($id);
         $resultado_1 = $this->MRoles->get_roles_empleado($id); 
-        $data['empleado'] = $resultado;
-        $data['roles'] = $resultado_1;
+        
         $data['funcion'] = 'ver';
+        $data['roles'] = $resultado_1;
+        $data['empleado'] = $resultado;
         $this->load->view('vEmpleados', $data); 
     }
         
@@ -73,15 +74,11 @@ class Empleados extends CI_Controller {
     }
     
     /**
-     * Computa la eliminación de un empleados cuyo id es $id_empleado, recibido por POST.
+     * Computa la eliminación de un empleado cuyo id es $id.
      * Redirige a empleados.
      */
-    public function eliminar(){
-        $id_empleado = $this->input->post('eliminar');
-        $datos = $this->input->post();
-        $datos['id'] = $id_empleado;
-        
-        $this->MEmpleados->eliminar($datos);
+    public function eliminar($id){
+        $this->MEmpleados->eliminar($id);
         redirect(site_url()."empleados");
     }   
 }

@@ -1,17 +1,23 @@
 <div class="txt-cabecera">
     PRODUCTOS.
 </div>
+<div class="txt-info">
+    ..: Listado de productos :..
+</div>
 <div class="row center-align">
-    <a class="btn waves-effect waves-green" onClick="productos.producto.preAlta()">AGREGAR PRODUCTO</a>
+    <a class="btn waves-effect waves-green" href="<?php echo site_url()."productos/alta"?>">AGREGAR PRODUCTO</a>
 </div>
 <div class="row">
     <div class="col m8 s12 offset-m2">
         <table class="responsive-table">
             <thead>
-                <td>#ID</td>
-                <td>Imagen</td>
-                <td>Nombre</td>
-                <td>Acciones</td>
+                <tr>
+                    <th>#ID</th>
+                    <th>Imagen</th>
+                    <th>Nombre</th>
+                    <th>Editar..</th>
+                    <th>Eliminar..</th>
+                </tr>
             </thead>
             <tbody id="tablaProductos">   
             <?php
@@ -24,8 +30,14 @@
                     <td><?php echo 'Imagen'; ?></td>
                     <td><?php echo $np; ?></td>
                     <td> 
-                        <a class="btn waves-effect waves-green" onClick="productos.editar(<?php echo $id; ?>)"><i class="material-icons">edit</i></a>
-                        <a class='dropdown-button btn' data-activates='<?php echo 'drop'.$id; ?>'><i class="material-icons">delete</i></a>
+                        <a class="btn waves-effect waves-green" href="<?php echo site_url()."productos/editar/".$id?>">
+                            <i class="material-icons">edit</i>
+                        </a>
+                    </td>
+                    <td>
+                        <a class="dropdown-button btn" data-activates='<?php echo 'drop'.$id; ?>'>
+                            <i class="material-icons">delete</i>
+                        </a>
                         <!-- Dropdown Structure -->
                         <ul id='<?php echo 'drop'.$id; ?>' class='dropdown-content'>
                             <li>¿Confirma?</li>
@@ -46,45 +58,6 @@
         </table>
     </div>
 </div>
-
-<div id="altaProducto" class="modal">
-    <div class="modal-content">
-        <div class="input-field col s12 m6 offset-m2">
-            <input id="nombreProducto" placeholder="Ingrese nombre..." type="text">
-            <label>Nombre</label>
-        </div>
-        <div class="file-field input-field">
-            <div class="btn">
-                <span>File</span>
-                <input id="inputFile" type="file">
-            </div>
-            <div class="file-path-wrapper">
-                <input class="file-path validate" type="text">
-            </div>
-        </div>
-        <div class="row center-align">
-            <a class="btn" onClick="productos.producto.postAlta()">Confirmar</a>
-        </div>
-    </div>
-</div>
-
-<div id="editarProducto" class="modal">
-    <div class="modal-content">
-        <div class="input-field col s12 m6 offset-m2">
-            <input id="nombreNuevoProducto" type="text">
-            <label>Nombre</label>
-        </div>
-        <div class="file-field input-field">
-            <div class="btn">
-                <span>File</span>
-                <input id="inputNuevoFile" type="file">
-            </div>
-            <div class="file-path-wrapper">
-                <input class="file-path validate" type="text">
-            </div>
-        </div>
-        <div class="row center-align">
-            <a id="btnEditar" class="btn">Confirmar</a>
-        </div>
-    </div>
+<div class="row center-align">
+    <a class="btn waves-effect waves-light tooltipped" data-tooltip="Volver a roles" href="<?php echo site_url()?>intranet">Volver</a> 
 </div>

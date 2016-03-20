@@ -1,7 +1,7 @@
 <?php 
 class MEmpleados extends CI_Model {
     
-   /**
+    /**
      * Computa y retorna todos los empleados disponibles.
      * @return Array(Id, DNI, Nombre, Direccion, Telefono, Email, Cuit, Password )
      */
@@ -45,10 +45,11 @@ class MEmpleados extends CI_Model {
         
             //Alta de los roles asignados al empleado
             $roles = $datos['roles'];
-            for ($i=0; i< $roles.length; $i++){
+            $cantidad = count($roles);
+            for ($i=0; $i< $cantidad; $i++){
                 $dataRoles = array(
                     'id_empleado' => $id,
-                    'rol' => $roles[i],
+                    'rol' => $roles[$i],
                 );
                 $this->db->insert('Info_roles',$dataRoles);
             }
@@ -139,19 +140,18 @@ class MEmpleados extends CI_Model {
     /**
      * Computa la eliminación de un empleado, así como también el de sus roles asocidos. La eliminación es controlada mediante 
      * transacciones, por lo que cualquier falla hace fallar la eliminación por completo.
-     * Recibe en $empleados, el Id del empleado a eliminar.
      * @return True o False indicando éxito o falla en la inserción.
      */
-    public function eliminar ( $empleado ){
+    public function eliminar ( $id_empleado ){
         
         //Comienza transacción de eliminación
         $this->db->trans_start();
         
-        $this->db->where('id', $empleado['id'] );
+        $this->db->where('id', $id_empleado );
         if ($this->db->delete('Empleados')) {
             
             //Borramos los roles existentes.
-            $this->db->where('id_empleado', $empleado['id'] );
+            $this->db->where('id_empleado', $id_empleado );
             if ($this->db->delete('info_roles') ){
                 $this->db->trans_complete();
                 return true;

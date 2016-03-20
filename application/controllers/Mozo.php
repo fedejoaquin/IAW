@@ -3,182 +3,240 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Mozo extends CI_Controller {
 
+    /**
+     * Lista todos los datos que requiere un mozo para operar: menú actual, mesas asociadas, y nofitificaciones.
+     * $data['nombre_carta'] = Nombre carta actual.
+     * $data['info_carta' ] = Array ( Secciones, Nombre_producto, Precio, Id_lista_precio)
+     * $data['info_promociones'] = Array ( NombrePromo, Productos, Precio )
+     * $data['mesas'] = Array( Id, Numero_mesa, Estado, Id_mozo )
+     */
     public function index(){
-        $data['funcion'] = 'index';
-        $data['id_empleado'] = $this->session->userdata('eid');
-        $data['mesas'] = $this->MMesasPedidores->get_mesas_empleado($data['id_empleado']);
-        $this->load->view('vMozo', $data);
-    }
-        
-    public function administrar(){
-        $data['funcion'] = 'administrar';
-        $data['id_empleado'] = $this->session->userdata('eid');
-        $data['id_mesa'] = $this->input->post('id_mesa');
-        $data['num_mesa'] = $this->MPedidos->get_num_mesa($data['id_mesa']);
-        $mesa_asignada = $data['id_mesa'];
         $menu_actual = $this->MCartas->get_menu_actual();
         $promo_actual = $this->MCartas->get_promociones_actual();
-        $pedidos_procesados = $this->MPedidos->get_productos_procesados($mesa_asignada);
-        $promociones_procesadas = $this->MPedidos->get_promociones_procesadas($mesa_asignada);
-
-        $data['id_carta'] = $menu_actual['id_carta'];
+        
         $data['nombre_carta'] = $menu_actual['nombre_carta'];
         $data['info_carta'] = $menu_actual['info_carta'];
         $data['info_promociones'] = $promo_actual;
-        $data['pedidos_procesados'] = $pedidos_procesados;
-        $data['promociones_procesadas'] = $promociones_procesadas;
-        $data['funcion'] = 'administrar';
+        $data['mesas'] = $this->MMesas->get_mesas_empleado($this->session->userdata('eid'));
+        
+        $data['funcion'] = 'index';
         $this->load->view('vMozo', $data);
     }
 
-    public function altaPedidoMozo(){
+    public function alta_pedido(){
         $resultado = array();
-        if($this->chequear_vinculado()){
-            //Array(tupla_1, tupla_2, ..., tupla_n)
-            //Tupla(Id, Producto, Precio, Id_lp, Comentarios)
-            $productos = $this->input->post('productosPedidos');
-            //Tupla(Id, Producto, Precio, Comentarios)
-            $promociones = $this->input->post('promocionesPedidas');
+        
+        //Array(tupla_1, tupla_2, ..., tupla_n)
+        //Tupla(Id, Producto, Precio, Id_lp, Comentarios)
+        $productos = $this->input->post('productosPedidos');
+        //Tupla(Id, Producto, Precio, Comentarios)
+        $promociones = $this->input->post('promocionesPedidas');
+        
+        $id_mesa = $this->input->post('id_mesa');
+        $id_mozo = $this->session->userdata('eid'); 
+        
+        //Si el mozo está habilitado y la mesa está abierta
+        if ($this->MMesas->mozo_habilitado($id_mozo, $id_mesa)){
+            
+            $productos_precios = $this->MCartas->get_productos_precio_menu_actual();
+            $promociones_precios = $this->MCartas->get_promociones_precio_menu_actual();
 
-            $id_pedidor = $this->session->userdata('eid');
-            $id_mesa = $this->input->post('id_mesa');
+            //Le indico a la base de dato que toda esta operación será mediante una transacción
+            $this->db->trans_start();
 
             if (!empty($productos)){ 
                 foreach ($productos as $row){
-                    $this->MPedidos->solicitarProducto($id_pedidor,$id_mesa, $row['id'], $row['id_lp'], $row['comentarios']);
+                    $componente = array('id_producto' => $row['id'], 'precio' => $row['precio'] );
+                    if (in_array($componente, $productos_precios)){
+                        $this->MPedidos->solicitarProducto($id_mozo,$id_mesa, $row['id'], $row['id_lp'], $row['comentarios']);
+                    }
                 }
             }
 
             if(!empty($promociones)){
                 foreach ($promociones as $row){
-                    $this->MPedidos->solicitarPromocion($id_pedidor,$id_mesa, $row['id'], $row['comentarios']);
+                    $componente = array('id' => $row['id'], 'precio' => $row['precio'] );
+                    if (in_array($componente, $promociones_precios)){
+                        $this->MPedidos->solicitarPromocion($id_mozo,$id_mesa, $row['id'], $row['comentarios']);
+                    }
                 }
-            }            
-
-            if (empty($productos) && empty($promociones)){
-                $resultado['error'] = 'Con los datos subministrados, no se puede realizar la operación.';
-                $resultado['data'] = array();
-                echo json_encode($resultado);
-            }else{
-                $resultado['data'] = array();
-                $resultado['data']['productos'] = $this->MPedidos->get_productos_procesados($id_mesa);
-                $resultado['data']['promociones'] = $this->MPedidos->get_promociones_procesadas($id_mesa);        
-                echo json_encode($resultado);
             }
 
+            //Finalizo la transacción una vez que todos los elementos fueron dados de alta correctamente
+            $this->db->trans_complete();
+
+            if (empty($productos) && empty($promociones)){
+                $resultado['data'] = array();
+                $resultado['error'] = 'Con los datos subministrados, no se puede realizar la operación.';
+            }else{
+                $resultado['data'] = array();
+            }
         }else{
-            $resultado['error'] = 'El usuario actual no se encuentra vinculado a webresto.';
             $resultado['data'] = array();
-            echo json_encode($resultado);
+            $resultado['error'] = 'Falló el pedido. Mesa cerrada o no asignada al mozo indicado.'; 
         }
+        echo json_encode($resultado);
+    }
+    
+    public function mesas_asociadas(){
+        $resultado = array();
+        
+        $id_mozo = $this->session->userdata('eid');
+        $retorno = $this->MMesas->get_mesas_empleado($id_mozo);
+        
+        $resultado['data'] = array();
+        $resultado['data']['mesas'] = $retorno;
+        echo json_encode($resultado);
     }
 
-    /**
-     * Dada una petición de un mozo, si este está logueado y vinculado a una mesa, retorna la descripción de los
-     * pedidos y promociones confirmadas, así como el estado de procesamiento de cada uno de ellos.
-     * @return Productos --> Array(Id_pedidor,Nombre_pedidor, Nombre_producto, Precio, Fecha_e, Fecha_p, Fecha_s)
-     * @return Promociones --> Array(Id_pedidor,Nombre_pedidor, Nombre_promocion, Precio, Fecha_e, Fecha_p, Fecha_s)
-     * 
-     */
-    public function estado_mesa(){
-        $id_mesa = $this->input->post('id_mesa');
-        $resultado = array();
-        if($this->chequear_vinculado()){
-            $resultado['data'] = array();
-            $resultado['data']['productos'] = $this->MPedidos->get_productos_procesados($id_mesa);
-            $resultado['data']['promociones'] = $this->MPedidos->get_promociones_procesadas($id_mesa);        
-            echo json_encode($resultado);
-        }else{
-            $resultado['error'] = 'El usuario actual no se encuentra vinculado a webresto.';
-            $resultado['data'] = array();
-            echo json_encode($resultado);
-        }
-    }
-    
-    /**
-    * Chequea si existe datos de vinculación de un cliente logueado. 
-    * - Responde verdadero en caso de estar vinculado.
-    * - Responde falso en caso de no estar vinculado.
-    */
-    private function chequear_vinculado(){
-        $resultado = $this->MMesasPedidores->get_mesa_pedidor($this->session->userdata('eid'));
-        if (count($resultado)>0){
-            return true;
-        }else{
-            return false;
-        }
-    } 
-    
     /*
      * Vincula un dado cliente, obteniendo su codigo y id de mesa.
      * Si el cliente esta vinculado al sistema, se lo asocia a la mesa.
      * Si no esta vinculado, entonces envia un mensaje de erro.
      */
-    public function vincularCliente(){
+    public function vincular_cliente(){
         $resultado = array();
-        $codigo = $this->input->post('codigoCliente');
+        
+        $id_mozo = $this->session->userdata('eid');
         $id_mesa = $this->input->post('id_mesa');
-        $valido = $this->MMesasPedidores->vincular_cliente($codigo,$id_mesa);
-        switch ($valido) {
-            case 1: $resultado['error']="La mesa a la que intenta vincular esta cerrada.";
-                break;
-            case 2: $resultado['error']="El codigo: ".$codigo." no esta vinculado al sistema.";
-                break;
+        $id_cliente = $this->input->post('id_cliente');
+        
+        //Obtenemos pedidor con ID igual a $id_cliente
+        $pedidor = $this->MPedidores->item_lista($id_cliente);
+        
+        //Si existe ese pedidor
+        if ( count($pedidor)!== 0 ){
+            //Si el cliente no está vinculado a otra mesa
+            if (count($this->MMesasPedidores->get_mesa_pedidor($id_cliente)) == 0){
+                //Si el mozo está habilitado a operar sobre la mesa
+                if($this->MMesas->mozo_habilitado($id_mozo, $id_mesa)){
+                    if ($this->MMesasPedidores->vincular_cliente($id_mesa, $id_cliente)){
+                        $resultado['data'] = array();
+                    }else{
+                        $resultado['data'] = array();
+                        $resultado['error'] = "Se produjo un error al intentar vincular el cliente.";
+                    }
+                }else{
+                    $resultado['data'] = array();
+                    $resultado['error'] = "Mesa cerrada o no vinculada con el mozo actual.";
+                }
+            }else{
+                $resultado['data'] = array();
+                $resultado['error'] = "El cliente ingresado ya se encuentra vinculado a una mesa.";
+            }
+        }else{
+            $resultado['data'] = array();
+            $resultado['error'] = "El cliente ingresado no es válido.";
+        }
+        echo json_encode($resultado);
+    }
+    
+    /**
+     * Computa y etorna la descripción de los pedidos y promociones confirmadas para una mesa cuyo id es $id.
+     * $data['vinculados'] = Array(Id_pedidor, Nombre)
+     * $data['productos'] = Array(Id_pedidor,Nombre_pedidor, Nombre_producto, Precio, Fecha_e, Fecha_p, Fecha_s)
+     * $data['promociones'] = Array(Id_pedidor,Nombre_pedidor, Nombre_promocion, Precio, Fecha_e, Fecha_p, Fecha_s)
+     * $data['error'] = Error si corresponde
+     * 
+     */
+    public function estado_mesa(){
+        $resultado = array();
+        
+        $id_mozo = $this->session->userdata('eid');
+        $id_mesa = $this->input->post('id_mesa');
+        
+        //Si el mozo está vinculado a la mesa.
+        if($this->MMesas->mozo_habilitado($id_mozo, $id_mesa)){
+            $resultado['data']['vinculados'] = $this->MMesasPedidores->get_clientes_vinculados($id_mesa);
+            $resultado['data']['productos'] = $this->MPedidos->get_productos_procesados($id_mesa);
+            $resultado['data']['promociones'] = $this->MPedidos->get_promociones_procesadas($id_mesa);
+        }else{
+            $resultado['error'] = 'La mesa indicada no está vinculada al mozo actual o se encuentra cerrada.';
+            $resultado['data'] = array();
+        }
+        echo json_encode($resultado);
+    }
+    
+    /**
+     * Computa el cierre parcial de una mesa cuyo id es $id.
+     * $resultado['data'] = Array()
+     * $resultado['error'] = Error en caso de corresponder.
+     */
+    public function cierre_parcial(){
+        $resultado = array();
+        $id_mozo = $this->session->userdata('eid');
+        $id_mesa = $this->input->post('id_mesa');
+        
+        if ($this->MMesas->mozo_habilitado($id_mozo, $id_mesa)){
+            if ($this->MMesas->cierre_parcial($id_mesa)){
+                $resultado['data'] = array();
+            }else{
+                $resultado['data'] = array();
+                $resultado['error'] = 'Error al intentar realizar el cierre parcial.';
+            }
+        }else{
+            $resultado['data'] = array();
+            $resultado['error'] = 'El mozo actual no se encuentra vinculado o la mesa ya está cerrada.';
+        }
+        echo json_encode($resultado);
+    }
+    
+    /**
+     * Computa el cierre total de una mesa cuyo id es $id. Notifica al recepcionista que
+     * compute la cuenta.
+     * $resultado['data'] = Array()
+     * $resultado['error'] = Error en caso de corresponder.
+     */
+    public function cierre_total(){
+        $resultado = array();
+        
+        $id_mozo = $this->session->userdata('eid');
+        $id_mesa = $this->input->post('id_mesa');
+        
+        if ($this->MMesas->mozo_habilitado($id_mozo, $id_mesa)){
+            if ($this->MMesas->cierre_por_cuenta($id_mesa)){
+                $resultado['data'] = array();
+            }else{
+                $resultado['data'] = array();
+                $resultado['error'] = 'Error al intentar realizar el cierre total.';
+            }
+        }else{
+            $resultado['data'] = array();
+            $resultado['error'] = 'El mozo actual no se encuentra vinculado o la mesa ya está cerrada.';
         }
         echo json_encode($resultado);
     }
 
     /*
-     * Devuelve las notificaciones para un determinado mozo.
+     * Computa y retorna las notificaciones para un dado mozo. Para esto contempla las 
+     * mesas asociadas al mismo, y retorna todos los mensajes asociados a cada mesa.
      */
-    public function pedir_notificaciones(){
-        $id_mozo = $this->input->get('id_mozo');
-        /* el cocinero cuando coloca el pedido en salida, genera la notificacion, lo simulamos con la BD*/
-        $resultado['notificaciones'] = $this->MPedidos->getNotificaciones($id_mozo);
-        echo json_encode($resultado); 
-    }
-    
-    /*
-     * Confirma que una dada notificacion ha sido vista por el mozo.
-     */
-     public function eliminar_notificacion(){
-         $resultado = array();
-        $not_id = $this->input->post('not_id');
+    public function mis_notificaciones(){
+        $resultado = array();
+        $notificaciones = array();
         
-        $error = $this->MPedidos->eliminarNotificacion($not_id);
-        if($error){
-            $resultado['error'] = "Se produjo un error en la eliminación de la notificación";
+        $id_mozo = $this->session->userdata('eid');
+        $mesas_asociadas = $this->MMesas->get_mesas_empleado($id_mozo);
+        
+        foreach ($mesas_asociadas as $row){
+            $not = $this->MNotificaciones->get_notificaciones($row['id']);
+            $notificaciones = array_merge($notificaciones, $not);
         }
+        $resultado['data']['notificaciones'] = $notificaciones;
         echo json_encode($resultado); 
     }
     
-    /*
-     * Asocia un determinado mozo a una determinada mesa, de forma tal de que pueda realizar pedidos.
-     */
-    public function asociar_mozo_mesa(){
-        $respuesta = array();
-        $id_mozo = $this->input->post('id_mozo');
-        $id_mesa = $this->input->post('id_mesa');
-        $vinculado = $this->MEmpleados->asociar_mozo_mesa($id_mozo,$id_mesa);
-        if(!$vinculado){
-          $respuesta['error'] = "Error: El mozo no pudo vincularse con la mesa";
-        }
-        echo json_encode($respuesta);
-    }
     
-    /*
-     * Elimina un determinado de una mesa, 
-     * de forma tal que no puede realizar mas pedidos sobre la misma
-     */
-    public function desasociar_mozo_mesa(){
-        $respuesta = array();
-        $id_mozo = $this->input->post('id_mozo');
-        $id_mesa = $this->input->post('id_mesa');
-        $desvinculado = $this->MEmpleados->desasociar_mozo_mesa($id_mozo,$id_mesa);
-        if(!$desvinculado){
-          $respuesta['error'] = "Error: El mozo no pudo desvincularse de la mesa";
+    public function eliminar_notificacion(){
+        $resultado = array();
+        
+        $id_not = $this->input->post('id');
+        if ($this->MNotificaciones->eliminar($id_not)){
+            $resultado['data'] = array();
+        }else{
+            $resultado['data'] = array();
+            $resultado['error'] = 'La notificación no pudo eliminarse.';
         }
-        echo json_encode($respuesta);
+        echo json_encode($resultado); 
     }
-    
 }

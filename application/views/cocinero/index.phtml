@@ -1,103 +1,155 @@
-<div class="row center-align">
-    
-    <!-- Inicio Tabs -->
-    <ul class="collapsible col s12 m8 offset-m2" data-collapsible="accordion">
+<div class="row txt-cabecera">
+    COCINERO
+</div>
+<div class="row txt-info">
+    ..: Listado de pedidos pendientes y procesados :..
+</div>
+<div class="row">
+    <ul class="collapsible col s12 m10 offset-m1" data-collapsible="accordion">
         <li>
-            <div id="tabPendientes" class=" active collapsible-header">Pendientes</div>
-                <div class="collapsible-body">
-                    <div class="row">
-                        <div class="col s12 m6">
-                            <table class = "striped responsive-table">
-                                <thead>
-                                    <th>Pedidos</th>
-                                </thead>
-                                <tbody id="pedPend">
-                                </tbody>
-                            </table>
-                        </div>
-                            <div class="col s12 m6">
-                                <table class = "striped responsive-table">
-                                    <thead>
-                                        <th >Promociones</th>
-                                    </thead>
-                                    <tbody id="promoPend">
-                                    </tbody>
-                            </table>
-                        </div>
+            <div class="collapsible-header">Pendientes <label id="lblPendientes" class="right">0</label> </div>
+            <div class="collapsible-body">
+                <div class="row">
+                    <div>
+                        <ul class="tabs">
+                            <li class="tab col s6 m4"><a class="active" href="#prodPend">Productos</a></li>
+                            <li class="tab col s6 m4"><a href="#promPend">Promociones</a></li>
+                        </ul>
+                    </div>
+                    <div id="prodPend">
+                        <table class="responsive-table highlight">
+                            <thead>
+                                <tr>
+                                    <th>#ID</th>
+                                    <th>Fecha/Hora</th>
+                                    <th>Producto</th>
+                                    <th>Comentarios</th>
+                                    <th>Info</th>
+                                    <th>Procesar</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tblProductosPendientes">
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="promPend">
+                        <table class="responsive-table highlight">
+                            <thead>
+                                <tr>
+                                    <th>#ID</th>
+                                    <th>Fecha/Hora</th>
+                                    <th>Promoción</th>
+                                    <th>Comentarios</th>
+                                    <th>Info</th>
+                                    <th>Procesar</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tblPromocionesPendientes">
+                            </tbody>
+                        </table>
                     </div>
                 </div>
+            </div> 
         </li>
         <li>
-          <div id="tabProcesados" class="collapsible-header">Procesados</div>
-          <div class="collapsible-body">
-            <div class="row">
-                <div class="col s12 m6">
-                    <table class = "striped responsive-table ">
-                        <thead>
-                            <th >Pedidos</th>
-                        </thead>
-                        <tbody id="pedProc">
-                        </tbody>
-                    </table>
-                 </div>
-                <div class="col s12 m6">
-                    <table class = "striped responsive-table">
-                        <thead>
-                            <th >Promociones</th>
-                        </thead>
-                        <tbody id="promoProc">
-                        </tbody>
-                    </table>
+            <div class="collapsible-header">Procesados</div>
+            <div class="collapsible-body">
+                <div class="row">
+                    <div>
+                        <ul class="tabs">
+                            <li class="tab col s6 m4"><a href="#prodProc">Productos</a></li>
+                            <li class="tab col s6 m4"><a href="#promoProc">Promociones</a></li>
+                        </ul>
+                    </div>
+                    <div id="prodProc">
+                        <table class="responsive-table highlight">
+                            <thead>
+                                <tr>
+                                    <th>#ID</th>
+                                    <th>Fecha/Hora</th>
+                                    <th>Producto</th>
+                                    <th>Comentarios</th>
+                                    <th>Info</th>
+                                    <th>Finalizar</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tblProductosProcesados">
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="promoProc">
+                        <table class="responsive-table highlight">
+                            <thead>
+                                <tr>
+                                    <th>#ID</th>
+                                    <th>Fecha/Hora</th>
+                                    <th>Promoción</th>
+                                    <th>Comentarios</th>
+                                    <th>Info</th>
+                                    <th>Finalizar</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tblPromocionesProcesadas">
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-          </div>
         </li>
     </ul>   
-      <!-- Fin Tabs -->
 </div> 
-
-  
-
-<!--
 <div class="row center-align">
-    <div class="col s6">
-        <table>
-            <thead>
-                         <a class='dropdown-button btn' href='#' data-activates='dropdown1'>Promos</a>
-                         <ul id='dropdown1' class='dropdown-content'>
-                           <li><a href="#!">promo 1</a></li>
-                           <li><a href="#!">promo 2</a></li>
-                           <li><a href="#!">promo 3</a></li>
-                         </ul>
-            </thead>
-            <tbody id="panel-promo1">
-                
-            </tbody>
-            
-        </table>
-    </div>
-    <div class="col s6">
-        <table>
-            <thead>
-                         <a class='dropdown-button btn' href='#' data-activates='dropdown1'>Promos</a>
-                         <ul id='dropdown1' class='dropdown-content'>
-                           <li><a href="#!">promo 1</a></li>
-                           <li><a href="#!">promo 2</a></li>
-                           <li><a href="#!">promo 3</a></li>
-                         </ul>
-            </thead>
-            <tbody id="panel-promo2">
-                
-            </tbody>
-            
-        </table>
-    </div>
-    <div class="col s12">
-        <a href ="<?php //echo  site_url()?>webresto/" class="btn waves-effect waves-light">Volver</a>
-    </div>
-    
+    <a class="btn waves-effect waves-light tooltipped" data-tooltip="Volver a roles" href="<?php echo site_url()?>intranet">Volver</a> 
 </div>
-    -->
 
+<div id="modalVerProducto" class="modal">
+    <div class="modal-content">
+        <div class="row txt-cabecera">
+            Info pedido
+        </div>
+        <div class="row">
+            <div class="input-field col s10 m6">
+                <input id="fecha_e" placeholder="Sin datos." type="text" readonly>   
+                <label>Fecha Entrada</label>
+            </div>
+            <div class="input-field col s10 m6">
+                <input id="fecha_p" placeholder="Sin datos." type="text" readonly>    
+                <label>Fecha procesado</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s4">
+                <input id="id_pedido" placeholder="Sin datos." type="text" readonly>   
+                <label>ID Pedido</label>
+            </div>
+            <div class="input-field col s4">
+                <input id="id_mesa" placeholder="Sin datos." type="text" readonly>   
+                <label>ID Mesa</label>
+            </div>
+            <div class="input-field col s4">
+                <input id="num_mesa" placeholder="Sin datos." type="text" readonly>   
+                <label>Num. Mesa</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s4 m4">
+                <input id="id_pedidor" placeholder="Sin datos." type="text" readonly>   
+                <label>ID Pedidor</label>
+            </div>
+            <div class="input-field col s12 m8">
+                <input id="nom_pedidor" placeholder="Sin datos." type="text" readonly>   
+                <label>Nom. Pedidor</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12 m8">
+                <input id="nom_mozo" placeholder="Sin datos." type="text" readonly>   
+                <label>Mozo</label>
+            </div>
+        </div>
+    </div>
+</div>
 
-    
+<audio id="audios_notificaciones">
+    <source src="sounds/notificacion.mp3" type="audio/mpeg">
+</audio>

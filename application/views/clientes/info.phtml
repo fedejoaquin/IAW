@@ -22,12 +22,12 @@
                     <td> <?php echo $this->session->userdata['user_name']; ?> </td>
                     <td> <?php echo $cid_1 . '-' . $cid_2 . '-' . $cid_3; ?> </td>
                     <td> <?php echo ($mesa_asignada != NULL ? $mesa_asignada['numero'] : 'Sin asignar'); ?> </td>
-                    <td> <?php echo ($mesa_asignada != NULL ? $mesa_asignada['numero'] : 'Sin asignar'); ?> </td>
+                    <td> <?php echo ($mesa_asignada != NULL ? $mesa_asignada['nombre_mozo'] : 'Sin asignar'); ?> </td>
                 </tr>
             </tbody>
         </table>
     </div>
 </div>
 <div class="row center-align">
-    <a class="btn waves-effect waves-light" href="<?php echo site_url()?>clientes/" >Volver</a>
+    <a class="btn waves-effect waves-light tooltipped" data-tooltip="Volver a webresto" href="<?php echo site_url()?>clientes/" >Volver</a>
 </div>

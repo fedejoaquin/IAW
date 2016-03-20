@@ -28,6 +28,10 @@
     background-color: green;
 }
 
+.toast-info{
+    background-color: blue;
+}
+
 .toast-error{
     background-color: red; 
 }

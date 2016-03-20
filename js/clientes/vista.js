@@ -1,9 +1,5 @@
 var cliente_vista = {
 
-mensaje : function(mensaje, tiempo, clase){
-    Materialize.toast(mensaje, tiempo ,clase);
-},
-
 calcular_estado : function (fecha_p, fecha_s){
     var salida;
     if (fecha_s !== null){
@@ -16,10 +12,13 @@ calcular_estado : function (fecha_p, fecha_s){
         }
     }
     return salida;
-},
+    
+}, //FIN CALCULAR ESTADO
 
 listar_carrito : function (){
-    $('#tablaCarrito').empty();
+    $('#lblTotal').val("$" + cliente.total + ".-");
+    $('#tblCarritoProductos').empty();
+    $('#tblCarritoPromociones').empty();
     
     for(var i=0; i<cliente.productos.length;i++){
         row = $("<tr></tr>");
@@ -60,7 +59,7 @@ listar_carrito : function (){
         $(row).append(colComentarios);
         $(row).append(colAcciones);
         
-        $('#tablaCarrito').append(row);
+        $('#tblCarritoProductos').append(row);
     }
     
     for(var i=0; i<cliente.promociones.length;i++){
@@ -88,7 +87,7 @@ listar_carrito : function (){
         $(link_d).attr("onclick", "cliente.promocion.quitar("+i+")");
         
         link_c = $("<a></a>");
-        $(link_c).attr("class", "btn waves-effects ");
+        $(link_c).attr("class", "btn waves-effects");
         $(link_c).attr("onclick", "cliente.promocion.comentar("+i+")");
         
         $(colImagen).append(img);
@@ -102,19 +101,23 @@ listar_carrito : function (){
         $(row).append(colComentarios);
         $(row).append(colAcciones);
         
-        $('#tablaCarrito').append(row);
+        $('#tblCarritoPromociones').append(row);
     }  
-},
+}, //FIN LISTAR CARRITO
 
 listar_confirmados : function(data){
     cliente_vista.listar_carrito();
     
     var productos = data['productos'];
     var promociones = data['promociones'];
+    var total_acumulado = 0;
         
-    $('#tablaConfirmados').empty();
+    $('#tblProductosConfirmados').empty();
+    $('#tblPromocionesConfirmadas').empty();
        
     for(var i=0; i<productos.length;i++){
+        total_acumulado += parseFloat(productos[i]['precio']);
+        
         row = $("<tr></tr>");
 
         colProducto = $("<td>"+productos[i]['nombre_producto']+"</td>");
@@ -132,10 +135,12 @@ listar_confirmados : function(data){
         $(row).append(colPrecio);
         $(row).append(colEstado);
 
-       $('#tablaConfirmados').append(row);
+       $('#tblProductosConfirmados').append(row);
     }
     
     for(var i=0; i<promociones.length;i++){
+        total_acumulado += parseFloat(promociones[i]['precio']);
+        
         row = $("<tr></tr>");
 
         colPromocion = $("<td>"+promociones[i]['nombre_promocion']+"</td>");
@@ -153,14 +158,17 @@ listar_confirmados : function(data){
         $(row).append(colPrecio);
         $(row).append(colEstado);
 
-       $('#tablaConfirmados').append(row);
+       $('#tblPromocionesConfirmadas').append(row);
     }
-},
+    
+    $('#lblTotalConfirmados').val("$"+total_acumulado+".-");
+}, //FIN LISTAR CONFIRMADOS
 
 comentar : function(comentario){
     $('#inputComentario').val(comentario);
     $('#modalComentarios').openModal();
-}
+    
+} //FIN COMENTAR
 
 } //FIN CLIENTE_VISTA
 

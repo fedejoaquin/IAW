@@ -14,7 +14,9 @@
                 <th>#ID</th>
                 <th>DNI</th>
                 <th>Nombre</th>
-                <th>Acciones</th>
+                <th>Info</th>
+                <th>Editar..</th>
+                <th>Eliminar..</th>
             </thead>
             <tbody>
             <?php foreach ($empleados as $empleado) { ?>
@@ -23,9 +25,19 @@
                     <td><?php echo $empleado['dni']; ?></td>
                     <td><?php echo $empleado['nombre']; ?></td>
                     <td>
-                        <a class="btn waves-effect waves-green" href="<?php echo site_url().'empleados/ver/'.$empleado['id']; ?>"><i class="material-icons">info</i></a>
-                        <a class="btn waves-effect waves-green" href="<?php echo site_url().'empleados/editar/'.$empleado['id']; ?>"><i class="material-icons">edit</i></a>
-                        <a class="dropdown-button btn" data-activates="<?php echo 'drop'.$empleado['id']; ?>" ><i class="material-icons">delete</i></a>
+                        <a class="btn waves-effect waves-green" href="<?php echo site_url().'empleados/ver/'.$empleado['id']; ?>">
+                            <i class="material-icons">info</i>
+                        </a>
+                    </td>
+                    <td>
+                        <a class="btn waves-effect waves-green" href="<?php echo site_url().'empleados/editar/'.$empleado['id']; ?>">
+                            <i class="material-icons">edit</i>
+                        </a>
+                    </td>
+                    <td>
+                        <a class="dropdown-button btn" data-activates="<?php echo 'drop'.$empleado['id']; ?>" >
+                            <i class="material-icons">delete</i>
+                        </a>
                         <ul id='<?php echo 'drop'.$empleado['id']; ?>' class='dropdown-content'>
                             <li>¿Confirma?</li>
                             <li class="divider"></li>
@@ -42,4 +54,7 @@
             </tbody>
         </table>
     </div>
+</div>
+<div class="row center-align">
+    <a class="btn waves-effect waves-light tooltipped" data-tooltip="Volver a roles" href="<?php echo site_url()?>intranet">Volver</a> 
 </div>

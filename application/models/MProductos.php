@@ -17,6 +17,20 @@ class MProductos extends CI_Model {
     }
     
     /**
+     * Computa y retorna el nombre de un producto cuyo id es $id.
+     */
+    public function get_producto($id){
+        $consulta = 'SELECT nombre ';
+        $consulta .= 'FROM Productos ';
+        $consulta .= 'WHERE id='.$id;
+        
+        $query = $this->db->query($consulta);
+        $resultado = $query->row_array();
+        
+        return $resultado;
+    }
+    
+    /**
      * Computa el alta de un producto.
      * @return ['valido'] = True o False, considerando si la inserción fue exitosa o no.
      * @return ['data'] = Array(Id, Nombre), en caso de éxito.
@@ -59,7 +73,7 @@ class MProductos extends CI_Model {
             'nombre' => $nombre
         );
         
-        if (count($this->item_lista($nombre)===0)){
+        if (count($this->item_lista($nombre))===0){
             $this->db->where('id', $id);
             return $this->db->update('Productos', $data);
         }else{
@@ -95,4 +109,4 @@ class MProductos extends CI_Model {
         
         return $resultado;
     }
- }
+}

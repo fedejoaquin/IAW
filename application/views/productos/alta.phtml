@@ -1,0 +1,41 @@
+<div class="txt-cabecera">
+    PRODUCTOS.
+</div>
+<div class="txt-info">
+    ..: Alta de producto :..
+</div>
+<?php 
+    $attr = array(
+        'autocomplete' => 'off',
+        'enctype' => "multipart/form-data",
+    );
+    echo form_open('productos/alta/', $attr); 
+?>
+    <div class="row">
+        <div class="input-field col s12 m4 offset-m4">
+            <input placeholder="Ingrese nombre..." id="nombre" type="text" class="validate" name="nombre" value="<?php echo set_value('nombre'); ?>">
+            <label>Nombre producto</label>
+            <?php echo form_error('nombre', '<div class="txt-form-error">','</div>'); ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="file-field input-field col s12 m4 offset-m4">
+            <div class="btn">
+                <span><i class="material-icons">add_a_photo</i></span>
+                <input id="foto_producto" name="foto_producto" type="file">
+            </div>
+            <div class="file-path-wrapper">
+                <input class="file-path validate" type="text">
+                <?php if (!empty($foto_producto_error)){ ?>
+                    <div class="txt-form-error">
+                        <?php echo $foto_producto_error; ?>
+                    </div>
+                <?php } ?>
+            </div>
+        </div>
+    </div>
+    <div class="row center-align">
+        <input class="btn waves-effect waves-light" type="submit" value="Confirmar"/>
+        <a class="btn waves-effect waves-light tooltipped" data-tooltip="Volver a roles" href="<?php echo site_url()?>intranet">Volver</a> 
+    </div>
+</form>

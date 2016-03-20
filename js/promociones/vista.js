@@ -2,11 +2,8 @@ var promociones_vista = {
     
 eliminar : function(id){
     $('#fp'+id).remove();
-},
     
-mensaje : function(mensaje, tiempo, clase){
-    Materialize.toast(mensaje, tiempo ,clase);
-},
+}, // FIN ELIMINAR
 
 resetear_select : function ( nombre ){
     option = $("<option></option>");
@@ -16,7 +13,7 @@ resetear_select : function ( nombre ){
     
     $('#'+nombre).empty();
     $('#'+nombre).append(option);
-},
+}, // FIN RESETEAR SELECT
 
 reset_dropdown : function (){
     $('.dropdown-button').dropdown({
@@ -28,7 +25,7 @@ reset_dropdown : function (){
         belowOrigin: false, // Displays dropdown below the button
         alignment: 'left' // Displays dropdown with edge aligned to the left of button
     });
-},
+}, // FIN RESET DROPDOWN
 
 producto : {
     abrir_modal : function(){

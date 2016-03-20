@@ -1,68 +1,333 @@
-<script src="<?php echo site_url(); ?>js/mozo/controlador.js" type="text/javascript"></script>
-<script src="<?php echo site_url(); ?>js/mozo/vista.js" type="text/javascript"></script>
+<div class="row txt-cabecera">
+    MOZO
+</div>
+<div class="row txt-info">
+    ..: Administración de mesas asignadas :..
+</div>
 
-<div class="row center-align">
-    <div class="col s8 offset-m2">
-    <input id="inputNotificaciones" type="hidden" value="<?php echo $id_empleado ?>">
-    <ul class="collapsible" data-collapsible="accordion">
-    <li>
-      <div class="collapsible-header active">Mesas</div>
-      <div class="collapsible-body">
-          <table class = "striped responsive-table">
+<div class="row">
+    <div class="col s12 m10 offset-m1">
+        <ul class="tabs">
+            <li class="tab"><a class="active" href="#menu">MENU</a></li>
+            <li class="tab"><a href="#mesas">MESAS</a></li>
+            <li class="tab"><a href="#notificaciones">NOTIFICACIONES <label id="lblNotificaciones">0</label></a></li>
+        </ul>
+    </div>
+</div>
+
+<div id="menu" class="row">
+    <div class="col m8 s12 offset-m2">
+        <?php echo 'La carta actual es: '.$nombre_carta.'<br>'; ?>
+        <ul class="collapsible" data-collapsible="accordion">
+            <?php 
+                $indice = 0;
+                $cantidad = count($info_carta);
+                while($indice<$cantidad){
+                    $seccion_anterior = $info_carta[$indice]['nombre_seccion'];
+                ?>
+                    <!-- imprimo el encabezado y el tag para abrir el cuerpo del tab -->
+                    <li> 
+                        <div class="collapsible-header"> <?php echo $seccion_anterior; ?> </div>
+                        <div class="collapsible-body">
+                            <table class="responsive-table">
+                            <tbody>          
+                            <?php
+                                //Mientras no cambie de encabezado, imprimo los elementos dentro
+                                while($indice<$cantidad && $seccion_anterior === $info_carta[$indice]['nombre_seccion']){
+                                    $row = $info_carta[$indice++];
+                                    $np = $row['nombre_producto'];
+                                    $id = $row['id_producto'];
+                                    $p = $row['precio'];
+                                    $id_lp = $row['id_lista_precio'];
+                            ?>
+                                <tr>
+                                    <td> <img src="<?php echo site_url().'img/comidas/'.$id.'.png'; ?>"/> </td>
+                                    <td><?php echo $np; ?></td>
+                                    <td><?php echo '$'.$p; ?></td>
+                                    <td> 
+                                        <a class="btn waves-effect waves-green" onclick="<?php echo "mozo.carrito.productos.agregar(".$id.",'".$np."',".$p.",".$id_lp." )"; ?>">
+                                            <i class="material-icons">add</i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            <?php
+                                }
+                            ?>
+                            </tbody>
+                            </table>
+                        </div>
+                    </li> 
+                    
+            <?php 
+                }
+
+                $indice = 0;
+                $cantidad = count($info_promociones);
+                while($indice<$cantidad){
+                    $promo_anterior = $info_promociones[$indice]['nombre_promocion'];
+                ?>
+                    <li> 
+                        <div class="collapsible-header"> <?php echo $promo_anterior; ?> </div>
+                        <div class="collapsible-body">
+                            <?php
+                                $id_promo = $info_promociones[$indice]['id_promocion'];
+                                $precio_promo = $info_promociones[$indice]['precio'];
+                                $nom_promo = $info_promociones[$indice]['nombre_promocion'];
+                            ?>
+                            <div class="row">
+                                <div class="input-field col s8 m1 offset-m5">
+                                    <input value="<?php echo '$'.$precio_promo; ?>" type="text" readonly>
+                                    <label>Costo</label>
+                                </div>
+                                <a class="input-field col s2 m1 btn" onclick="<?php echo "mozo.carrito.promociones.agregar(".$id_promo.",'".$nom_promo."',".$precio_promo.")"; ?>">
+                                    <i class="material-icons">add</i>
+                                </a>
+                            </div>
+                            <div class="row">
+                                <table class="responsive-table">
+                                <tbody>  
+                                <?php
+                                    //Mientras no cambie de encabezado, imprimo los elementos dentro
+                                    while($indice<$cantidad && $promo_anterior === $info_promociones[$indice]['nombre_promocion']){
+                                        $row = $info_promociones[$indice++];
+                                        $np = $row['nombre_producto'];
+                                        $id = $row['id_producto'];
+                                ?>
+                                    <tr>
+                                        <td> <img src="<?php echo site_url().'img/comidas/'.$id.'.png'; ?>"/> </td>
+                                        <td><?php echo $np; ?></td>
+                                    </tr>
+                                <?php
+                                    }
+                                ?>
+                                </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </li> 
+            <?php       
+                }
+            ?>
+                    <li>
+                        <div class="collapsible-header" onClick="mozo.carrito.listar()">Pedidos sin confirmar</div>
+                        <div class="collapsible-body">
+                            <div class="row">
+                                <div class="input-field col s4 m2 offset-m1 offset-s4">
+                                    <input id="lblTotal" type="text" value="$0.-" readonly>
+                                    <label>Total</label>
+                                </div>
+                                <div class="input-field col s12 m4 offset-m1">
+                                    <a class="btn waves-effect" onclick="mozo.carrito.pre_confirmar()">Confirmar pedidos</a>
+                                </div>
+                                <div class="input-field col s12 m4">
+                                    <a class="btn waves-effect" onclick="mozo.carrito.vaciar()">Vaciar carrito</a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col s12 m10 offset-m1">
+                                    <ul class="tabs">
+                                        <li class="tab"><a class="active" href="#productos">Productos</a></li>
+                                        <li class="tab"><a href="#promociones">Promociones</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div id="productos" class="row">
+                                <table class="responsive-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Img</th>
+                                            <th>Producto</th>
+                                            <th>Precio</th>
+                                            <th>Comentarios</th>
+                                            <th>Comentar</th>
+                                            <th>Eliminar</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tblCarritoProductos">  
+                                    </tbody>     
+                                </table>
+                            </div>
+                            <div id="promociones" class="row">
+                                <table class="responsive-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Img</th>
+                                            <th>Promoción</th>
+                                            <th>Precio</th>
+                                            <th>Comentarios</th>
+                                            <th>Comentar</th>
+                                            <th>Eliminar</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tblCarritoPromociones">  
+                                    </tbody>     
+                                </table>
+                            </div>
+                        </div>
+                    </li>
+        </ul>
+    </div>
+</div>
+
+<div id="mesas" class="row">
+    <div class="col s12 m6 offset-m3">
+        <table class="responsive-table highlight">
             <thead>
-              <tr>
-                <th data-field="numeroMesa">Numero de Mesa</th>
-                <th data-field="estado">Estado</th>
-                <tr data-field="acciones"></tr>
+                <tr>
+                    <th>ID Mesa</th>
+                    <th>Num. Mesa</th>
+                    <th>Estado</th>
+                    <th>Vincular</th>
+                    <th>Info</th>
+                    <th>Oper. Mesa..</th>
+                </tr>
             </thead>
-            <tbody>
-               <?php foreach ($mesas as $mesa){?>
-              <tr>
-                <td><?php echo 'Mesa Nº : '.$mesa['numero_mesa'] ?></td>
-                <td><?php echo ($mesa['estado']==1) ? "Abierta":"Cerrada"?></td>
-                <?php if($mesa['estado']==1){ ?>
-                <td>
-                    <form name="tabla" action="<?php echo site_url() ?>mozo/administrar" method="POST">
-                        <a href="<?php echo site_url()?>mozo/adminMesa">
-                            <button class="btn waves-effect waves-light" type="submit" value="<?php echo $mesa['id']; ?>" name="id_mesa">
-                                Ver Mesa
-                            </button>
-                        </a>
-                    </form>
-                </td>
-               <?php } ?>
-              </tr>
-               <?php } ?>
+            <tbody id="tblMesasActivas">
             </tbody>
         </table>
-      </div>
-    </li>
-    <li>
-    <div id="tabNotificaciones" class="collapsible-header">Notificaciones</div>
-    <div class="collapsible-body">
-            <table class = "striped responsive-table">
+    </div>
+</div>
+
+<div id="notificaciones" class="row">
+    <div class="col s12 m8 offset-m2">
+        <table class="responsive-table highlight">
+            <thead>
+                <tr>
+                    <th>Mensaje</th>
+                    <th>Visto</th>
+                </tr>
+            </thead>
+            <tbody id="tblNotificaciones">
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div id="modalConfirmacion" class="modal">
+    <div class="modal-content">
+        <div class="row txt-cabecera">
+            Confirmando pedido mesa
+        </div>
+        <div class="row txt-info">
+            ..: Ingrese la mesa que requiere el pedido :..
+        </div>
+        <div class="row">
+            <div class="input-field col s4 m2 offset-m2">
+                <input id="idMozo" type="text" value="<?php echo $this->session->userdata('eid');?>" readonly>
+                <label>ID Mozo</label>
+            </div>
+            <div class="input-field col s8 m6">
+                <input id="nombreMozo" type="text" value="<?php echo $this->session->userdata('user_name');?>" readonly>
+                <label>Nombre</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s4 m3 offset-m2">
+                <select id="selectMesa">    
+                </select>
+                <label>Seleccione Mesa...</label>
+            </div>
+            <a class="btn col s6 m3 offset-s1 offset-m1" onClick="mozo.carrito.post_confirmar()">Confirmar</a>
+        </div>
+    </div>
+</div>
+
+<div id="modalComentarios" class="modal">
+    <div class="modal-content">
+        <div class="row txt-cabecera">
+            Ingresando comentario
+        </div>
+        <div class="row txt-info">
+            ..: Coloque el comentario que desea :..
+        </div>
+        <div class="row">
+            <input id="inputComentario" placeholder="Sin comentarios" type="text" maxlength="85" autocomplete="off">
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a onClick="mozo.enviar_comentario()" class="waves-effect waves-green btn-flat">OK</a>
+    </div>
+</div>
+
+<div id="modalVinculacion" class="modal">
+    <div class="modal-content">
+        <div class="row txt-cabecera">
+            Vinculando cliente
+        </div>
+        <div class="row">
+            <div class="input-field col s12 m3 offset-m3">
+                <input id="inputMesaVinculacion" value="-1" type="text" readonly>
+                <label>ID Mesa</label>
+            </div>
+            <div class="input-field col s12 m3">
+                <input id="inputVinculacion" placeholder="XX-XX-XX (Sin guiones)" type="text" maxlength="6" autocomplete="off">
+                <label>Código cliente</label>
+            </div>
+        </div>
+    </div>
+    <div class="row center-align">
+        <a onClick="mozo.vincular.postAlta()" class="btn waves-effect waves-green">Confirmar</a>
+    </div>
+</div>
+
+<div id="modalVerMesa" class="modal">
+    <div class="modal-content">
+        <div class="row">
+            <div class="txt-cabecera">
+                Información Mesa
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s6 m4 offset-m1">
+                <input id="lblTotalConfirmados" type="text" value="$0.-" readonly>
+                <label>Total acumulado</label>
+            </div>
+            <div class="input-field col s12 m6">
+                <select id="selectVinculados">
+                    
+                </select>
+                <label>Clientes</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m10 offset-m1">
+                <ul id="tabVerMesa" class="tabs">
+                    <li class="tab"><a class="active" href="#verMesaProductos">Productos</a></li>
+                    <li class="tab"><a href="#verMesaPromo">Promociones</a></li>
+                </ul>
+            </div>
+        </div>
+        <div id="verMesaProductos" class="row">
+            <table class="responsive-table highlight">
                 <thead>
-                  <tr>
-                    <th data-field="numeroNot">Numero</th>
-                    <th data-field="mesa">Mesa</th>
-                    <th data-field="producto">Producto</th>
-                    <th data-field="comentarios">Comentarios</th>
-                    <th data-field="notificado"></th>
+                    <tr>
+                        <th>Pedidor</th>
+                        <th>Producto</th>
+                        <th>Precio</th>
+                        <th>Estado</th>
+                    </tr>
                 </thead>
-            <tbody id="tablaNotificaciones">
-            </tbody>
-        </table>
-    </div>
-    </li>
-    
-    
-  </ul>
+                <tbody id="tblProductosConfirmados">  
+                </tbody>     
+            </table>
+        </div>
+        <div id="verMesaPromo" class="row">
+            <table class="responsive-table highlight">
+                <thead>
+                    <tr>
+                        <th>Pedidor</th>
+                        <th>Producto</th>
+                        <th>Precio</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody id="tblPromocionesConfirmadas">  
+                </tbody>     
+            </table>
+        </div>
     </div>
 </div>
+
 <div class="row center-align">
-    <a class="btn waves-effect waves-light" href="<?php echo site_url()?>intranet/" >Volver</a>
+    <a class="btn waves-effect waves-light tooltipped" href="<?php echo site_url()?>intranet/" data-tooltip="Volver a roles">Volver</a>
 </div>
-
-
-
- 

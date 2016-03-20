@@ -8,10 +8,14 @@
     <div class="col m8 s12 offset-m2">
         <table class="responsive-table">
             <thead>
-                <td>#ID</td>
-                <td>Nombre</td>
-                <td>Creador</td>
-                <td>Acciones</td>
+                <tr>
+                    <th>#ID</th>
+                    <th>Nombre</th>
+                    <th>Creador</th>
+                    <th>Ver</th>
+                    <th>Editar..</th>
+                    <th>Eliminar..</th>
+                </tr>
             </thead>
             <tbody id="tablaMenues">   
             <?php
@@ -25,9 +29,19 @@
                     <td><?php echo $nm; ?></td>
                     <td><?php echo $nc; ?></td>
                     <td> 
-                        <a class="btn waves-effect waves-green" href="<?php echo site_url()."menu/ver/".$id; ?>"><i class="material-icons">info</i></a>
-                        <a class="btn waves-effect waves-green" href="<?php echo site_url()."menu/editar/".$id; ?>"><i class="material-icons">edit</i></a>
-                        <a class='dropdown-button btn' data-activates='<?php echo 'drop'.$id; ?>'><i class="material-icons">delete</i></a>
+                        <a class="btn waves-effect waves-green"  href="<?php echo site_url()."menu/ver/".$id; ?>">
+                            <i class="material-icons">info</i>
+                        </a>
+                    </td>
+                    <td>
+                        <a class="btn waves-effect waves-green"  href="<?php echo site_url()."menu/editar/".$id; ?>">
+                            <i class="material-icons">edit</i>
+                        </a>
+                    </td>
+                    <td>
+                        <a class='dropdown-button btn' data-activates='<?php echo 'drop'.$id; ?>'>
+                            <i class="material-icons">delete</i>
+                        </a>
                         <!-- Dropdown Structure -->
                         <ul id='<?php echo 'drop'.$id; ?>' class='dropdown-content'>
                             <li>¿Confirma?</li>
@@ -75,4 +89,7 @@
             <a class="btn" onClick="menu.postAlta()">Confirmar</a>
         </div>
     </div>
+</div>
+<div class="row center-align">
+    <a class="btn waves-effect waves-light tooltipped" data-tooltip="Volver a roles" href="<?php echo site_url()?>intranet">Volver</a> 
 </div>

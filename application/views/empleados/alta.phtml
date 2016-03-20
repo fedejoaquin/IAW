@@ -14,7 +14,7 @@
         <div class="row">
             <div class="input-field col s12 m4 offset-m2">
                 <input placeholder="Ingrese nombre..." id="nombre" type="text" class="validate" name="nombre" value="<?php echo set_value('nombre'); ?>">
-                <label data-error="hola que tal" >Nombre</label>
+                <label>Nombre</label>
                 <?php echo form_error('nombre', '<div class="txt-form-error">','</div>'); ?>
             </div>
             <div class="input-field col s6 m2">
@@ -74,7 +74,7 @@
         </div>
         <div class="row center-align">
             <input class="btn waves-effect waves-light" type="submit" value="Confirmar"/>
-            <a class="btn waves-effect waves-light" href="<?php echo site_url()?>empleados">Cancelar</a> 
+            <a class="btn waves-effect waves-light tooltipped" data-tooltip="Volver a empleados" href="<?php echo site_url()?>empleados">Cancelar</a> 
         </div>
     </form>
 </div>
