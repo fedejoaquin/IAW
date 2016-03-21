@@ -11,35 +11,51 @@ $config['permisos'] = array(
 
 $config['permisos'] = array(
    'Admin' => array(
-       'index' => array('admin')
+        'all' => array('Admin'),
     ),
-    'Cajero' => array(
-       'index' => array('admin')
+    'Clientes' => array(
+        'all' => array('Cliente'),
     ),
     'Cocinero' => array(
-       'index' => array('admin')
+        'all' => array('Admin', 'Recepcionista', 'Cocinero'),
     ),
     'Competencia' => array(
-       'index' => array('admin')
+        'all' => array('Admin','Cajero','Gerente','Cocinero','Mozo','Recepcionista','Visitante'),
     ),
     'Empleados' => array(
-       'index' => array('admin')
+        'index' => array('Admin','Gerente'),
+        'ver' => array('Admin','Gerente'),
+        'alta' => array('Admin','Gerente'),
+        'editar' => array('Admin','Gerente'),
+        'eliminar' => array('Admin','Gerente'),
+        
     ),
-    'Gerente' => array(
-       'index' => array('admin')
+    'Intranet' => array(
+       'index' => array('Admin','Cajero','Gerente','Cocinero','Mozo','Recepcionista'),
+    ),
+    'Menu' => array(
+        'all' => array('Admin','Gerente'),
     ),
     'Mozo' => array(
-       'index' => array('admin')
+       'all' => array('Mozo'),
     ),
-    'Nosotros' => array(
-       'index' => array('admin')
+    'Productos' => array(
+        'all' => array('Admin', 'Gerente'),
+    ),
+    'Promociones' => array(
+        'all' => array('Admin', 'Gerente'),
+    ),
+    'Roles' => array(
+        'all' => array('Admin', 'Gerente'),
     ),
     'Webresto' => array(
-       'index' => array('admin')
-    ),
-    'Welcome' => array(
-       'index' => array('admin')
+        'index' => array('Admin','Cajero','Gerente','Cocinero','Mozo','Recepcionista','Cliente','Visitante'),
+        'loginEmpleado' => array('Visitante'),
+        'loginCliente' => array('Visitante'),
+        'loginFacebook' => array('Visitante'),
+        'loginGMail' => array('Visitante'),
+        'logout' => array('Admin','Cajero','Gerente','Cocinero','Mozo','Recepcionista','Cliente','Visitante'),
     ),
 );
 
-$config['roles'] = array('Admin','Cajero','Gerente','Cocinero','Mozo','Recepcionista','Visitante');
+$config['roles'] = array('Admin','Cajero','Gerente','Cocinero','Mozo','Recepcionista','Cliente','Visitante');

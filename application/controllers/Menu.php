@@ -4,8 +4,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Menu extends CI_Controller {
     
     /**
+     * Garantiza que el acceso al controlador sea por parte de un usuario
+     * con credenciales habilitadas. En caso contrario, redirige a una vista
+     * que indica que no tiene permisos para realizar la operación solicitada.
+     */
+    public function __construct() {
+        parent::__construct();
+        $this->acl->control_acceso_redirigir('Menu','all');
+    }
+    
+    /**
      * Lista todas las cartas actuales del sistema, permitiendo acceder, modificar y eliminar a cada una de ellas.
-     * $data ['menues']= Array(Id, Nombre_menu, Nombre_creador )
+     * $data ['menues'] = Array(Id, Nombre_menu, Nombre_creador )
      */
     public function index(){
         $data = array();
@@ -17,9 +27,10 @@ class Menu extends CI_Controller {
     /**
      * Computa el alta de un menu, de nombre $nombre, y tomando como restricciones de dia y hora $restriccion_dia y $restriccion_hora,
      * así como creador a $creador, datos recibidos por POST, mediante un origen ajax.
-     * @return ['data'] = Array (Id, Nombre, Id_restriccion_dia, Id_restriccion_hora, Creador), en caso de éxito.
-     * @return ['data'] = Vacio, en caso de error.
-     * @return ['error'] = Error si corresponde. 
+     * @return VIA AJAX
+     * $resultado['data'] = Array (Id, Nombre, Id_restriccion_dia, Id_restriccion_hora, Creador), en caso de éxito.
+     * $resultado['data'] = Vacio, en caso de error.
+     * $resultado['error'] = Tipo de error en caso de corresponder.
      */
     public function alta(){
         $nombre = $this->input->post('nombre');
@@ -59,8 +70,7 @@ class Menu extends CI_Controller {
     }
     
     /**
-     * Lista toda la información de un dado menú cuyo id es $id, permitiendo editarlo
-     * mediante funciones ajax.
+     * Lista toda la información de un dado menú cuyo id es $id.
      * $data ['datos'] = Array(Id, Nombre_menu, Nombre_creador, Id_restriccion_dia, Id_restriccion_hora)
      * $data ['restricciones_dia'] = Array(Id, Nombre_restriccion, Nombre_creador)
      * $data ['restricciones_hora'] = Array(Id, Nombre_restriccion, Nombre_creador)
@@ -81,8 +91,10 @@ class Menu extends CI_Controller {
     /**
      * Computa la eliminación de un menú cuyo id es $id_menu, recibido por POST, mediante
      * un origen ajax.
-     * $resultado ['data'] = Vacio. Indica operación exitosa.
-     * $resultado ['error'] = Error si corresponde.
+     * 
+     * @return VIA AJAX
+     * $resultado['data'] = Vacio. Indica operación exitosa.
+     * $resultado['error'] = Tipo de error en caso de corresponder.
      */
     public function eliminar(){
         $id = $this->input->post('id_menu');
@@ -103,9 +115,11 @@ class Menu extends CI_Controller {
      * Computa el alta de un producto a al menú cuyo id es $id_menu. Contempla para esto los identificadores
      * del producto, seccion y lista de precio asociados $id_producto, $id_seccion, $id_lista_precio, recibidos por
      * POST mediante un origen ajax.
-     * $resultado ['data'] = Array (Id, Id_carta, Id_producto, Id_seccion, Id_lista_precio), en caso de éxito.
-     * $resultado ['data'] = Vacio, en caso de error.
-     * $resultado ['error'] = Error si corresponde.
+     * 
+     * @return VIA AJAX
+     * $resultado['data'] = Array (Id, Id_carta, Id_producto, Id_seccion, Id_lista_precio), en caso de éxito.
+     * $resultado['data'] = Vacio, en caso de error.
+     * $resultado['error'] = Tipo de error en caso de corresponder.
      */
     public function alta_producto(){
         $id_menu = $this->input->post('id_menu');
@@ -128,9 +142,11 @@ class Menu extends CI_Controller {
     /**
      * Computa el alta de una promoción al menú cuyo id es $id_menu. Contempla para esto el id de promoción $id_promocion, 
      * recibidos por POST mediante un origen ajax.
-     * $resultado ['data'] = Array (Id, Nombre, Precio), en caso de éxito.
-     * $resultado ['data'] = Vacio, en caso de error.
-     * $resultado ['error'] = Error si corresponde.
+     * 
+     * @return VIA AJAX
+     * $resultado['data'] = Array (Id, Nombre, Precio), en caso de éxito.
+     * $resultado['data'] = Vacio, en caso de error.
+     * $resultado['error'] = Error si corresponde.
      */
     public function alta_promocion(){
         $id_menu = $this->input->post('id_menu');
@@ -151,8 +167,10 @@ class Menu extends CI_Controller {
     /**
      * Computa la eliminación de un producto del menú. Para esto, contempla el id $id_producto_infocarta, 
      * recibido por POST mediante un origen ajax.
-     * $resultado ['data'] = Vacio, en caso de éxito.
-     * $resultado ['error'] = Error si corresponde.
+     * 
+     * @return VIA AJAX
+     * $resultado['data'] = Vacio, en caso de éxito.
+     * $resultado['error'] = Tipo de error en caso de corresponder.
      */
     public function eliminar_producto(){
         $id_p_ic= $this->input->post('id_producto_infocarta');
@@ -171,8 +189,10 @@ class Menu extends CI_Controller {
     /**
      * Computa la eliminación de una promoción del menú cuyo id es $id_menu. Para esto, contempla el 
      * id de promoción, $id_promocion, recibidos por POST mediante un origen ajax.
-     * $resultado ['data'] = Vacio, en caso de éxito.
-     * $resultado ['error'] = Error si corresponde.
+     * 
+     * @return VIA AJAX
+     * $resultado['data'] = Vacio, en caso de éxito.
+     * $resultado['error'] = Tipo de error en caso de corresponder.
      */
     public function eliminar_promocion(){
         $id_carta = $this->input->post('id_menu');
@@ -192,8 +212,10 @@ class Menu extends CI_Controller {
     /**
      * Computa la modificación del campo nombre por $nombre, de un menú cuyo id es $id, recibidos por POST, 
      * mediante un origen ajax.
-     * $resultado ['data'] = Vacio. Indica operación exitosa.
-     * $resultado ['error'] = Error si corresponde.
+     * 
+     * @return VIA AJAX
+     * $resultado['data'] = Vacio. Indica operación exitosa.
+     * $resultado['error'] = Tipo de error en caso de corresponder.
      */
     public function cambiar_nombre(){
         $id = $this->input->post('id');
@@ -213,8 +235,10 @@ class Menu extends CI_Controller {
     /**
      * Computa la modificación del campo restricción hora por $id_horas, de un menú cuyo id es $id, recibidos por POST, 
      * mediante un origen ajax.
-     * $resultado ['data'] = Vacio. Indica operación exitosa.
-     * $resultado ['error'] = Error si corresponde.
+     * 
+     * @return VIA AJAX
+     * $resultado['data'] = Vacio. Indica operación exitosa.
+     * $resultado['error'] = Tipo de error en caso de corresponder.
      */
     public function cambiar_horas(){
         $id = $this->input->post('id');
@@ -234,8 +258,10 @@ class Menu extends CI_Controller {
     /**
      * Computa la modificación del campo restricción dia por $id_dias, de un menú cuyo id es $id, recibidos por POST, 
      * mediante un origen ajax.
-     * $resultado ['data'] = Vacio. Indica operación exitosa.
-     * $resultado ['error'] = Error si corresponde.
+     * 
+     * @return VIA AJAX
+     * $resultado['data'] = Vacio. Indica operación exitosa.
+     * $resultado['error'] = Tipo de error en caso de corresponder.
      */
     public function cambiar_dias(){
         $id = $this->input->post('id');
@@ -256,8 +282,10 @@ class Menu extends CI_Controller {
      * Computa la modificación de los campos de un producto asociado a un menú cuyo id es $id. 
      * Se modificarán los campos seccion y lista precio, por $id_seccion y $id_lista_precio respectivamente, 
      * recibidos por POST, mediante un origen ajax.
-     * $resultado ['data'] = Vacio. Indica operación exitosa.
-     * $resultado ['error'] = Error si corresponde.
+     * 
+     * @return VIA AJAX
+     * $resultado['data'] = Vacio. Indica operación exitosa.
+     * $resultado['error'] = Tipo de error en caso de corresponder.
      */
     public function cambiar_info_lista(){
         $id_prod_info_carta = $this->input->post('id');
@@ -278,9 +306,11 @@ class Menu extends CI_Controller {
     /**
      * Computa y retorna toda la información que se puede asociar a un producto, esto es, las secciones y listas de precios
      * que lo contienen. Contempla para esto el id del producto, $id, recibido por POST mediante un origen ajax.
-     * $resultado ['data']['secciones'] = Array (Id, Nombre).
-     * $resultado ['data']['listaPrecios'] = Array(Lista_precio, Nombre_lista, Precio_producto).
-     * $resultado ['error'] = Error si corresponde.
+     * 
+     * @return VIA AJAX
+     * $resultado['data']['secciones'] = Array (Id, Nombre).
+     * $resultado['data']['listaPrecios'] = Array(Lista_precio, Nombre_lista, Precio_producto).
+     * $resultado['error'] = Tipo de error en caso de corresponder.
      */
     public function info_producto(){
         $id = $this->input->post('id');
@@ -302,8 +332,10 @@ class Menu extends CI_Controller {
     /**
      * Computa y retorna toda la información de los producto, cuyos nombres se puedan asociar con un parámetro de búsqueda 
      * $texto, recibido por POST mediante un origen ajax.
-     * $resultado ['data']['productos'] = Array (Id, Nombre).
-     * $resultado ['data']['cantidad'] = Count [productos].
+     * 
+     * @return VIA AJAX
+     * $resultado['data']['productos'] = Array (Id, Nombre).
+     * $resultado['data']['cantidad'] = Count [productos].
      */
     public function autocompletar(){
         $txt = $this->input->post('texto');
@@ -320,7 +352,9 @@ class Menu extends CI_Controller {
     
     /**
      * Computa y retorna todas las promociones disponibles, solicitadas mediante un origen ajax.
-     * $resultado ['data']['promociones'] = Array (Id, Nombre, Precio).
+     * 
+     * @return VIA AJAX
+     * $resultado['data']['promociones'] = Array (Id, Nombre, Precio).
      */
     public function listar_promociones(){
         $resultado = array();
@@ -332,7 +366,9 @@ class Menu extends CI_Controller {
     /**
      * Computa y retorna toda la información asociada a una promoción $id_promocion, recibida por POST, mediante un 
      * origen ajax.
-     * $resultado ['data']['promocion'] = Array (Id_producto, Nombre_producto).
+     * 
+     * @return VIA AJAX
+     * $resultado['data']['promocion'] = Array (Id_producto, Nombre_producto).
      */
     public function info_promocion(){
         $id_promocion = $this->input->post('id_promocion');
@@ -347,8 +383,10 @@ class Menu extends CI_Controller {
     /**
      * Computa y retorna toda la información asociada a las restricciones de horas y días actuales, dada la solicitud 
      * recibida mediante un origen ajax.
-     * $resultado ['restricciones_dia'] = Array(Id, Nombre_restriccion, Nombre_creador)
-     * $resultado ['restricciones_hora'] = Array(Id, Nombre_restriccion, Nombre_creador)
+     * 
+     * @return VIA AJAX
+     * $resultado['restricciones_dia'] = Array(Id, Nombre_restriccion, Nombre_creador)
+     * $resultado['restricciones_hora'] = Array(Id, Nombre_restriccion, Nombre_creador)
      */
     public function info_restricciones(){
         $resultado = array();

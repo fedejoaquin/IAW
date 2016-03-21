@@ -12,14 +12,27 @@ class Acl{
         $this->_CI->load->config('acl', TRUE);
         $this->acl = $this->_CI->config->item('permisos', 'acl');
     }
+    
+    public function control_acceso_redirigir($controlador, $funcion){
+        if (! $this->tiene_permiso($controlador, $funcion)){
+            if ($this->_CI->input->is_ajax_request()){
+                $data = array();
+                $data['data'] = '';
+                $data['error'] = 'Sin credenciales para realizar esta operación';
+                echo json_encode($data);
+            }else{
+                redirect(site_url()."welcome/sin_permiso");
+            }
+        }
+    }
 	
     public function tiene_permiso($controlador, $funcion){
-        $uid = $this->_CI->session->userdata('eid'); //ID empleado
-        $ucid = $this->_CI->session->userdata('cid'); //ID cliente
+        $eid = $this->_CI->session->userdata('eid'); //ID empleado
+        $cid = $this->_CI->session->userdata('cid'); //ID cliente
         $user_roles = $this->_CI->session->userdata('roles');
         
         //No es cliente
-        if (!cid){
+        if (!$cid){
             // Es visitante
             if (! $eid OR ! $user_roles ){
                 $user_roles = array('Visitante');

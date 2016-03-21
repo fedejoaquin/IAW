@@ -4,42 +4,43 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Clientes extends CI_Controller {
     
     /**
-     * Index de Clientes. Chequea que esté logueado y/o vinculado.
-     * - En caso de estar logueado como cliente, muetra el index.
-     * - En caso de estar logueado como cliente y vinculado, muestra el index.
-     * - En caso de estar logueado como empleado, redirige a intranet.
-     * - En caso no estar logueado, redirige al home de webresto.
+     * Garantiza que el acceso al controlador sea por parte de un usuario
+     * con credenciales habilitadas. En caso contrario, redirige a una vista
+     * que indica que no tiene permisos para realizar la operación solicitada.
+     */
+    public function __construct() {
+        parent::__construct();
+        $this->acl->control_acceso_redirigir('Clientes','all');
+    }
+    
+    /**
+     * Lista las operaciones disponibles para un cliente.
      */
     public function index(){
-        $this->chequear_login_redirect();
         $this->chequear_vinculado();
         $data['funcion'] = 'index';
         $this->load->view('vClientes',$data);
     }
     
     /**
-     * Info de Clientes. Chequea que esté logueado y/o vinculado.
-     * - En caso de estar logueado y/o vinculado, muetra la info actual.
-     * - En caso de estar logueado como empleado, redirige a intranet.
-     * - En caso no estar logueado, redirige al home de webresto.
+     * Lista la información disponible del cliente solicitante, a saber:
+     * ID, Nombre, Mesa asignada y Mozo asignado.
      */
     public function info(){
-        $this->chequear_login_redirect();
         $this->chequear_vinculado();
         $data['funcion'] = 'info';
         $this->load->view('vClientes',$data);
     }
     
     /**
-     * Lista el menú actual y los pedidos, si es que el cliente está logueado y vinculado.
-     * $data['info_carta' ] = Array (Secciones,nombre_producto,Precio, Id_lista_precio)
-     * $data['nombre_carta'] = nombre de la carta actual
-     * $data['info_promociones'] = Array(NombrePromo,Productos,Precio)
-     * 
-     *  */
+     * Lista el menú actual y los pedidos para el cliente solicitante; en caso de no estar aún vinculado a una 
+     * mesa redirige a clientes/index.
+     * $data['info_carta'] = Array( Nombre_seccion, Nombre_producto, Id_producto,Precio, Id_lista_precio)
+     * $data['nombre_carta'] = Nombre de la carta actual.
+     * $data['info_promociones'] = Array(Id_promocion, Nombre_promocion, Nombre_producto, Id_producto, Precio ).
+     */
     public function pedidos(){
-        $this->chequear_login_redirect();
-        if($this->chequear_vinculado_redirect()){
+        if($this->chequear_vinculado()){
             $menu_actual = $this->MCartas->get_menu_actual();
             $promo_actual = $this->MCartas->get_promociones_actual();
             
@@ -49,15 +50,21 @@ class Clientes extends CI_Controller {
             $data['info_promociones'] = $promo_actual;
             $data['funcion'] = 'pedidos';
             $this->load->view('vClientes', $data);
+        }else{
+            $data['funcion'] = 'index';
+            $this->load->view('vClientes',$data);
         }
     }
     
     /**
      * Computa el alta de pedidos tanto de productos como de promociones, parametrizados por un cliente.
-     * Valida que el cliente esté vinculado, y registra el pedido siempre y cuando el producto/promoción
-     * se encuentre dentro del menú actualmente habilitado; descarta aquellos productos/promociones no válidos.
-     * @return Array con el estado de la mesa, en caso de cómputo exitoso.
-     * @return Array con el error detectado, en caso de cómputo incorrecto.
+     * Valida que el producto/promoción se encuentre dentro del menú actualmente habilitado; descarta 
+     * aquellos productos/promociones no válidos.
+     * 
+     * @return VIA AJAX
+     * $data['productos'] = Array(Id_pedidor, Nombre_pedidor, Nombre_producto, Precio, Fecha_e, Fecha_p, Fecha_s)
+     * $data['promociones'] = Array(Id_pedidor, Nombre_pedidor, Nombre_promocion, Precio, Fecha_e, Fecha_p, Fecha_s)
+     * $data['error'] = Tipo de error en caso de corresponder.
      */ 
     public function alta_pedido(){
         $resultado = array();   
@@ -120,10 +127,13 @@ class Clientes extends CI_Controller {
     }
 
     /**
-     * Dada una petición de un cliente, si éste está logueado y vinculado a una mesa, retorna la descripción de los
-     * pedidos y promociones confirmadas, así como el estado de procesamiento de cada uno de ellos.
-     * @return Productos --> Array(Id_pedidor,Nombre_pedidor, Nombre_producto, Precio, Fecha_e, Fecha_p, Fecha_s)
-     * @return Promociones --> Array(Id_pedidor,Nombre_pedidor, Nombre_promocion, Precio, Fecha_e, Fecha_p, Fecha_s)
+     * Computa y retorna la descripción de los productos y promociones confirmadas por un cliente para un mesa habilitada, 
+     * así como el estado de procesamiento de cada uno de ellos.
+     *
+     * @return VIA AJAX
+     * $data['productos'] = Array(Id_pedidor, Nombre_pedidor, Nombre_producto, Precio, Fecha_e, Fecha_p, Fecha_s)
+     * $data['promociones'] = Array(Id_pedidor, Nombre_pedidor, Nombre_promocion, Precio, Fecha_e, Fecha_p, Fecha_s)
+     * $data['error'] = Tipo de error en caso de corresponder.
      */
     public function estado_mesa(){
         $resultado = array();
@@ -140,50 +150,16 @@ class Clientes extends CI_Controller {
     }
     
     /**
-    * Chequea si existe datos de cliente logueado. 
-    * - Si no está logueado, redirige al home del sitio.
-    * - Si está logueado, elimina datos de sessión y redirige a webresto/logout.
+    * Computa el logout de un cliente.
     */
     public function logout(){
-        $this->chequear_login_redirect();
         redirect(site_url().'webresto/logout');
     }
-            
-    /**
-    * Chequea los datos de session. 
-    * - Si la session indica que ya se logueó, y es como empleado, redirige a intranet.
-    * - Si la session indica que ya se logueó, y es como cliente, no redirige.
-    * - Si la session indica que no se logueó, entonces redirige a webresto.
-    */
-   private function chequear_login_redirect(){
-        if (!($this->session->userdata('eid') === NULL )){
-            redirect(site_url().'intranet');
-        }else{
-            if ($this->session->userdata('cid') === NULL){
-                redirect(site_url().'webresto');
-            }
-        }
-    }
     
     /**
-    * Chequea si existe datos de vinculación de un cliente logueado. 
-    * - Si la session indica que ya se vinculó, entonces retorna verdadero.
-    * - Si la session indica que no se logueó, entonces redirige al home del sitio t retorna false.
-    */
-    private function chequear_vinculado_redirect(){
-        if ($this->chequear_vinculado()){
-            return true;
-        }else{
-            $data['funcion'] = 'index';
-            $this->load->view('vClientes',$data);
-            return false;
-        }
-    }
-    
-    /**
-    * Chequea si existe datos de vinculación de un cliente logueado. 
-    * - Responde verdadero en caso de estar vinculado.
-    * - Responde falso en caso de no estar vinculado.
+    * Chequea si existe datos de vinculación del cliente. En caso de existirlo, aloja los 
+    * datos de la mesa a la que se vinculó el cliente en su session. 
+    * @return True o Falso, en caso de estar vinculado o no respectivamente.
     */
     private function chequear_vinculado(){
         $resultado = $this->MMesasPedidores->get_mesa_pedidor($this->session->userdata('cid'));

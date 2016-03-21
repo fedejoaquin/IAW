@@ -172,7 +172,11 @@ class MEmpleados extends CI_Model {
         $resultado = $query->row_array();
         return $resultado;
     }
-
+    
+    /**
+     * Computa y retorno los datos asociados a un empleado cuyo id es $id_empleado.
+     * @return Array(Id, DNI, Nombre, Direccion, Telefono, Email, Cuit, Password )
+     */
     public function obtener_empleado_id($id_empleado){  
         $consulta = 'SELECT * ';
         $consulta .= 'FROM Empleados ';

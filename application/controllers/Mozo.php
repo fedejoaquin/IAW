@@ -2,6 +2,16 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Mozo extends CI_Controller {
+    
+    /**
+     * Garantiza que el acceso al controlador sea por parte de un empleado
+     * con credenciales habilitadas. En caso contrario, redirige a una vista
+     * que indica que no tiene permisos para realizar la operación solicitada.
+     */
+    public function __construct() {
+        parent::__construct();
+        $this->acl->control_acceso_redirigir('Menu','all');
+    }
 
     /**
      * Lista todos los datos que requiere un mozo para operar: menú actual, mesas asociadas, y nofitificaciones.
@@ -22,7 +32,18 @@ class Mozo extends CI_Controller {
         $data['funcion'] = 'index';
         $this->load->view('vMozo', $data);
     }
-
+    
+    /**
+     * Computa el alta de pedidos tanto de productos como de promociones, parametrizados por un mozo, para una dada mesa.
+     * Valida que el producto/promoción se encuentre dentro del menú actualmente habilitado; descarta 
+     * aquellos productos/promociones no válidos.
+     * Valida que el mozo se encuentre habilitado para operar sobre la mesa indicada.
+     * Operación ejecutada con transacciones.
+     * 
+     * @return VIA AJAX
+     * $data['data'] = Vacio.
+     * $data['error'] = Tipo de error en caso de corresponder.
+     */ 
     public function alta_pedido(){
         $resultado = array();
         
@@ -78,6 +99,12 @@ class Mozo extends CI_Controller {
         echo json_encode($resultado);
     }
     
+    /**
+     * Retorna las mesas asociadas al mozo solicitante.
+     * 
+     * @return VIA AJAX
+     * $resultado[data][mesas] = Array( Id, Numero_mesa, Estado, Id_mozo )
+     */
     public function mesas_asociadas(){
         $resultado = array();
         
@@ -90,9 +117,12 @@ class Mozo extends CI_Controller {
     }
 
     /*
-     * Vincula un dado cliente, obteniendo su codigo y id de mesa.
-     * Si el cliente esta vinculado al sistema, se lo asocia a la mesa.
-     * Si no esta vinculado, entonces envia un mensaje de erro.
+     * Vincula un dado cliente, a una dada mesa, siempre que el cliente se encuentre
+     * dado de alta en el sistema.
+     * 
+     * @return VIA AJAX
+     * $resultado['data'] = Vacio.
+     * $resultado['error'] = Tipo de error en caso de corresponder.
      */
     public function vincular_cliente(){
         $resultado = array();
@@ -132,11 +162,13 @@ class Mozo extends CI_Controller {
     }
     
     /**
-     * Computa y etorna la descripción de los pedidos y promociones confirmadas para una mesa cuyo id es $id.
+     * Computa y retorna la descripción de los pedidos y promociones confirmadas para una mesa cuyo id es $id.
+     * 
+     * @return VIA AJAX
      * $data['vinculados'] = Array(Id_pedidor, Nombre)
      * $data['productos'] = Array(Id_pedidor,Nombre_pedidor, Nombre_producto, Precio, Fecha_e, Fecha_p, Fecha_s)
      * $data['promociones'] = Array(Id_pedidor,Nombre_pedidor, Nombre_promocion, Precio, Fecha_e, Fecha_p, Fecha_s)
-     * $data['error'] = Error si corresponde
+     * $data['error'] = Tipo de error en caso de corresponder.
      * 
      */
     public function estado_mesa(){
@@ -159,8 +191,10 @@ class Mozo extends CI_Controller {
     
     /**
      * Computa el cierre parcial de una mesa cuyo id es $id.
+     * 
+     * @return VIA AJAX
      * $resultado['data'] = Array()
-     * $resultado['error'] = Error en caso de corresponder.
+     * $resultado['error'] = Tipo de error en caso de corresponder.
      */
     public function cierre_parcial(){
         $resultado = array();
@@ -184,8 +218,10 @@ class Mozo extends CI_Controller {
     /**
      * Computa el cierre total de una mesa cuyo id es $id. Notifica al recepcionista que
      * compute la cuenta.
+     * 
+     * @return VIA AJAX
      * $resultado['data'] = Array()
-     * $resultado['error'] = Error en caso de corresponder.
+     * $resultado['error'] = Tipo de error en caso de corresponder.
      */
     public function cierre_total(){
         $resultado = array();
@@ -208,8 +244,11 @@ class Mozo extends CI_Controller {
     }
 
     /*
-     * Computa y retorna las notificaciones para un dado mozo. Para esto contempla las 
+     * Computa y retorna las notificaciones para el mozo solicitante. Para esto contempla las 
      * mesas asociadas al mismo, y retorna todos los mensajes asociados a cada mesa.
+     * 
+     * @return VIA AJAX
+     * $resultado['data']['notificaciones'] = Array (Id, Mensaje)
      */
     public function mis_notificaciones(){
         $resultado = array();
@@ -226,7 +265,13 @@ class Mozo extends CI_Controller {
         echo json_encode($resultado); 
     }
     
-    
+    /**
+     * Computa la eliminación de una notificación cuyo id es $id_not.
+     * 
+     * @retun VIA AJAX
+     * $resultado['data'] = Vacio
+     * $resultado['error'] = Tipo de error en caso de corresponder.
+     */
     public function eliminar_notificacion(){
         $resultado = array();
         

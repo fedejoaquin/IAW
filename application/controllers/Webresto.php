@@ -9,8 +9,9 @@ class Webresto extends CI_Controller {
      * - En caso no estar logueado, muestra el index de webresto.
      */
     public function index(){
-        //Si no esta logueado, no redirige.
+        $this->acl->control_acceso_redirigir('Webresto', 'index');
         $this->chequear_login_redirect();
+        
         $data['funcion'] = 'index';
         $this->load->view('vWebresto', $data);
     }
@@ -22,8 +23,9 @@ class Webresto extends CI_Controller {
     * - Redirige a la vista webresto/index indicando error en caso de autenticación fallida.
     */
     public function loginEmpleado(){
-        //Si no esta logueado, no redirige.
+        $this->acl->control_acceso_redirigir('Webresto', 'loginEmpleado');
         $this->chequear_login_redirect();        
+        
         //Chequeo de datos enviados por el formulario
         if ($this->form_validation->run('webresto/loginEmpleado') == FALSE){
             $data['funcion'] = 'index';
@@ -79,8 +81,9 @@ class Webresto extends CI_Controller {
     * Redirige a la vista clientes/index.
     */
     public function loginCliente(){
-        //Si no esta logueado, no redirige
+        $this->acl->control_acceso_redirigir('Webresto', 'loginCliente');
         $this->chequear_login_redirect();
+        
         //Chequeo de datos enviados por el formulario
         if ($this->form_validation->run('webresto/loginCliente') == FALSE){
             $data['funcion'] = 'index';
@@ -98,8 +101,9 @@ class Webresto extends CI_Controller {
      * Redirige a clientes/index.
      */
     public function loginFacebook(){             
-        //Si no esta logueado, no redirige
+        $this->acl->control_acceso_redirigir('Webresto', 'loginFacebook');
         $this->chequear_login_redirect();
+        
         $this->load->library('facebook', array('appId' => '1619523704926420', 'secret' => '2fa24e04930670206e1f5747e17b45c5'));
         //Si esta procesando el callback de Facebook exitoso, proceso los datos y creo sesión
          if($this->facebook->getUser()){
@@ -119,8 +123,9 @@ class Webresto extends CI_Controller {
      * Redirige a clientes/index.
      */
     public function loginGMail(){
-        //Si no esta logueado, no redirige.
+        $this->acl->control_acceso_redirigir('Webresto', 'loginGMail');
         $this->chequear_login_redirect();
+        
         //Include two files from google-php-client library in controller
         require_once APPPATH . "libraries/google-api/src/Google/autoload.php";
 
@@ -170,6 +175,7 @@ class Webresto extends CI_Controller {
      * Destruye la session. Redirige a webresto.
      */
     public function logout(){
+        $this->acl->control_acceso_redirigir('Webresto', 'logout');
         $this->session->sess_destroy();  
         redirect(site_url().'webresto');
     }

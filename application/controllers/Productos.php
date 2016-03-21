@@ -2,6 +2,11 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Productos extends CI_Controller {
+    
+    public function __construct() {
+        parent::__construct();
+        $this->acl->control_acceso_redirigir('Productos','all');
+    }
 
     /**
     * Lista todos los productos actuales del sistema, permitiendo acceder, modificar y eliminar a cada uno de ellos.

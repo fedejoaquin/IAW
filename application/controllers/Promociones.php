@@ -3,6 +3,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Promociones extends CI_Controller {
     
+    public function __construct() {
+        parent::__construct();
+        $this->acl->control_acceso_redirigir('Promociones','all');
+    }
+
+    
     /**
      * Lista todas las promociones actuales del sistema, permitiendo acceder, modificar y eliminar a cada una de ellas.
      * @return ['promociones']= Array(Id, Nombre, Precio )

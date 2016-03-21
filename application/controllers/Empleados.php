@@ -5,34 +5,40 @@ class Empleados extends CI_Controller {
     
     /**
      * Lista todos los empleados actuales del sistema, permitiendo acceder, modificar y eliminar a cada uno de ellos.
-     * @return ['empleados']= Array(Id, DNI, Nombre, Direccion, Telefono, Email, Cuit, Password )
+     * Realiza un control de acceso garantizando que las credenciales así lo habiliten.
+     * $data['empleados'] = Array (Id, DNI, Nombre, Direccion, Telefono, Email, Cuit, Password ).
      */
-    public function index(){            
-        $resultado = $this->MEmpleados->listar();    
+    public function index(){ 
+        $this->acl->control_acceso_redirigir('Empleados','index');
+        
         $data['funcion'] = 'index';
-        $data['empleados'] = $resultado;
+        $data['empleados'] = $this->MEmpleados->listar();
         $this->load->view('vEmpleados', $data); 
     }
     
     /**
      * Lista todos los datos de un empleado cuyo id es $id.
-     * @return ['empleado']= Array(Id, DNI, Nombre, Direccion, Telefono, Email, Cuit, Password )
+     * Realiza un control de acceso garantizando que las credenciales así lo habiliten.
+     * $data['roles'] = Array (Id, Descripcion ).
+     * $data['empleado'] = Array(Id, DNI, Nombre, Direccion, Telefono, Email, Cuit, Password )
      */
     public function ver($id){
-        $resultado = $this->MEmpleados->obtener_empleado_id($id);
-        $resultado_1 = $this->MRoles->get_roles_empleado($id); 
+        $this->acl->control_acceso_redirigir('Empleados','ver');
         
         $data['funcion'] = 'ver';
-        $data['roles'] = $resultado_1;
-        $data['empleado'] = $resultado;
+        $data['roles'] = $this->MRoles->get_roles_empleado($id);
+        $data['empleado'] = $this->MEmpleados->obtener_empleado_id($id);
         $this->load->view('vEmpleados', $data); 
     }
         
     /**
      * Computa el alta de un empleados, con los datos recibidos por POST, desde el formulario de alta. 
-     * En caso de éxito, redirige a empledos; caso contrario, retorna a formulario de alta.
+     * En caso de éxito, redirige a empleados; caso contrario, retorna a formulario de alta.
+     * Realiza un control de acceso garantizando que las credenciales así lo habiliten.
      */
     public function alta(){
+        $this->acl->control_acceso_redirigir('Empleados','alta');
+        
         if ($this->form_validation->run('empleados/altaEditar') == FALSE){
             $data['funcion'] = 'alta';
             $this->load->view('vEmpleados', $data);
@@ -47,10 +53,15 @@ class Empleados extends CI_Controller {
     }
     
     /**
-     * Computa la edición de un empleados cuyos datos provienen del formulario editar, recibido por POST.
+     * Computa la edición de un empleado cuyos datos provienen del formulario editar, recibido por POST.
      * En caso de edición exitosa, redirige a empleados; caso contrario, redirige a empleados editar.
+     * Realiza un control de acceso garantizando que las credenciales así lo habiliten.
+     * $data['roles'] = Array (Id, Descripcion ).
+     * $data['empleado'] = Array(Id, DNI, Nombre, Direccion, Telefono, Email, Cuit, Password )
      */
     public function editar($id){
+        $this->acl->control_acceso_redirigir('Empleados','editar');
+        
         $datos = $this->input->post();
         $datos['id'] = $id;
         
@@ -74,10 +85,12 @@ class Empleados extends CI_Controller {
     }
     
     /**
-     * Computa la eliminación de un empleado cuyo id es $id.
-     * Redirige a empleados.
+     * Computa la eliminación de un empleado cuyo id es $id. Redirige a empleados
+     * Realiza un control de acceso garantizando que las credenciales así lo habiliten.
      */
     public function eliminar($id){
+        $this->acl->control_acceso_redirigir('Empleados','eliminar');
+        
         $this->MEmpleados->eliminar($id);
         redirect(site_url()."empleados");
     }   

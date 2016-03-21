@@ -3,7 +3,7 @@ class MRoles extends CI_Model{
 
     /**
      * Computa y retorna los roles asociados a un dado empleado con identificador $id.
-     * @return Array(Descripcion)
+     * @return Array(Id, Descripcion)
      */ 
     public function get_roles_empleado($id){
         
