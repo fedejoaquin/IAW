@@ -27,6 +27,7 @@ class Menu extends CI_Controller {
     /**
      * Computa el alta de un menu, de nombre $nombre, y tomando como restricciones de dia y hora $restriccion_dia y $restriccion_hora,
      * así como creador a $creador, datos recibidos por POST, mediante un origen ajax.
+     * 
      * @return VIA AJAX
      * $resultado['data'] = Array (Id, Nombre, Id_restriccion_dia, Id_restriccion_hora, Creador), en caso de éxito.
      * $resultado['data'] = Vacio, en caso de error.

@@ -1,0 +1,64 @@
+<div class="txt-cabecera">
+    LISTAS DE PRECIOS
+</div>
+<div class="txt-info">
+    ..: Info lista precio :..
+</div>
+<div class="row">
+    <div class="col m8 s12 offset-m2">
+        <table class="responsive-table">
+            <thead>
+                <tr>
+                    <th>#ID Prod.</th>
+                    <th>Nombre Prod.</th>
+                    <th>Precio</th>
+                    <th>Info</th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php 
+                foreach($productos_lista as $row){
+                    $id = $row['id_producto'];
+                    $n = $row['nombre_producto'];
+                    $p = $row['precio_producto'];
+            ?>
+                <tr>
+                    <td><?php echo $id; ?></td>
+                    <td><?php echo $n; ?></td>
+                    <td><?php echo '$'.$p; ?></td>
+                    <td>
+                        <a class="btn waves-effect waves-green" onClick="<?php echo "listaprecios.producto.info(".$id_lista.",".$id.")"; ?>">
+                            <i class="material-icons">info</i>
+                        </a>
+                    </td>
+                </tr>
+            <?php        
+                }
+            ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div id="infoProducto" class="modal">
+    <div class="modal-content">
+        <div class="row">
+            <div class="col m8 s12 offset-m2">
+                <table class="responsive-table">
+                    <thead>
+                        <tr>
+                            <th>Nombre Menu</th>
+                            <th>Nombre Sección</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tblInfoProducto">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row center-align">
+    <a class="btn waves-effect waves-light tooltipped" data-tooltip="Volver a listas" href="<?php echo site_url()?>listaprecios">Volver</a> 
+</div>

@@ -2,20 +2,71 @@
 class MListaPrecios extends CI_Model{
     
     /**
-     * ESTO DEBE IR EN PRODUCTO NO EN LISTA DE PRECIOS
+     * Computa y retorna todas las listas de precios en el sistema.
+     * $resultado = Array (Id, Nombre, Fecha_modificacion, Creador ).
      */
-    public function get_productos (){
-        $consulta = "SELECT * FROM Productos";
-        $resultado = $this->db->query($consulta)->result_array();
+    public function listar(){
+        $consulta = 'SELECT lp.id, lp.nombre, lp.fecha_modificacion, e.nombre as creador ';
+        $consulta .= 'FROM Lista_precio lp JOIN Empleados e ON lp.creador = e.id ';
+        $consulta .= 'ORDER BY lp.fecha_modificacion DESC, nombre ASC ';
+        
+        $query = $this->db->query($consulta);
+        $resultado = $query->result_array();
+        
         return $resultado;
     }
     
-    public function get_lista_precios(){
-        //$consulta = "SELECT id as id_lp FROM Lista_precio";
-        $consulta = "SELECT ilp.id_lista_precio,p.id as id_prod,lp.nombre as nombreLista "
-                        . "FROM productos p JOIN info_lista_precio ilp ON "
-                        . "ilp.id_producto = p.id JOIN lista_precio lp ON lp.id = ilp.id_lista_precio AND lp.id =1";
-        $resultado = $this->db->query($consulta)->result_array();
+    public function alta($nombre, $creador){
+        $data = array(
+            'nombre' => $nombre,
+            'creador' => $creador,
+            'fecha_modificacion' => date("Y-m-d H:i:s"),
+        );
+        
+        if (count($this->item_lista($nombre))===0){
+            if ($this->db->insert('Lista_precios', $data)){
+                $resultado['valido'] = true;
+                $resultado['data'] = $this->item_lista($nombre);
+            }else{
+                $resultado['valido'] = false;
+            }
+        }else{
+            $resultado['valido'] = false;
+        }
+        
+        return $resultado;
+    }
+    
+    /**
+     * Computa y retorna todos los productos asociados a la lista de precio cuyo id es $id.
+     * $resultado = Array( Id_producto, Nombre_producto, Precio_producto )
+     */
+    public function get_productos_lista($id){
+        $consulta = 'SELECT p.id as id_producto, p.nombre as nombre_producto, ilp.precio as precio_producto ';
+        $consulta .= 'FROM Info_lista_precio ilp LEFT JOIN Productos p ON ilp.id_producto = p.id ';
+        $consulta .= 'WHERE ilp.id_lista_precio ='.$id.' ';
+        $consulta .= 'ORDER BY p.nombre ASC ';
+        
+        $query = $this->db->query($consulta);
+        $resultado = $query->result_array();
+        
+        return $resultado;
+    }
+    
+    /**
+     * Computa y retorna el nombre de las cartas y secciones a las que el producto $id_producto pertenece,
+     * estando este producto asociado a la carta y sección cuyo precio responde a la lista de precio $id_lista.
+     * $resultado = Array ( Nombre_carta, Nombre_seccion ).
+     */
+    public function info_producto($id_lista, $id_producto){
+        $consulta = 'SELECT c.nombre as nombre_carta, s.nombre as nombre_seccion ';
+        $consulta .= 'FROM ((Info_carta ic LEFT JOIN Secciones s ON ic.id_seccion = s.id ) ';
+        $consulta .= 'LEFT JOIN Cartas c ON ic.id_carta = c.id ) ';
+        $consulta .= 'WHERE ic.id_lista_precio = '.$id_lista.' AND ic.id_producto ='.$id_producto.' ';
+        
+        $query = $this->db->query($consulta);
+        $resultado = $query->result_array();
+        
         return $resultado;
     }
     
@@ -35,50 +86,17 @@ class MListaPrecios extends CI_Model{
     }
     
     /**
-     * WTF ??????????????????????????????????????????????
-     */
-    public function get_listas_productos($productos){
-        //Obtenemos las listas de precios.
-        $listasPrecios = $this->get_lista_precios();
-        $resultado = array();
-       
-        //Si hay productos que ver si ajustan a una determinada lista de productos.
-        if(isset($productos))
-        {   $cantidadProd = count($productos);   
-            //Por cada una de las listas de precios.
-            foreach ($listasPrecios as $listaPrecio){
-                $listaValida = 1;
-                $indiceProd = 0;
-                //Obtengo la lista de acuerdo al id.
-                $consulta = "SELECT ilp.id_lista_precio as id_lista,p.id as id_prod,lp.nombre as nombreLista "
-                        . "FROM productos p JOIN info_lista_precio ilp ON "
-                        . "ilp.id_producto = p.id JOIN lista_precio lp ON lp.id = ilp.id_lista_precio AND lp.id =".$listaPrecio['id_lp'];
-                $lista = $this->db->query($consulta)->result_array();
-                $elementosLista = count($lista);
-                //Mientras  no se chequeen todos los elementos, o falte uno.
-                while($indiceProd<$cantidadProd && $listaValida){
-                    $indiceLista = 0;
-                    $encontre = 0;
-                    /*Buscamos dentro de los elementos de la lista, si se encuentra el que estamos buscando
-                     * hasta que lo encontremos, o terminemos de buscar.
-                     */
-                    while($indiceLista<$elementosLista && !$encontre){
-                        if($lista[$indiceLista]['id_prod'] == $productos[$indiceProd]){
-                            $encontre = 1;
-                        }
-                        $indiceLista ++ ;
-                    }
-                    $indiceProd ++ ;
-                    if(!$encontre){ $listaValida = 0; }
-                }
-                if($listaValida){
-                    array_push($resultado, array('id_lista'=>$lista['id_lista'],'nombre'=>$lista['nombreLista']) );
-                }
-            }
-        }
-        else
-        {
-            
-        }
+    * Computa y retorna el registro de una lista de precios con nombre $nombre, si es que existe.
+    * $resultado = Array ( Id, Nombre, Fecha_modificacion, Creador ).
+    */
+    public function item_lista($nombre){
+        $consulta = 'SELECT lp.id, lp.nombre, lp.fecha_modificacion, e.nombre as creador ';
+        $consulta .= 'FROM Lista_precios lp LEFT JOIN Empleados e ON lp.creador = e.id ';
+        $consulta .= 'WHERE lp.nombre = "'.$nombre.'"';
+        
+        $query = $this->db->query($consulta);
+        $resultado = $query->row_array();
+        
+        return $resultado;
     }
 }
