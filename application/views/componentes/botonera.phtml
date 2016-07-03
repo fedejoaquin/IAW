@@ -1,11 +1,25 @@
 <nav>
-    <div class="nav-wrapper">
-        <a href="<?php echo site_url()?>" class="brand-logo">MiResto</a>
+    <div class="nav-wrapper fondo-barra">
+        <a href="<?php echo site_url()?>" class="brand-logo">
+            <img class="logo-resto" src="<?php echo site_url() ?>img/Bohemia_logo.png">
+        </a>
         <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
         <ul class="right hide-on-med-and-down">
-            <li><a href="<?php echo site_url()?>nosotros">Nosotros</a></li>
-            <li><a href="<?php echo site_url()?>competencia">Competencia</a></li>
-            <li><a href="<?php echo site_url()?>webresto">Mi Resto 2.0</a></li>
+            <li>
+                <a href="<?php echo site_url()?>nosotros">
+                    <button class="boton btn-botonera waves-effect transparent">Nosotros</button>
+                </a>
+            </li>
+            <li>
+                <a href="<?php echo site_url()?>competencia">
+                    <button class="boton btn-botonera waves-effect transparent">Competencia</button>
+                </a>
+            </li>
+            <li>
+                <a href="<?php echo site_url()?>webresto">
+                    <button class="boton btn-botonera waves-effect transparent">Mi Resto 2.0</button>
+                </a>
+            </li>
         </ul>
         <ul class="side-nav" id="mobile-demo">
             <li><a href="<?php echo site_url()?>nosotros">Nosotros</a></li>

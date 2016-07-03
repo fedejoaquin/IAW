@@ -52,7 +52,7 @@ productos : {
             </a> 
             **/    
             a = $('<a></a>');
-            $(a).attr('class', 'btn waves-effect waves-green');
+            $(a).attr('class', 'boton btn-base-mini waves-effect transparent');
             $(a).attr('onClick', 'cocinero.productos.ver('+row['id']+')');
             $(a).append(i_info);
 
@@ -62,7 +62,7 @@ productos : {
             </a> 
             **/ 
             a_1 = $('<a></a>');
-            $(a_1).attr('class', 'btn waves-effect waves-green');
+            $(a_1).attr('class', 'boton btn-base-mini waves-effect transparent');
             $(a_1).attr('onClick', 'cocinero.productos.procesar('+row['id']+')');
             $(a_1).append(i_visto);
 
@@ -118,7 +118,7 @@ productos : {
             </a> 
             **/    
             a = $('<a></a>');
-            $(a).attr('class', 'btn waves-effect waves-green');
+            $(a).attr('class', 'boton btn-base-mini waves-effect transparent');
             $(a).attr('onClick', 'cocinero.productos.ver('+row['id']+')');
             $(a).append(i_info);
 
@@ -128,7 +128,7 @@ productos : {
             </a> 
             **/ 
             a_1 = $('<a></a>');
-            $(a_1).attr('class', 'btn waves-effect waves-green');
+            $(a_1).attr('class', 'boton btn-base-mini waves-effect transparent');
             $(a_1).attr('onClick', 'cocinero.productos.finalizar('+row['id']+')');
             $(a_1).append(i_visto);
 
@@ -178,7 +178,7 @@ productos : {
         </a> 
         **/    
         a = $('<a></a>');
-        $(a).attr('class', 'btn waves-effect waves-green');
+        $(a).attr('class', 'boton btn-base-mini waves-effect transparent');
         $(a).attr('onClick', 'cocinero.productos.ver('+id+')');
         $(a).append(i_info);
 
@@ -188,7 +188,7 @@ productos : {
         </a> 
         **/ 
         a_1 = $('<a></a>');
-        $(a_1).attr('class', 'btn waves-effect waves-green');
+        $(a_1).attr('class', 'boton btn-base-mini waves-effect transparent');
         $(a_1).attr('onClick', 'cocinero.productos.finalizar('+id+')');
         $(a_1).append(i_visto);
 
@@ -254,7 +254,7 @@ promociones : {
             </a> 
             **/    
             a = $('<a></a>');
-            $(a).attr('class', 'btn waves-effect waves-green');
+            $(a).attr('class', 'boton btn-base-mini waves-effect transparent');
             $(a).attr('onClick', 'cocinero.promociones.ver('+row['id']+')');
             $(a).append(i_info);
 
@@ -264,7 +264,7 @@ promociones : {
             </a> 
             **/ 
             a_1 = $('<a></a>');
-            $(a_1).attr('class', 'btn waves-effect waves-green');
+            $(a_1).attr('class', 'boton btn-base-mini waves-effect transparent');
             $(a_1).attr('onClick', 'cocinero.promociones.procesar('+row['id']+')');
             $(a_1).append(i_visto);
 
@@ -321,7 +321,7 @@ promociones : {
             </a> 
             **/    
             a = $('<a></a>');
-            $(a).attr('class', 'btn waves-effect waves-green');
+            $(a).attr('class', 'boton btn-base-mini waves-effect transparent');
             $(a).attr('onClick', 'cocinero.promociones.ver('+row['id']+')');
             $(a).append(i_info);
 
@@ -331,7 +331,7 @@ promociones : {
             </a> 
             **/ 
             a_1 = $('<a></a>');
-            $(a_1).attr('class', 'btn waves-effect waves-green');
+            $(a_1).attr('class', 'boton btn-base-mini waves-effect transparent');
             $(a_1).attr('onClick', 'cocinero.promociones.finalizar('+row['id']+')');
             $(a_1).append(i_visto);
 
@@ -381,7 +381,7 @@ promociones : {
         </a> 
         **/    
         a = $('<a></a>');
-        $(a).attr('class', 'btn waves-effect waves-green');
+        $(a).attr('class', 'boton btn-base-mini waves-effect transparent');
         $(a).attr('onClick', 'cocinero.promociones.ver('+id+')');
         $(a).append(i_info);
 
@@ -391,7 +391,7 @@ promociones : {
         </a> 
         **/ 
         a_1 = $('<a></a>');
-        $(a_1).attr('class', 'btn waves-effect waves-green');
+        $(a_1).attr('class', 'boton btn-base-mini waves-effect transparent');
         $(a_1).attr('onClick', 'cocinero.promociones.finalizar('+id+')');
         $(a_1).append(i_visto);
 

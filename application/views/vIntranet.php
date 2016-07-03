@@ -18,36 +18,36 @@
             <div class="col s12 center-align">
                 <?php if (in_array("Admin", $roles)){ ?>
                     <a class="tooltipped" data-tooltip="Admin" href="<?php echo site_url() ?>admin">
-                        <img src="<?php echo site_url()?>img/1.png" class="btn-opc btn-floating waves-effect waves-light">
+                        <img src="<?php echo site_url()?>img/Perfil_admin.png" class="btn-opc btn-floating transparent waves-effect waves-light">
                     </a>
                 <?php } ?>
                 <?php if (in_array("Gerente", $roles)){ ?>
                     <a class="tooltipped" data-tooltip="Gerente" href="<?php echo site_url() ?>gerente">
-                        <img src="<?php echo site_url()?>img/1.png" class="btn-opc btn-floating waves-effect waves-light">
+                        <img src="<?php echo site_url()?>img/Perfil_gerente.png" class="btn-opc btn-floating transparent waves-effect waves-light">
                     </a>
                 <?php } ?>
                 <?php if (in_array("Cajero", $roles)){ ?>
                     <a class="tooltipped" data-tooltip="Cajero" href="<?php echo site_url() ?>cajero">
-                        <img src="<?php echo site_url()?>img/1.png" class="btn-opc btn-floating waves-effect waves-light">
+                        <img src="<?php echo site_url()?>img/Perfil_cajero.png" class="btn-opc btn-floating transparent waves-effect waves-light">
                     </a>
                 <?php } ?>
                 <?php if (in_array("Recepcionista", $roles)){ ?>
                     <a class="tooltipped" data-tooltip="Recepcionista" href="<?php echo site_url() ?>recepcionista">
-                        <img src="<?php echo site_url()?>img/1.png" class="btn-opc btn-floating waves-effect waves-light">
+                        <img src="<?php echo site_url()?>img/Perfil_recepcionista.png" class="btn-opc btn-floating transparent waves-effect waves-light">
                     </a>
                 <?php } ?> 
                 <?php if (in_array("Mozo", $roles)){ ?>
                     <a class="tooltipped" data-tooltip="Mozo" href="<?php echo site_url() ?>mozo">
-                        <img src="<?php echo site_url()?>img/1.png" class="btn-opc btn-floating waves-effect waves-light">
+                        <img src="<?php echo site_url()?>img/Perfil_mozo.png" class="btn-opc btn-floating transparent waves-effect waves-light">
                     </a>
                 <?php } ?> 
                 <?php if (in_array("Cocinero", $roles)){ ?>
                     <a class="tooltipped" data-tooltip="Cocinero" href="<?php echo site_url() ?>cocinero">
-                        <img src="<?php echo site_url()?>img/1.png" class="btn-opc btn-floating waves-effect waves-light">
+                        <img src="<?php echo site_url()?>img/Perfil_cocinero.png" class="btn-opc btn-floating transparent waves-effect waves-light">
                     </a>
                 <?php } ?> 
                     <a class="tooltipped" data-tooltip="Cerrar sesión" href="<?php echo site_url() ?>webresto/logout">
-                        <img src="<?php echo site_url()?>img/1.png" class="btn-opc btn-floating waves-effect waves-light">
+                        <img src="<?php echo site_url()?>img/Boton_cerrar_sesion.png" class="btn-opc btn-floating transparent waves-effect waves-light">
                     </a>
             </div>
         </div>

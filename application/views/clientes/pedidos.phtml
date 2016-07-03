@@ -1,5 +1,8 @@
 <div class="row txt-cabecera">
-    ¡Bienvenido al sistema de pedidos de miResto!
+    ¡SISTEMA DE PEDIDOS DE MI RESTO 2.0!
+</div>
+<div class="row txt-info">
+    ..: Administrando su pedido :..
 </div>
 
 <div class="row">
@@ -13,7 +16,7 @@
 
 <div id="menu" class="row">
     <div class="col m8 s12 offset-m2">
-        <?php echo 'La carta actual es: '.$nombre_carta.'<br>'; ?>
+        <p class="txt-info"><?php echo 'La carta actual es: '.$nombre_carta.'<br>'; ?></p>
         <ul class="collapsible" data-collapsible="accordion">
             <?php 
                 $indice = 0;
@@ -41,7 +44,7 @@
                                     <td><?php echo $np; ?></td>
                                     <td><?php echo '$'.$p; ?></td>
                                     <td> 
-                                        <a class="btn waves-effect waves-green" onclick="<?php echo "cliente.producto.agregar(".$id.",'".$np."',".$p.",".$id_lp." )"; ?>"><i class="material-icons">add</i></a>
+                                        <a class="boton btn-base-mini waves-effect" onclick="<?php echo "cliente.producto.agregar(".$id.",'".$np."',".$p.",".$id_lp." )"; ?>"><i class="material-icons">add</i></a>
                                     </td>
                                 </tr>
                             <?php
@@ -73,7 +76,7 @@
                                     <input value="<?php echo '$'.$precio_promo; ?>" type="text" readonly>
                                     <label>Costo</label>
                                 </div>
-                                <a class="input-field col s2 m1 btn" onclick="<?php echo "cliente.promocion.agregar(".$id_promo.",'".$nom_promo."',".$precio_promo.")"; ?>">
+                                <a class="boton btn-base-mini col s2 m1 transparent waves-effect" onclick="<?php echo "cliente.promocion.agregar(".$id_promo.",'".$nom_promo."',".$precio_promo.")"; ?>">
                                     <i class="material-icons">add</i>
                                 </a>
                             </div>
@@ -117,10 +120,10 @@
                         <label>Total</label>
                     </div>
                     <div class="input-field col s12 m4 offset-m1">
-                        <a class="btn waves-effect" onclick="cliente.confirmar_pedido()">Confirmar pedidos</a>
+                        <a class="boton btn-base waves-effect transparent" onclick="cliente.confirmar_pedido()">Confirmar</a>
                     </div>
                     <div class="input-field col s12 m4">
-                        <a class="btn waves-effect" onclick="cliente.vaciar_carrito()">Vaciar carrito</a>
+                        <a class="boton btn-base waves-effect transparent" onclick="cliente.vaciar_carrito()">Vaciar carrito</a>
                     </div>
                     <div class="row">
                         <div class="col s12 m10 offset-m1">
@@ -207,5 +210,5 @@
 </div>
 
 <div class="row center-align">
-    <a class="btn waves-effect waves-light tooltipped" data-tooltip="Volver a webresto" href="<?php echo site_url()?>clientes/" >Volver</a>
+    <a class="boton btn-base transparen waves-effect tooltipped" data-tooltip="Volver a webresto" href="<?php echo site_url()?>clientes/" >Volver</a>
 </div>

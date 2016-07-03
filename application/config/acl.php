@@ -13,6 +13,15 @@ $config['permisos'] = array(
    'Admin' => array(
         'all' => array('Admin'),
     ),
+    'Gerente' => array(
+        'all' => array('Admin', 'Gerente'),
+    ),
+    'Cajero' => array(
+        'all' => array('Admin', 'Gerente', 'Cajero'),
+    ),
+    'Recepcionista' => array(
+        'all' => array('Admin', 'Gerente', 'Recepcionista'),
+    ),
     'Clientes' => array(
         'all' => array('Cliente'),
     ),

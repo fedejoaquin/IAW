@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Admin extends CI_Controller {
+class Recepcionista extends CI_Controller {
     
     /**
      * Garantiza que el acceso al controlador sea por parte de un usuario
@@ -10,11 +10,11 @@ class Admin extends CI_Controller {
      */
     public function __construct() {
         parent::__construct();
-        $this->acl->control_acceso_redirigir('Admin','all');
+        $this->acl->control_acceso_redirigir('Recepcionista','all');
     }
     
     public function index(){
-        $data['funcion'] = 'Admin';
+        $data['funcion'] = 'Recepcionista';
         $this->load->view('vEnConstruccion', $data);
     }
 }

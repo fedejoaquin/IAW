@@ -1,6 +1,69 @@
-.btn-login{
+body{
+    background-image: url('../img/Textura_fondo.jpg');
+}
+
+.logo-resto {
+    width: 250px;
+    height: 50px;
+    padding-top: 10px;
+    padding-left: 10px;
+}
+
+.transparent{
+    background-color: transparent !important;
+}
+
+.fondo-barra{
+    background-image: url('../img/Textura_barras.jpg');
+}
+
+.cuerpo-principal{
+    margin-top: 20px;
+}
+
+.img-slider{
+    background-repeat:no-repeat;
+}
+
+.boton{
+    font-family: Verdana;
+    font-size: 15px;
+    font-style: Italic;
+    font-weight: 600;
+    text-align: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-color: transparent !important;
+    margin: 0px; 
+    border: none;
+}
+
+.btn-botonera{
+    background-image: url('../img/Boton_amarillo.png');
     width: 150px;
-    height: 150px;
+    height: 56px;
+    color: #a20000;
+}
+
+.btn-base{
+    background-image: url('../img/Boton_bordo.png');
+    width: 183px;
+    height: 72px;
+    padding: 26px;
+    color: #f9c707;
+}
+
+.btn-base-mini{
+    background-image: url('../img/Boton_bordo_mini.png');
+    width: 50px;
+    height: 50px;
+    padding: 12px;
+    color: #f9c707;
+}
+
+.btn-login{
+    width: 140px;
+    height: 140px;
 }
 
 .btn-opc{
@@ -8,32 +71,93 @@
     height: 100px; 
 }
 
+.btn-en-construccion{
+    width: 150px;
+    height: 150px; 
+}
+
 .txt-cabecera{
-    text-align: center;
-    font-size: 25px;   
+    font-family: Verdana;
+    font-size: 19px;
+    font-style: Italic;
+    font-variant: small-caps;
+    font-weight: bold;
+    text-align: center;   
     margin: 10px;
+    color: #852700;
 }
 
 .txt-info{
-    text-align: center;
-    font-size: 18px;   
+    font-family: Verdana;
+    font-size: 18px;
+    font-variant: small-caps;
+    text-align: center;  
     margin: 10px;
+    color: #852700;
+}
+
+.txt-dinero{
+    font-weight: Bold;
 }
 
 .txt-form-error{
-    font-size:8px;
+    font-family: Verdana;
+    font-size: 14px;
+    font-style: Italic;
+    font-variant: small-caps;
+    color: #852700;
 }
 
 .toast-ok{
+    font-family: Verdana;
+    font-size: 15px;
+    font-style: Italic;
+    font-variant: small-caps;
+    font-weight: Bold;
+    color: rgba(255,255,255,0.90);
     background-color: green;
 }
 
 .toast-info{
-    background-color: blue;
+    font-family: Verdana;
+    font-size: 15px;
+    font-style: Italic;
+    font-variant: small-caps;
+    font-weight: Bold;
+    color: rgba(255,255,255,0.90);
+    background-color: #e2860f;
 }
 
 .toast-error{
-    background-color: red; 
+    font-family: Verdana;
+    font-size: 15px;
+    font-style: Italic;
+    font-variant: small-caps;
+    font-weight: Bold;
+    color: rgba(255,255,255,0.90);
+    background-color: #852700; 
+}
+
+.podio{
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-color: transparent !important;
+}
+
+#lblPendientes{
+    font-family: Verdana;
+    font-size: 18px;
+    font-variant: small-caps;
+    text-align: center;  
+    color: #f9c707;
+}
+
+#lblNotificaciones{
+    font-family: Verdana;
+    font-size: 15px;
+    font-variant: small-caps;
+    text-align: center;  
+    color: #852700;  
 }
 
 .div-btn-opc{
@@ -44,22 +168,76 @@
     display: none;
 }
 
-.rutaSeguimiento{
-    background-color: blue;
+.input-field label {
+    font-family: Verdana;
+    color: #852700;
 }
 
-.msjError{
-    color : red;
+input[type=text]:focus:not([readonly])+label, 
+input[type=password]:focus:not([readonly])+label{
+    color: #852700;
 }
 
-.btn-adminmesa{
-        width: 175px;
+input[type=text], 
+input[type=password]{
+    font-family: Verdana;
+    font-size: 15px;
+    color: rgba(0, 0, 0, 0.57);
+    border-bottom: 1px solid #852700;
 }
 
-.err-vincular{
-    color: red;
+ input[type=text]:focus:not([readonly]), 
+ input[type=password]:focus:not([readonly]){
+    border-bottom: 1px solid #852700;
+    box-shadow: 0 1px 0 0 #852700;
 }
 
-.pass-vincular{
-    color: green;
+thead {
+    border-top: 2px solid #852700;
+    border-bottom: 2px solid #852700;
+}
+
+td, th{
+    font-family: Verdana;
+    font-size: 14px;
+    font-weight: Bold;
+    color: rgba(0, 0, 0, 0.57);
+}
+
+.collapsible {
+    border-top: 0px solid #ddd;
+    border-right: 0px solid #ddd;
+    border-left: 0px solid #ddd;
+    margin: 0.5rem 0 1rem 0;
+}
+
+.collapsible-header{
+    font-family: Verdana;
+    font-size: 16px;
+    font-style: Italic;
+    font-variant: small-caps;
+    font-weight: Bold;
+    color: rgba(0, 0, 0, 0.57);
+    background-image: url("../img/Textura_barras.jpg");
+    border: 1px solid #852700;
+}
+
+.collapsible-body{
+    border-bottom: 0px solid #ddd;
+}
+
+.tabs {
+    background-color: transparent;
+}
+
+.tabs .tab a{
+    color: #852700;
+}
+
+.tabs .tab a:hover {
+    color: rgba(255,255,255,0.90);
+}
+
+.tabs .indicator{
+    background-color: #852700;
 }

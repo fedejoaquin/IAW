@@ -17,7 +17,7 @@
 
 <div id="menu" class="row">
     <div class="col m8 s12 offset-m2">
-        <?php echo 'La carta actual es: '.$nombre_carta.'<br>'; ?>
+        <p class="txt-info"> <?php echo 'La carta actual es: '.$nombre_carta.'<br>'; ?></p>
         <ul class="collapsible" data-collapsible="accordion">
             <?php 
                 $indice = 0;
@@ -45,7 +45,7 @@
                                     <td><?php echo $np; ?></td>
                                     <td><?php echo '$'.$p; ?></td>
                                     <td> 
-                                        <a class="btn waves-effect waves-green" onclick="<?php echo "mozo.carrito.productos.agregar(".$id.",'".$np."',".$p.",".$id_lp." )"; ?>">
+                                        <a class="boton btn-base-mini waves-effect transparent" onclick="<?php echo "mozo.carrito.productos.agregar(".$id.",'".$np."',".$p.",".$id_lp." )"; ?>">
                                             <i class="material-icons">add</i>
                                         </a>
                                     </td>
@@ -76,10 +76,10 @@
                             ?>
                             <div class="row">
                                 <div class="input-field col s8 m1 offset-m5">
-                                    <input value="<?php echo '$'.$precio_promo; ?>" type="text" readonly>
+                                    <input class="txt-dinero" value="<?php echo '$'.$precio_promo; ?>" type="text" readonly>
                                     <label>Costo</label>
                                 </div>
-                                <a class="input-field col s2 m1 btn" onclick="<?php echo "mozo.carrito.promociones.agregar(".$id_promo.",'".$nom_promo."',".$precio_promo.")"; ?>">
+                                <a class="boton btn-base-mini s2 m1 waves-effect transparent " onclick="<?php echo "mozo.carrito.promociones.agregar(".$id_promo.",'".$nom_promo."',".$precio_promo.")"; ?>">
                                     <i class="material-icons">add</i>
                                 </a>
                             </div>
@@ -113,14 +113,14 @@
                         <div class="collapsible-body">
                             <div class="row">
                                 <div class="input-field col s4 m2 offset-m1 offset-s4">
-                                    <input id="lblTotal" type="text" value="$0.-" readonly>
+                                    <input id="lblTotal" class="txt-dinero" type="text" value="$0.-" readonly>
                                     <label>Total</label>
                                 </div>
                                 <div class="input-field col s12 m4 offset-m1">
-                                    <a class="btn waves-effect" onclick="mozo.carrito.pre_confirmar()">Confirmar pedidos</a>
+                                    <a class="boton btn-base waves-effect transparent" onclick="mozo.carrito.pre_confirmar()">Confirmar</a>
                                 </div>
                                 <div class="input-field col s12 m4">
-                                    <a class="btn waves-effect" onclick="mozo.carrito.vaciar()">Vaciar carrito</a>
+                                    <a class="boton btn-base waves-effect transparent" onclick="mozo.carrito.vaciar()">Vaciar carrito</a>
                                 </div>
                             </div>
                             <div class="row">
@@ -177,9 +177,9 @@
                     <th>ID Mesa</th>
                     <th>Num. Mesa</th>
                     <th>Estado</th>
-                    <th>Vincular</th>
+                    <th>Vinc.</th>
                     <th>Info</th>
-                    <th>Oper. Mesa..</th>
+                    <th>Oper.</th>
                 </tr>
             </thead>
             <tbody id="tblMesasActivas">
@@ -227,7 +227,9 @@
                 </select>
                 <label>Seleccione Mesa...</label>
             </div>
-            <a class="btn col s6 m3 offset-s1 offset-m1" onClick="mozo.carrito.post_confirmar()">Confirmar</a>
+            <div class="col m3 offset-m1">
+                <a class="boton btn-base-mini waves-effect transparent" onClick="mozo.carrito.post_confirmar()">OK</a>
+            </div>
         </div>
     </div>
 </div>
@@ -243,10 +245,10 @@
         <div class="row">
             <input id="inputComentario" placeholder="Sin comentarios" type="text" maxlength="85" autocomplete="off">
         </div>
-    </div>
-    <div class="modal-footer">
-        <a onClick="mozo.enviar_comentario()" class="waves-effect waves-green btn-flat">OK</a>
-    </div>
+        <div class="modal-footer center-align">
+            <a onClick="mozo.enviar_comentario()" class="boton btn-base-mini waves-effect transparent">OK</a>
+        </div>
+    </div> 
 </div>
 
 <div id="modalVinculacion" class="modal">
@@ -266,7 +268,7 @@
         </div>
     </div>
     <div class="row center-align">
-        <a onClick="mozo.vincular.postAlta()" class="btn waves-effect waves-green">Confirmar</a>
+        <a onClick="mozo.vincular.postAlta()" class="boton btn-base waves-effect transparent">Confirmar</a>
     </div>
 </div>
 
@@ -279,7 +281,7 @@
         </div>
         <div class="row">
             <div class="input-field col s6 m4 offset-m1">
-                <input id="lblTotalConfirmados" type="text" value="$0.-" readonly>
+                <input id="lblTotalConfirmados" class="txt-dinero" type="text" value="$0.-" readonly>
                 <label>Total acumulado</label>
             </div>
             <div class="input-field col s12 m6">
@@ -329,5 +331,5 @@
 </div>
 
 <div class="row center-align">
-    <a class="btn waves-effect waves-light tooltipped" href="<?php echo site_url()?>intranet/" data-tooltip="Volver a roles">Volver</a>
+    <a class="boton btn-base waves-effect transparent tooltipped" href="<?php echo site_url()?>intranet/" data-tooltip="Volver a roles">Volver</a>
 </div>

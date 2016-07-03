@@ -61,11 +61,11 @@ carrito : {
             $(icon_c).text("comment");
 
             link_d = $("<a></a>");
-            $(link_d).attr("class", "btn waves-effects");
+            $(link_d).attr("class", "boton btn-base-mini waves-effect transparent");
             $(link_d).attr("onclick", "mozo.carrito.productos.quitar("+i+")");
 
             link_c = $("<a></a>");
-            $(link_c).attr("class", "btn waves-effects"); 
+            $(link_c).attr("class", "boton btn-base-mini waves-effect transparent"); 
             $(link_c).attr("onclick", "mozo.carrito.productos.comentar("+i+")");
 
             $(colImagen).append(img);
@@ -105,11 +105,11 @@ carrito : {
             $(icon_c).text("comment");
 
             link_d = $("<a></a>");
-            $(link_d).attr("class", "btn waves-effects");
+            $(link_d).attr("class", "boton btn-base-mini waves-effect transparent");
             $(link_d).attr("onclick", "mozo.carrito.promociones.quitar("+i+")");
 
             link_c = $("<a></a>");
-            $(link_c).attr("class", "btn waves-effects");
+            $(link_c).attr("class", "boton btn-base-mini waves-effect transparent");
             $(link_c).attr("onclick", "mozo.carrito.promociones.comentar("+i+")");
 
             $(colImagen).append(img);
@@ -162,7 +162,7 @@ notificaciones : {
             </a> 
             **/    
             a = $('<a></a>');
-            $(a).attr('class', 'btn waves-effect waves-green');
+            $(a).attr('class', 'boton btn-base-mini waves-effects transparent');
             $(a).attr('onClick', 'mozo.notificaciones.marcar_visto('+notificaciones[i]['id']+')');
             $(a).append(i_visto);
             
@@ -254,17 +254,17 @@ mesa : {
             $(i_operar).text('settings');
   
             a = $('<a></a>');
-            $(a).attr('class', 'btn waves-effect waves-green');
+            $(a).attr('class', 'boton btn-base-mini waves-effect transparent');
             $(a).attr('onClick', 'mozo.vincular.preAlta('+mesas[i]['id']+')');
             $(a).append(i_vincular);
             
             a_1 = $('<a></a>');
-            $(a_1).attr('class', 'btn waves-effect waves-green');
+            $(a_1).attr('class', 'boton btn-base-mini waves-effect transparent');
             $(a_1).attr('onClick', 'mozo.mesa.ver('+mesas[i]['id']+')');
             $(a_1).append(i_info);
             
             a_2 = $('<a></a>');
-            $(a_2).attr('class', 'dropdown-button btn');
+            $(a_2).attr('class', 'dropdown-button boton btn-base-mini waves-effect transparent');
             $(a_2).attr('data-activates', 'dm'+mesas[i]['id']);
             $(a_2).append(i_operar);
 
