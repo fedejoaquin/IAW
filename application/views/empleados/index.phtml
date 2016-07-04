@@ -5,7 +5,7 @@
     ..: Listando los empleados existentes :..
 </div>
 <div class="row center-align">
-    <a class="btn waves-effect waves-light" href="<?php echo site_url()?>empleados/alta">Agregar Empleado</a>
+    <a class="boton btn-base waves-effect transparent" href="<?php echo site_url()?>empleados/alta">Crear</a>
 </div>
 <div class="row">
     <div class="col s12 m8 offset-m2">
@@ -25,17 +25,17 @@
                     <td><?php echo $empleado['dni']; ?></td>
                     <td><?php echo $empleado['nombre']; ?></td>
                     <td>
-                        <a class="btn waves-effect waves-green" href="<?php echo site_url().'empleados/ver/'.$empleado['id']; ?>">
+                        <a class="boton btn-base-mini waves-effect transparent" href="<?php echo site_url().'empleados/ver/'.$empleado['id']; ?>">
                             <i class="material-icons">info</i>
                         </a>
                     </td>
                     <td>
-                        <a class="btn waves-effect waves-green" href="<?php echo site_url().'empleados/editar/'.$empleado['id']; ?>">
+                        <a class="boton btn-base-mini waves-effect" href="<?php echo site_url().'empleados/editar/'.$empleado['id']; ?>">
                             <i class="material-icons">edit</i>
                         </a>
                     </td>
                     <td>
-                        <a class="dropdown-button btn" data-activates="<?php echo 'drop'.$empleado['id']; ?>" >
+                        <a class="dropdown-button boton btn-base-mini waves-effect" data-activates="<?php echo 'drop'.$empleado['id']; ?>" >
                             <i class="material-icons">delete</i>
                         </a>
                         <ul id='<?php echo 'drop'.$empleado['id']; ?>' class='dropdown-content'>
@@ -56,5 +56,5 @@
     </div>
 </div>
 <div class="row center-align">
-    <a class="btn waves-effect waves-light tooltipped" data-tooltip="Volver a roles" href="<?php echo site_url()?>intranet">Volver</a> 
+    <a class="boton btn-base waves-effect tooltipped" data-tooltip="Volver a roles" href="<?php echo site_url()?>intranet">Volver</a> 
 </div>

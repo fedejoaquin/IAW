@@ -62,11 +62,11 @@ carrito : {
 
             link_d = $("<a></a>");
             $(link_d).attr("class", "boton btn-base-mini waves-effect transparent");
-            $(link_d).attr("onclick", "mozo.carrito.productos.quitar("+i+")");
+            $(link_d).attr("onClick", "mozo.carrito.productos.quitar("+i+")");
 
             link_c = $("<a></a>");
             $(link_c).attr("class", "boton btn-base-mini waves-effect transparent"); 
-            $(link_c).attr("onclick", "mozo.carrito.productos.comentar("+i+")");
+            $(link_c).attr("onClick", "mozo.carrito.productos.comentar("+i+")");
 
             $(colImagen).append(img);
             $(link_d).append(icon_d);
@@ -106,11 +106,11 @@ carrito : {
 
             link_d = $("<a></a>");
             $(link_d).attr("class", "boton btn-base-mini waves-effect transparent");
-            $(link_d).attr("onclick", "mozo.carrito.promociones.quitar("+i+")");
+            $(link_d).attr("onClick", "mozo.carrito.promociones.quitar("+i+")");
 
             link_c = $("<a></a>");
             $(link_c).attr("class", "boton btn-base-mini waves-effect transparent");
-            $(link_c).attr("onclick", "mozo.carrito.promociones.comentar("+i+")");
+            $(link_c).attr("onClick", "mozo.carrito.promociones.comentar("+i+")");
 
             $(colImagen).append(img);
             $(link_d).append(icon_d);

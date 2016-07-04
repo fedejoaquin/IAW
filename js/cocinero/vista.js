@@ -4,7 +4,6 @@ set_pendientes : function(cantidad){
     anteriores = $('#lblPendientes').text();
     $('#lblPendientes').text(cantidad);
     if (anteriores<cantidad){
-        $('#audios_notificaciones')[0].play();
         auxiliar.mensaje('Hay nuevos pedidos pendientes.', 2500, 'toast-info');
     }
     

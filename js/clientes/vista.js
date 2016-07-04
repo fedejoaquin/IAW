@@ -39,14 +39,14 @@ listar_carrito : function (){
         icon_c = $("<i></i>");
         $(icon_c).attr("class", "material-icons");
         $(icon_c).text("comment");
-        
+                    
         link_d = $("<a></a>");
-        $(link_d).attr("class", "btn waves-effects");
-        $(link_d).attr("onclick", "cliente.producto.quitar("+i+")");
+        $(link_d).attr("class", "boton btn-base-mini waves-effect transparent");
+        $(link_d).attr("onClick", "cliente.producto.quitar("+i+")");
                
         link_c = $("<a></a>");
-        $(link_c).attr("class", "btn waves-effects");
-        $(link_c).attr("onclick", "cliente.producto.comentar("+i+")");
+        $(link_c).attr("class", "boton btn-base-mini waves-effect transparent");
+        $(link_c).attr("onClick", "cliente.producto.comentar("+i+")");
         
         $(colImagen).append(img);
         $(link_d).append(icon_d);
@@ -83,12 +83,12 @@ listar_carrito : function (){
         $(icon_c).text("comment");
         
         link_d = $("<a></a>");
-        $(link_d).attr("class", "btn waves-effects");
-        $(link_d).attr("onclick", "cliente.promocion.quitar("+i+")");
+        $(link_d).attr("class", "boton btn-base-mini waves-effect transparent");
+        $(link_d).attr("onClick", "cliente.promocion.quitar("+i+")");
         
         link_c = $("<a></a>");
-        $(link_c).attr("class", "btn waves-effects");
-        $(link_c).attr("onclick", "cliente.promocion.comentar("+i+")");
+        $(link_c).attr("class", "boton btn-base-mini waves-effect transparent");
+        $(link_c).attr("onClick", "cliente.promocion.comentar("+i+")");
         
         $(colImagen).append(img);
         $(link_d).append(icon_d);

@@ -15,9 +15,20 @@
             ..: Acá te mostramos el podio de tu búsqueda :..
         </div>
         <div class="row">
-            <div class="col s12 m8 offset-m2">
-                <img height="200px" width="200px" src="<?php echo site_url().'img/Podio.jpg'; ?>"/>
-            </div>
+            <table class="col s12 m2 offset-m5 offset-s2">
+                <tr>
+                    <td class="td_podio"><img class="podio" src="<?php echo site_url().'img/Podio_1.png'; ?>"/></td>
+                    <td id="puestoUno"></td>
+                </tr>
+                <tr>
+                    <td class="td_podio"><img class="podio" src="<?php echo site_url().'img/Podio_2.png'; ?>"/></td>
+                    <td id="puestoDos"></td>
+                </tr>
+                <tr>
+                    <td class="td_podio"><img class="podio" src="<?php echo site_url().'img/Podio_3.png'; ?>"/></td>
+                    <td id="puestoTres"></td>
+                </tr>
+            </table>
         </div>
         <div class="row">
             <div class="col m8 s12 offset-m2">
@@ -31,12 +42,10 @@
                                         <thead>
                                             <tr>
                                                 <th>Pos.</th>
-                                                <th>Logo</th>
-                                                <th>Nombre</th>
+                                                <th>Sucursal</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-
+                                        <tbody id="tblPosiciones">
                                         </tbody>
                                     </table>
                                 </div>
@@ -56,32 +65,86 @@
                             </div>
                             <div id="producto" class="row">
                                 <div class="col s12">
-                                    <table id="tblCervezas" class="responsive-table highlight">
+                                    <table class="responsive-table">
                                         <thead>
                                             <tr>
                                                 <th>Nombre producto</th>
                                                 <th>Ver producto</th>
+                                                <th>Aplicar</th>
                                             </tr>
                                         </thead>
-                                        <tbody id="tblProductosCompetencia">
+                                        <tbody id="tblCervezas">
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
 
-                            <div id="filtro" class="row">
-                                <div class="col s12">
-                                    <table class="responsive-table highlight">
-                                        <thead>
-                                            <tr>
-                                                <th>Dia</th>
-                                                <th>Mes</th>
-                                                <th>Año</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        </tbody>
-                                    </table>
+                            <div id="filtro">
+                                <div class="row center-align">
+                                    <a class="boton btn-base transparent waves-effect" onclick="competencia.filtro.fecha()">Filtrar</a>
+                                </div>
+                                <div class="row">
+                                    <div class="col s12">
+                                        <table class="responsive-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Dia</th>
+                                                    <th>Mes</th>
+                                                    <th>Año</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <div class="input-field">
+                                                            <select id="selectDia">    
+                                                                <option selected type="number" value="-1">---</option>
+                                                                <?php 
+                                                                    for($i=1; $i<10; $i++){
+                                                                        echo "<option type='number' value='".$i."'>0".$i."</option>";
+                                                                    }
+                                                                    for($i=10; $i<13; $i++){
+                                                                        echo "<option type='number' value='".$i."'>".$i."</option>";
+                                                                    }
+                                                                ?>
+                                                            </select>
+                                                        </div> 
+                                                    </td>
+                                                    <td>
+                                                        <div class="input-field">
+                                                            <select id="selectMes">    
+                                                                <option selected type="number" value="-1">---</option>
+                                                                <option type="number" value="1">Enero</option>
+                                                                <option type="number" value="2">Febrero</option>
+                                                                <option type="number" value="3">Marzo</option>
+                                                                <option type="number" value="4">Abril</option>
+                                                                <option type="number" value="5">Mayo</option>
+                                                                <option type="number" value="6">Junio</option>
+                                                                <option type="number" value="7">Julio</option>
+                                                                <option type="number" value="8">Agosto</option>
+                                                                <option type="number" value="9">Septiembre</option>
+                                                                <option type="number" value="10">Octubre</option>
+                                                                <option type="number" value="11">Noviembre</option>
+                                                                <option type="number" value="12">Diciembre</option>
+                                                            </select>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="input-field">
+                                                            <select id="selectAnio">    
+                                                                <option selected type="number" value="-1">---</option>
+                                                                <?php 
+                                                                    for($i=2016; $i>1999; $i--){
+                                                                        echo "<option type='number' value='".$i."'>".$i."</option>";
+                                                                    }
+                                                                ?>
+                                                            </select>
+                                                        </div> 
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -94,13 +157,23 @@
                 <div class="row txt-cabecera">
                     ¡BOHEMIA COMPETENCIA!
                 </div>
-                <div class="row txt-info">
-                    ..: Visualizando cerveza :..
+                <div id="lblVerCerveza" class="row txt-info">
                 </div>
                 <div class="row">
-                    <div class="row txt_info">
-                        Cerveza horrible
-                    </div>
+                    <table class="responsive-table">
+                        <thead>
+                            <tr>
+                                <th>Características</th>
+                                <th>Graduación</th>
+                                <th>IBU</th>
+                                <th>Amargor</th>
+                                <th>DG</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tblVerCerveza">
+                            
+                        </tbody>
+                    </table>
                 </div>
             </div> 
         </div>

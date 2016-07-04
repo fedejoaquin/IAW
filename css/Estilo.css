@@ -139,9 +139,25 @@ body{
 }
 
 .podio{
+    height: 50px;
+    width: 50px;
     background-size: cover;
     background-repeat: no-repeat;
     background-color: transparent !important;
+}
+
+.podio_img{
+    height: 50px;
+    width: 150px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-color: transparent !important;
+}
+
+.td_podio{
+    padding: 0px;
+    height: 65px;
+    width:  65px;
 }
 
 #lblPendientes{

@@ -26,18 +26,17 @@ cargar_podio : function(){
                 auxiliar.mensaje('El podio no puede ser actualizado.', 5000,'toast-error');
             },
             success: function (response){
-                var respuesta = JSON.parse(response);
                 auxiliar.espera.detener();
-                if (respuesta['error'] === undefined){
-                    competencia_vista.cargar_podio(respuesta);
+                if (response['error'] === undefined){
+                    competencia_vista.cargar_podio(response);
                 }else{
-                    auxiliar.mensaje(respuesta['error'], 5000,'toast-error');
+                    auxiliar.mensaje(response['error'], 5000,'toast-error');
                 }
             }
         });
     }else{
         $.ajax({
-            data:  JSON.stringify({nombre:competencia.filtro_cerveza, dia: competencia.filtro_dia, mes: competencia.filtro_mes, anio: competencia.filtro_anio}),
+            data:  JSON.stringify({nombre_producto:competencia.filtro_cerveza, dia: competencia.filtro_dia, mes: competencia.filtro_mes, anio: competencia.filtro_anio}),
             url:   'http://localhost:8888/consumo_producto',
             type:  'post',
             dataType: "json",
@@ -49,12 +48,11 @@ cargar_podio : function(){
                 auxiliar.mensaje('El podio no puede ser actualizado.', 5000,'toast-error');
             },
             success: function (response){
-                var respuesta = JSON.parse(response);
                 auxiliar.espera.detener();
-                if (respuesta['error'] === undefined){
-                    competencia_vista.cargar_podio(respuesta);
+                if (response['error'] === undefined){
+                    competencia_vista.cargar_podio(response);
                 }else{
-                    auxiliar.mensaje(respuesta['error'], 5000,'toast-error');
+                    auxiliar.mensaje(response['error'], 5000,'toast-error');
                 }
             }
         });
@@ -66,7 +64,7 @@ cargar_podio : function(){
 cervezas : {
     listar : function(){
         $.ajax({
-            data:  JSON.stringify({}),
+            data:  {},
             url:   'http://localhost:8888/productos',
             type:  'post',
             dataType: "json",
@@ -77,9 +75,8 @@ cervezas : {
                 auxiliar.mensaje('Las cervezas del concurso no pueden ser listadas.', 5000,'toast-error');
             },
             success: function (response){
-                var respuesta = JSON.parse(response);
-                if (respuesta['error'] === undefined){
-                    competencia_vista.cervezas.listar(respuesta);
+                if (response['error'] === undefined){
+                    competencia_vista.cervezas.listar(response);
                 }else{
                     auxiliar.mensaje(respuesta['error'], 5000,'toast-error');
                 }
@@ -87,33 +84,25 @@ cervezas : {
         });
     },
     
-    ver : function(nombre_id){
-        auxiliar.espera.lanzar();
-        $.ajax({
-            data:  JSON.stringify({nombre: nombre_id }),
-            url:   'http://localhost:8888/info_producto',
-            type:  'post',
-            dataType: "json",
-            crossDomain:true,
-            error: function(response){
-                auxiliar.espera.detener();
-                auxiliar.mensaje('Se produjo un error en la conexión.', 5000,'toast-error');
-                auxiliar.mensaje('El servidor no está respondiendo nuestra solicitud.', 5000,'toast-error');
-                auxiliar.mensaje('La cerveza no puede ser visualizada.', 5000,'toast-error');
-            },
-            success: function (response){
-                var respuesta = JSON.parse(response);
-                auxiliar.espera.detener();
-                if (respuesta['error'] === undefined){
-                    competencia_vista.cervezas.ver(respuesta);
-                }else{
-                    auxiliar.mensaje(respuesta['error'], 5000,'toast-error');
-                }
-            }
-        });
+    ver : function(id){
+        competencia_vista.cervezas.ver(id);
     }
 
-} //FIN CERVEZA
+}, //FIN CERVEZA
+
+
+filtro : {
+    cerveza : function(nombre){
+        competencia.filtro_cerveza = nombre;
+        competencia.cargar_podio();
+    },
+    fecha : function(){
+        competencia.filtro_dia = 31 - ('31' - $('#selectDia').val());
+        competencia.filtro_mes = 12 - ('12' - $('#selectMes').val());
+        competencia.filtro_anio = 2016 - ('2016' - $('#selectAnio').val());
+        competencia.cargar_podio();
+    }
+}
 
 }//FIN COMPETENCIA
 

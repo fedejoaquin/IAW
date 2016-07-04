@@ -91,6 +91,7 @@ class Clientes extends CI_Controller {
                         $componente = array('id_producto' => $row['id'], 'precio' => $row['precio'] );
                         if (in_array($componente, $productos_precios)){
                             $this->MPedidos->solicitarProducto($id_pedidor,$id_mesa, $row['id'], $row['id_lp'], $row['comentarios']);
+                            $this->concurso->control_participa_concurso($row['id']);
                         }
                     }
                 }

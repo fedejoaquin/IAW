@@ -5,9 +5,6 @@
     ..: Editando empleado :..
 </div>
 <div class="row">
-    <?php echo validation_errors(); ?>
-</div>
-<div class="row">
     <?php 
         $attr = array(
             'autocomplete' => 'off'
@@ -75,8 +72,8 @@
         </div>
     </div>
     <div class="row center-align">
-        <input class="btn waves-effect waves-light" type="submit" value="Confirmar"/>
-        <a class="btn waves-effect waves-light tooltipped" data-tooltip="Volver a empleados" href="<?php echo site_url()?>empleados">Cancelar</a> 
+        <input class="boton btn-base waves-effect transparent" type="submit" value="Confirmar"/>
+        <a class="boton btn-base waves-effect transparent tooltipped" data-tooltip="Volver a empleados" href="<?php echo site_url()?>empleados">Cancelar</a> 
     </div>
     </form>
 </div>

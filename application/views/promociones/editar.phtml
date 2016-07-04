@@ -33,7 +33,7 @@
                 <div class="collapsible-header">Productos</div>
                 <div class="collapsible-body">
                     <div class="row center-align">
-                        <a class="btn waves-effect waves-green" onClick="promociones.producto.preAlta()">Agregar Producto</a>
+                        <a class="boton btn-base waves-effect transparent" onClick="promociones.producto.preAlta()">Agregar</a>
                     </div>
                     <table class="responsive-table">
                         <thead>
@@ -49,7 +49,7 @@
                                 <td><?php echo $id; ?></td>
                                 <td><?php echo $np; ?></td>
                                 <td>
-                                    <a class='dropdown-button btn' data-activates='<?php echo 'dprod'.$id; ?>'><i class="material-icons">delete</i></a>
+                                    <a class='dropdown-button boton btn-base-mini waves-effect transparent' data-activates='<?php echo 'dprod'.$id; ?>'><i class="material-icons">delete</i></a>
                                     <!-- Dropdown Structure -->
                                     <ul id='<?php echo 'dprod'.$id; ?>' class='dropdown-content'>
                                         <li>¿Confirma?</li>
@@ -91,10 +91,10 @@
             </div>
         </div>
         <div class="row center-align">
-            <a class="btn" onClick="promociones.producto.postAlta()">Confirmar</a>
+            <a class="boton btn-base waves-effect transparent" onClick="promociones.producto.postAlta()">Confirmar</a>
         </div>
     </div>
 </div>
 <div class="row center-align">
-    <a class="btn waves-effect waves-light tooltipped" data-tooltip="Volver a promociones" href="<?php echo site_url()?>promociones">Volver</a> 
+    <a class="boton btn-base waves-effect transparent tooltipped" data-tooltip="Volver a promociones" href="<?php echo site_url()?>promociones">Volver</a> 
 </div>
