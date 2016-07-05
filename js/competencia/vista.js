@@ -13,8 +13,7 @@ cargar_podio : function(data){
         $("#puestoUno").empty();
         img = $("<img/>");
         $(img).attr("src", "http://localhost/IAW-PF/img/"+data[0]['nombre_competidor']+".png");
-        $(img).attr("class", "podio_img tooltipped");
-        $(img).attr("data-tooltip",data[0]['nombre_competidor'] );
+        $(img).attr("class", "podio_img");
         $("#puestoUno").append(img);
         
         //Segundo puesto podio
@@ -53,13 +52,46 @@ cargar_podio : function(data){
                     }
                 }
             }else{
-                //Hay solo dos para podio 
+                //Hay solo dos para podio
+                $("#puestoTres").empty();
+                img = $("<img/>");
+                $(img).attr("src", "http://localhost/IAW-PF/img/Bohemia.Vacante.png");
+                $(img).attr("class", "podio_img");
+                $("#puestoTres").append(img);
             }
         }else{
             //Hay un solo para podio.
+            $("#puestoDos").empty();
+            img = $("<img/>");
+            $(img).attr("src", "http://localhost/IAW-PF/img/Bohemia.Vacante.png");
+            $(img).attr("class", "podio_img");
+            $("#puestoDos").append(img);
+            
+            $("#puestoTres").empty();
+            img = $("<img/>");
+            $(img).attr("src", "http://localhost/IAW-PF/img/Bohemia.Vacante.png");
+            $(img).attr("class", "podio_img");
+            $("#puestoTres").append(img);
         }
     }else{
         //Sin elementos para podio.
+        $("#puestoUno").empty();
+        img = $("<img/>");
+        $(img).attr("src", "http://localhost/IAW-PF/img/Bohemia.Vacante.png");
+        $(img).attr("class", "podio_img");
+        $("#puestoUno").append(img);
+        
+        $("#puestoDos").empty();
+        img = $("<img/>");
+        $(img).attr("src", "http://localhost/IAW-PF/img/Bohemia.Vacante.png");
+        $(img).attr("class", "podio_img");
+        $("#puestoDos").append(img);
+
+        $("#puestoTres").empty();
+        img = $("<img/>");
+        $(img).attr("src", "http://localhost/IAW-PF/img/Bohemia.Vacante.png");
+        $(img).attr("class", "podio_img");
+        $("#puestoTres").append(img);
         
     }
 }, //FIN CARGAR PODIO

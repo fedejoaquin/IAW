@@ -20,7 +20,7 @@ class Concurso{
             $datos = array(
                 "nombre_competidor" => "Bohemia.Argentina", 
                 "password" => "d8015c4f1e8d6f6bd00f1da9c8712c0ea1fb9fbe64a4971e91b1d05706db4c93",
-                "nombre_producto" => "Honey Beer"
+                "nombre_producto" => $id_producto_webservice
             );
             $datosString = json_encode($datos);
         

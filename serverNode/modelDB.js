@@ -32,10 +32,7 @@ MongoClient.connect('mongodb://localhost:27017/competenciasDB', function(err, db
         
       });
     info_productos = db.collection('competidores_productos');
-    data = {
-        "nombre_competidor" : "Bohemia.Argentina",
-        "nombre_producto" : "Honey Beer"
-    };
+    
     //incrementar_consumo(data,function(respuesta){console.log(respuesta);})
    // console.log("Servidor Iniciaado correctamente");
      });

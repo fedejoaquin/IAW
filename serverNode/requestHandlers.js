@@ -190,11 +190,11 @@ function consumo_total(response,dataPost){
 }
 
 function incrementar_consumo(response,dataPost) {
-    //db.checkLogin(dataPost, function(logueado){
+    db.checkLogin(dataPost, function(logueado){
     
     response.setHeader("Content-Type", "text/json");
     response.setHeader("Access-Control-Allow-Origin", "*");
-    //if(logueado === "log"){
+    if(logueado === "log"){
         datos = JSON.parse(dataPost);
         
         db.incrementar_consumo(datos,function(salida){
@@ -209,14 +209,14 @@ function incrementar_consumo(response,dataPost) {
                 response.end(JSON.stringify(result));
             }
         });
-    /**}
+    }
     else{
         var result = {
                         "error":"Usuario No Logueado"
                     };
         response.end(JSON.stringify(result));
     }
-    });**/
+    });
 
 }
 

@@ -159,7 +159,8 @@ class MCartas extends CI_Model {
         $consulta .= 'FROM (((Cartas_promociones cp LEFT JOIN Promociones p ON  cp.id_promocion = p.id ) ';
         $consulta .= 'LEFT JOIN Info_promociones ip ON p.id = ip.id_promocion ) ';
         $consulta .= 'LEFT JOIN Productos pr ON ip.id_producto = pr.id ) ';
-        $consulta .= 'WHERE cp.id_carta = '.$id_carta;
+        $consulta .= 'WHERE cp.id_carta = '.$id_carta.' ';
+        $consulta .= 'ORDER BY p.nombre ASC ';
 
         $query = $this->db->query($consulta);
         $resultado = $query->result_array();

@@ -2,7 +2,7 @@
     MENÚES.
 </div>
 <div class="row center-align">
-    <a class="btn waves-effect waves-green" onClick="menu.preAlta()" >AGREGAR MENU</a>
+    <a class="boton btn-base waves-effect transparent" onClick="menu.preAlta()" >Agregar</a>
 </div>
 <div class="row">
     <div class="col m8 s12 offset-m2">
@@ -29,17 +29,17 @@
                     <td><?php echo $nm; ?></td>
                     <td><?php echo $nc; ?></td>
                     <td> 
-                        <a class="btn waves-effect waves-green"  href="<?php echo site_url()."menu/ver/".$id; ?>">
+                        <a class="boton btn-base-mini waves-effect transparent"  href="<?php echo site_url()."menu/ver/".$id; ?>">
                             <i class="material-icons">info</i>
                         </a>
                     </td>
                     <td>
-                        <a class="btn waves-effect waves-green"  href="<?php echo site_url()."menu/editar/".$id; ?>">
+                        <a class="boton btn-base-mini waves-effect transparent"  href="<?php echo site_url()."menu/editar/".$id; ?>">
                             <i class="material-icons">edit</i>
                         </a>
                     </td>
                     <td>
-                        <a class='dropdown-button btn' data-activates='<?php echo 'drop'.$id; ?>'>
+                        <a class='boton btn-base-mini waves-effect transparent dropdown-button' data-activates='<?php echo 'drop'.$id; ?>'>
                             <i class="material-icons">delete</i>
                         </a>
                         <!-- Dropdown Structure -->
@@ -86,10 +86,10 @@
             </div>
         </div>
         <div class="row center-align">
-            <a class="btn" onClick="menu.postAlta()">Confirmar</a>
+            <a class="boton btn-base waves-effect transparent" onClick="menu.postAlta()">Confirmar</a>
         </div>
     </div>
 </div>
 <div class="row center-align">
-    <a class="btn waves-effect waves-light tooltipped" data-tooltip="Volver a roles" href="<?php echo site_url()?>intranet">Volver</a> 
+    <a class="boton btn-base waves-effect transparent tooltipped" data-tooltip="Volver a roles" href="<?php echo site_url()?>intranet">Volver</a> 
 </div>

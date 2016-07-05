@@ -67,7 +67,7 @@ postAlta : function(datos){
     </a> 
     **/    
     a = $('<a></a>');
-    $(a).attr('class', 'btn waves-effect waves-green');
+    $(a).attr('class', 'boton btn-base-mini waves-effect transparent');
     $(a).attr('href', '/IAW-PF/menu/ver/'+id_menu);
     $(a).append(i_info);
     
@@ -77,7 +77,7 @@ postAlta : function(datos){
     </a> 
     **/ 
     a_1 = $('<a></a>');
-    $(a_1).attr('class', 'btn waves-effect waves-green');
+    $(a_1).attr('class', 'boton btn-base-mini waves-effect transparent');
     $(a_1).attr('href', '/IAW-PF/menu/editar/'+id_menu);
     $(a_1).append(i_edit);
 
@@ -85,7 +85,7 @@ postAlta : function(datos){
     <a class='dropdown-button btn' data-activates='dropID'><i class="material-icons">delete</i></a>
     **/     
     a_2 = $('<a></a>');
-    $(a_2).attr('class', 'dropdown-button btn');
+    $(a_2).attr('class', 'boton btn-base-mini waves-effect transparent dropdown-button');
     $(a_2).attr('data-activates', 'dm'+id_menu);
     $(a_2).append(i_delete);
 
@@ -269,7 +269,7 @@ producto : {
         </a> 
         **/    
         var a = $('<a></a>');
-        $(a).attr('class', 'btn waves-effect waves-green');
+        $(a).attr('class', 'boton btn-base-mini waves-effect transparent');
         $(a).attr('onClick', 'menu.producto.preEditar('+datos['id']+','+id_producto+')');
         $(a).append(i_edit);
 
@@ -277,7 +277,7 @@ producto : {
         <a class='dropdown-button btn' data-activates='dropID'><i class="material-icons">delete</i></a>
         **/     
         var a_1 = $('<a></a>');
-        $(a_1).attr('class', 'dropdown-button btn');
+        $(a_1).attr('class', 'boton btn-base-mini waves-effect transparent dropdown-button');
         $(a_1).attr('data-activates', 'dprod'+id_producto);
         $(a_1).append(i_delete);
 
@@ -429,7 +429,7 @@ promocion : {
         $(i_info).text('info');
 
         a = $('<a></a>');
-        $(a).attr('class', 'btn waves-effect waves-green');
+        $(a).attr('class', 'boton btn-base-mini waves-effect transparent');
         $(a).attr('href', '/IAW-PF/promociones/ver/'+id_promocion);
         $(a).append(i_info);
 
@@ -438,7 +438,7 @@ promocion : {
         $(i_delete).text('delete');
 
         a_1 = $('<a></a>');
-        $(a_1).attr('class', 'dropdown-button btn');
+        $(a_1).attr('class', 'boton btn-base-mini waves-effect transparent dropdown-button');
         $(a_1).attr('data-activates', 'dprom'+id_promocion);
         $(a_1).append(i_delete);
 

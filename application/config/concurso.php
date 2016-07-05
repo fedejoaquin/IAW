@@ -10,10 +10,10 @@ $config['concurso'] = array(
 
 $config['mapeoProductos'] = array(
     '13' => [],
-    '14' => 'Honey Beer',
-    '15' => 'Honey Beer',
-    '16' => 'Honey Beer',
+    '14' => [],
+    '15' => [],
+    '16' => [],
     '17' => 'Honey Beer',
-    '18' => 'Honey Beer',
-    '19' => 'Honey Beer',
+    '18' => 'Barley Wine',
+    '19' => 'IPA - India Pale Ale',
 );

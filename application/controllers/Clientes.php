@@ -23,6 +23,15 @@ class Clientes extends CI_Controller {
     }
     
     /**
+     * Permite al cliente calificar al mozo que lo atendió.
+     */
+    public function calificar(){
+        $this->chequear_vinculado();
+        $data['funcion'] = 'calificar';
+        $this->load->view('vClientes',$data);
+    }
+    
+    /**
      * Lista la información disponible del cliente solicitante, a saber:
      * ID, Nombre, Mesa asignada y Mozo asignado.
      */
