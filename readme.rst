@@ -1,16 +1,16 @@
 **************************************
-<b>Proyecto Final de materia</b>
+Proyecto Final de materia
 **************************************
 
-Web resto: sistema web para la administración de pedidos de un resto.<br>
-Implementación del proyecto final de materia de <b>Técnicas y Lenguajes para la<br>
-programación de servidores.</b>
+Web resto: sistema web para la administración de pedidos de un resto.
+Implementación del proyecto final de materia de Técnicas y Lenguajes para la
+programación de servidores.
 
 *******************
-<b>Desarrolladores</b>
+Desarrolladores
 *******************
 
-<b>Federico Joaquín - Leandro Gilardi.</b><br>
-Alumnos de Ing. en Sistemas de Computación.<br>
-Dpto. de Cs. e Ing. de la Computación - Univ. Nac. del Sur.<br>
+Federico Joaquín - Leandro Gilardi.
+Alumnos de Ing. en Sistemas de Computación.
+Dpto. de Cs. e Ing. de la Computación - Univ. Nac. del Sur.
 www.cs.uns.edu.ar - www.uns.edu.ar
